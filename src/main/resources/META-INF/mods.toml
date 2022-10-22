@@ -64,10 +64,3 @@ A magic mod.
     versionRange = "[1.19.2,1.20)"
     ordering = "NONE"
     side = "BOTH"
-[[dependencies.sas]]
-modId = "calio"
-mandatory = true
-# This version range declares a minimum of the current minecraft version up to but not including the next major version
-versionRange = "[1.19.2,1.20)"
-ordering = "NONE"
-side = "BOTH"
