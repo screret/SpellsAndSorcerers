@@ -6,16 +6,13 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.UseAnim;
-import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import screret.sas.SpellsAndSorcerers;
-import screret.sas.enchantment.ModEnchantments;
 import screret.sas.item.wand.Wand;
-import screret.sas.item.wand.power.IIsChargeable;
 import screret.sas.item.wand.power.IIsExplosive;
+import screret.sas.item.wand.power.IIsChargeable;
 import screret.sas.item.wand.power.IIsRaycaster;
 
 public class ExplosionWand extends Wand implements IIsChargeable, IIsExplosive, IIsRaycaster {

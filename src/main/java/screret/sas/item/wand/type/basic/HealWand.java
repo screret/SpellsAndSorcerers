@@ -1,14 +1,12 @@
 package screret.sas.item.wand.type.basic;
 
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import screret.sas.enchantment.ModEnchantments;
 import screret.sas.item.wand.Wand;
 import screret.sas.item.wand.power.IIsHoldable;
 import screret.sas.item.wand.power.IIsRaycaster;

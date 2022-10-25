@@ -9,7 +9,9 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import screret.sas.SpellsAndSorcerers;
-import screret.sas.enchantment.enchantment.*;
+import screret.sas.enchantment.enchantment.PowerEnchantment;
+import screret.sas.enchantment.enchantment.ProlongedUseEnchantment;
+import screret.sas.enchantment.enchantment.QuickChargeEnchantment;
 import screret.sas.item.wand.Wand;
 import screret.sas.item.wand.power.IIsHoldable;
 

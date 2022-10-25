@@ -5,8 +5,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.Level;
 import screret.sas.item.wand.Wand;
-import screret.sas.item.wand.power.IIsChargeable;
 import screret.sas.item.wand.power.IIsHoldable;
+import screret.sas.item.wand.power.IIsChargeable;
 
 public class SightWand extends Wand implements IIsHoldable, IIsChargeable {
 
