@@ -1,29 +1,29 @@
 package screret.sas.api.wand.ability;
 
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.InteractionHand;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.util.INBTSerializable;
+import net.minecraft.world.phys.Vec3;
 
-public interface IWandAbility extends INBTSerializable<CompoundTag> {
+public interface IWandAbility {
 
-    IWandAbility[] getChildren();
-
-    InteractionResultHolder<ItemStack> execute(Level level, Player player, InteractionHand hand);
+    InteractionResultHolder<ItemStack> execute(Level level, LivingEntity player, ItemStack stack, WandAbilityInstance.Vec3Wrapped currentPosition, int timeCharged);
 
     int getUseDuration();
 
-    void onUsingTick(ItemStack stack, LivingEntity user, int usageTicks);
+    boolean isHoldable();
 
-    void releaseUsing(ItemStack stack, Level level, LivingEntity entity, int timeLeft);
+    boolean isChargeable();
 
     int getCooldownDuration();
 
     float getBaseDamagePerHit();
 
-    String getId();
+    float getDamagePerHit(ItemStack stack);
+
+    ResourceLocation getKey();
+
+    ResourceLocation getModelLocation();
 }

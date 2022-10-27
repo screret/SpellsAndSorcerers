@@ -6,7 +6,7 @@ import screret.sas.enchantment.ModEnchantments;
 
 public class QuickChargeEnchantment extends Enchantment {
     public QuickChargeEnchantment(Enchantment.Rarity pRarity, EquipmentSlot... pApplicableSlots) {
-        super(pRarity, ModEnchantments.CROSSBOW_OR_WAND, pApplicableSlots);
+        super(pRarity, ModEnchantments.Categories.CROSSBOW_OR_WAND, pApplicableSlots);
     }
 
     /**

@@ -12,15 +12,16 @@ import screret.sas.SpellsAndSorcerers;
 import screret.sas.enchantment.enchantment.PowerEnchantment;
 import screret.sas.enchantment.enchantment.ProlongedUseEnchantment;
 import screret.sas.enchantment.enchantment.QuickChargeEnchantment;
-import screret.sas.item.wand.Wand;
-import screret.sas.item.wand.power.IIsHoldable;
+import screret.sas.item.item.WandItem;
 
 public class ModEnchantments {
 
-    public static final EnchantmentCategory WAND = EnchantmentCategory.create("sas:wand", (item)->(item instanceof Wand));
-    public static final EnchantmentCategory HOLDABLE_WAND = EnchantmentCategory.create("sas:holdable", (item)->(item instanceof IIsHoldable));
-    public static final EnchantmentCategory CROSSBOW_OR_WAND = EnchantmentCategory.create("sas:crossbow_wand", (item)->(item instanceof Wand || item instanceof CrossbowItem));
-    public static final EnchantmentCategory BOW_OR_WAND = EnchantmentCategory.create("sas:bow_wand", (item)->(item instanceof Wand || item instanceof BowItem));
+    public static class Categories{
+        public static final EnchantmentCategory WAND = EnchantmentCategory.create("sas:wand", (item)->(item instanceof WandItem));
+        public static final EnchantmentCategory CROSSBOW_OR_WAND = EnchantmentCategory.create("sas:crossbow_wand", (item)->(item instanceof WandItem || item instanceof CrossbowItem));
+        public static final EnchantmentCategory BOW_OR_WAND = EnchantmentCategory.create("sas:bow_wand", (item)->(item instanceof WandItem || item instanceof BowItem));
+    }
+
 
 
     public static final DeferredRegister<Enchantment> ENCHANTS = DeferredRegister.create(ForgeRegistries.ENCHANTMENTS, SpellsAndSorcerers.MODID);

@@ -12,7 +12,6 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
-import screret.sas.item.wand.WandItem;
 
 import java.util.function.Predicate;
 
@@ -52,7 +51,7 @@ public class Util {
         return stuff;
     }
 
-    public void spawnParticlesInLine(Level level, Vec3 start, Vec3 end, ParticleOptions particle, int pointsPerLine, Vec3 speed, boolean alwaysRender){
+    public static void spawnParticlesInLine(Level level, Vec3 start, Vec3 end, ParticleOptions particle, int pointsPerLine, Vec3 randomDeviation, boolean alwaysRender){
         double d = start.distanceTo(end) / pointsPerLine;
         for (int i = 0; i < pointsPerLine; i++) {
             Vec3 pos = new Vec3(start.x, start.y, start.z);
@@ -61,10 +60,10 @@ public class Util {
 
             pos = pos.add(v);
             if(level.isClientSide){
-                level.addParticle(particle, alwaysRender, pos.x, pos.y, pos.z, speed.x, speed.y, speed.z);
+                level.addParticle(particle, alwaysRender, pos.x, pos.y, pos.z, randomDeviation.x, randomDeviation.y, randomDeviation.z);
                 continue;
             }
-            ((ServerLevel)level).sendParticles(particle, pos.x, pos.y, pos.z, 1, speed.x, speed.y, speed.z, 0);
+            ((ServerLevel)level).sendParticles(particle, pos.x, pos.y, pos.z, 1, randomDeviation.x, randomDeviation.y, randomDeviation.z, 0);
         }
     }
 

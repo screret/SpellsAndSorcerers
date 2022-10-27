@@ -7,7 +7,7 @@ import screret.sas.enchantment.ModEnchantments;
 public class ProlongedUseEnchantment extends Enchantment {
 
     public ProlongedUseEnchantment(Rarity enchantRarity, EquipmentSlot... pApplicableSlots) {
-        super(enchantRarity, ModEnchantments.HOLDABLE_WAND, pApplicableSlots);
+        super(enchantRarity, ModEnchantments.Categories.WAND, pApplicableSlots);
     }
 
     /**

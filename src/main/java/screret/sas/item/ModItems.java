@@ -8,9 +8,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import screret.sas.SpellsAndSorcerers;
 import screret.sas.block.ModBlocks;
-import screret.sas.item.wand.type.advanced.ExplosionWand;
-import screret.sas.item.wand.type.basic.HealWand;
-import screret.sas.item.wand.type.basic.RayWand;
+import screret.sas.item.item.WandItem;
 
 public class ModItems {
 
@@ -23,9 +21,10 @@ public class ModItems {
 
 
     // WANDS
-    public static final RegistryObject<Item> RAY_WAND = ITEMS.register("ray_wand", RayWand::new);
-    public static final RegistryObject<Item> EXPLOSION_WAND = ITEMS.register("explosion_wand", ExplosionWand::new);
-    public static final RegistryObject<Item> HEAL_WAND = ITEMS.register("heal_wand", HealWand::new);
+    public static final RegistryObject<Item> WAND = ITEMS.register("wand", WandItem::new);
+    //public static final RegistryObject<Item> RAY_WAND = ITEMS.register("ray_wand", RayWand::new);
+    //public static final RegistryObject<Item> EXPLOSION_WAND = ITEMS.register("explosion_wand", ExplosionWand::new);
+    //public static final RegistryObject<Item> HEAL_WAND = ITEMS.register("heal_wand", HealWand::new);
 
 
     //MISC ITEMS

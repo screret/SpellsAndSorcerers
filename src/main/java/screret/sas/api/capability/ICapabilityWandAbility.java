@@ -7,25 +7,22 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.util.INBTSerializable;
 import screret.sas.api.wand.ability.IWandAbility;
+import screret.sas.api.wand.ability.WandAbilityInstance;
 
 import java.util.List;
 
-public interface ICapabilityWandAbility {
+public interface ICapabilityWandAbility extends INBTSerializable<CompoundTag>{
 
     //void execute(IWandAbility ability, Level level, Player player, InteractionHand hand);
 
-    IWandAbility getCrouchAbility();
+    WandAbilityInstance getCrouchAbility();
 
-    IWandAbility getAbility();
+    WandAbilityInstance getAbility();
 
-    void addAbility(ResourceLocation loc, IWandAbility toAdd);
+    void setMainAbility(WandAbilityInstance ability);
 
-    void removeAbility(ResourceLocation loc);
+    void setCrouchAbility(WandAbilityInstance ability);
 
-    void setMainAbility(IWandAbility ability);
-
-    void setCrouchAbility(IWandAbility ability);
-
-    List<IWandAbility> getAll();
+    List<WandAbilityInstance> getAll();
 }
 

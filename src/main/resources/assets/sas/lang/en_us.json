@@ -1,8 +1,9 @@
 {
   "item.sas.wand": "%s Wand",
-  "item.sas.explosion_wand": "Explosion",
-  "item.sas.ray_wand": "Ray",
-  "item.sas.heal_wand": "Healing",
-  "item.sas.sight_wand": "Sight",
-  "item.sas.transmutation_wand": "Transmutation"
+  "key.sas.basic": "Basic",
+  "key.sas.explosion": "Explosion",
+  "key.sas.ray": "Ray",
+  "key.sas.heal": "Healing",
+  "key.sas.sight": "Sight",
+  "key.sas.transmutation": "Transmutation"
 }

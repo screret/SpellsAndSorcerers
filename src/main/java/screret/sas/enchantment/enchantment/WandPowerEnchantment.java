@@ -7,7 +7,7 @@ import screret.sas.enchantment.ModEnchantments;
 public class WandPowerEnchantment extends Enchantment {
 
     public WandPowerEnchantment(Rarity enchantRarity, EquipmentSlot... pApplicableSlots) {
-        super(enchantRarity, ModEnchantments.WAND, pApplicableSlots);
+        super(enchantRarity, ModEnchantments.Categories.WAND, pApplicableSlots);
     }
 
     /**

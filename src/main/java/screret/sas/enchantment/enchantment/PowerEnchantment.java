@@ -6,7 +6,7 @@ import screret.sas.enchantment.ModEnchantments;
 
 public class PowerEnchantment extends Enchantment {
     public PowerEnchantment(Enchantment.Rarity pRarity, EquipmentSlot... pApplicableSlots) {
-        super(pRarity, ModEnchantments.BOW_OR_WAND, pApplicableSlots);
+        super(pRarity, ModEnchantments.Categories.BOW_OR_WAND, pApplicableSlots);
     }
 
     /**

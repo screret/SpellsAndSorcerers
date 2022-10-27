@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/handheld",
   "textures": {
-    "layer0": "#layer0"
+    "layer0": "sas:item/wand/ray_wand"
   }
 }

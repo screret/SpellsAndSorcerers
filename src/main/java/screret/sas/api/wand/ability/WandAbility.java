@@ -1,47 +1,33 @@
 package screret.sas.api.wand.ability;
 
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
+import screret.sas.SpellsAndSorcerers;
+import screret.sas.enchantment.ModEnchantments;
 
 public class WandAbility implements IWandAbility {
 
-    private final IWandAbility[] children;
     private final int useDuration, cooldownDuration;
     private final float damagePerHit;
     private final boolean applyEnchants;
+    protected final ParticleOptions particle;
 
-    public WandAbility(int useDuration, int cooldownDuration, float damagePerHit, boolean applyEnchants, IWandAbility... children){
+    public WandAbility(int useDuration, int cooldownDuration, float damagePerHit, boolean applyEnchants, ParticleOptions particle){
         this.useDuration = useDuration;
         this.cooldownDuration = cooldownDuration;
         this.damagePerHit = damagePerHit;
         this.applyEnchants = applyEnchants;
-        this.children = children;
+        this.particle = particle;
     }
 
     @Override
-    public IWandAbility[] getChildren() {
-        return this.children;
-    }
-
-    @Override
-    public InteractionResultHolder<ItemStack> execute(Level level, Player player, InteractionHand hand) {
-        ItemStack itemstack = player.getItemInHand(hand);
-        var returnValue = InteractionResultHolder.fail(itemstack);
-        for (var child : this.getChildren()){
-            var val = child.execute(level, player, hand).getResult();
-            if(val == InteractionResult.FAIL)
-                return InteractionResultHolder.fail(itemstack);
-            else if(val == InteractionResult.CONSUME)
-                return InteractionResultHolder.consume(itemstack);
-        }
-        return returnValue;
+    public InteractionResultHolder<ItemStack> execute(Level level, LivingEntity player, ItemStack stack, WandAbilityInstance.Vec3Wrapped currentPosition, int timeCharged) {
+        return InteractionResultHolder.fail(stack);
     }
 
     @Override
@@ -50,13 +36,12 @@ public class WandAbility implements IWandAbility {
     }
 
     @Override
-    public void onUsingTick(ItemStack stack, LivingEntity user, int usageTicks) {
-
+    public boolean isHoldable() {
+        return false;
     }
 
-    @Override
-    public void releaseUsing(ItemStack stack, Level level, LivingEntity entity, int timeLeft) {
-
+    public boolean isChargeable(){
+        return false;
     }
 
     @Override
@@ -66,28 +51,26 @@ public class WandAbility implements IWandAbility {
 
     @Override
     public float getBaseDamagePerHit() {
-        return 0;
+        return damagePerHit;
     }
 
     @Override
-    public String getId() {
-        return "base";
+    public float getDamagePerHit(ItemStack stack){
+        return damagePerHit + (damagePerHit / 5) * stack.getEnchantmentLevel(ModEnchantments.POWER.get());
     }
 
     @Override
-    public CompoundTag serializeNBT() {
-        CompoundTag tag = new CompoundTag();
-        tag.putString("id", getId());
-        ListTag children = new ListTag();
-        for (IWandAbility child : this.children){
-            children.add(child.serializeNBT());
-        }
-        tag.put("children", children);
-        return tag;
+    public ResourceLocation getKey() {
+        return WandAbilityRegistry.WAND_ABILITIES_BUILTIN.get().getKey(this);
     }
 
     @Override
-    public void deserializeNBT(CompoundTag nbt) {
+    public ResourceLocation getModelLocation() {
+        return new ResourceLocation(SpellsAndSorcerers.WAND_ABILIY_PATH.getNamespace(), SpellsAndSorcerers.WAND_ABILIY_PATH.getPath() + getKey().getPath());
+    }
 
+    @Override
+    public String toString() {
+        return getKey().toString();
     }
 }
