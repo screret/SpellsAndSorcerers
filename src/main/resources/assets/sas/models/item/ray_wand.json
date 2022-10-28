@@ -1,5 +1,6 @@
 {
   "parent": "minecraft:item/handheld",
+  "ability": "shoot_ray",
   "textures": {
     "layer0": "sas:item/wand/ray_wand"
   }

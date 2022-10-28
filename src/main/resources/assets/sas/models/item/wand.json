@@ -1,6 +1,12 @@
 {
   "parent": "minecraft:item/handheld",
+  "loader": "sas:wand",
   "textures": {
     "layer0": "sas:item/wand/ray_wand"
-  }
+  },
+  "overrides": [
+    {"sas:ability": "shoot_ray", "model":  "item/ray_wand"},
+    {"sas:ability": "shoot_angry_ray", "model":  "item/explosion_wand"},
+    {"sas:ability": "shoot_hold_down", "model":  "item/heal_wand"}
+  ]
 }

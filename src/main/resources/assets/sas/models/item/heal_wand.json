@@ -1,5 +1,6 @@
 {
   "parent": "minecraft:item/handheld",
+  "ability": "shoot_hold_down",
   "textures": {
     "layer0": "sas:item/wand/heal_wand"
   }

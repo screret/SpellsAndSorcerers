@@ -1,38 +1,22 @@
-package screret.sas.model;
+package screret.sas.client.model;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.gson.*;
 import com.mojang.datafixers.util.Pair;
-import com.mojang.math.Quaternion;
-import com.mojang.math.Transformation;
-import com.mojang.math.Vector3f;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.ItemOverrides;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.*;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.phys.Vec2;
-import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.client.ForgeRenderTypes;
 import net.minecraftforge.client.RenderTypeGroup;
-import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.minecraftforge.client.model.CompositeModel;
-import net.minecraftforge.client.model.DynamicFluidContainerModel;
-import net.minecraftforge.client.model.QuadTransformers;
-import net.minecraftforge.client.model.SimpleModelState;
 import net.minecraftforge.client.model.geometry.*;
-import org.apache.commons.lang3.mutable.MutableObject;
+import screret.sas.SpellsAndSorcerers;
 import screret.sas.api.capability.WandAbilityProvider;
 import screret.sas.api.wand.ability.WandAbility;
 import screret.sas.api.wand.ability.WandAbilityRegistry;
@@ -71,23 +55,22 @@ public class WandModel implements IUnbakedGeometry<WandModel> {
 
         TextureAtlasSprite baseSprite = baseLocation == null ? null : spriteGetter.apply(baseLocation);
 
-        // We need to disable GUI 3D and block lighting for this to render properly
         var itemContext = StandaloneGeometryBakingContext.builder(context).withGui3d(false).withUseBlockLight(false).build(modelLocation);
-        var modelBuilder = CompositeModel.Baked.builder(itemContext, baseSprite, new MaterialOverrideHandler(overrides, bakery, itemContext, this), context.getTransforms());
-
-        var normalRenderTypes = getLayerRenderTypes(false);
+        var modelBuilder = new SimpleBakedModel.Builder(false, false, false, context.getTransforms(), new MaterialOverrideHandler(overrides, bakery, itemContext, this));
 
         if (baseLocation != null && baseSprite != null)
         {
             // Base texture
             var unbaked = UnbakedGeometryHelper.createUnbakedItemElements(0, baseSprite);
             var quads = UnbakedGeometryHelper.bakeElements(unbaked, mat -> baseSprite, modelState, modelLocation);
-            modelBuilder.addQuads(normalRenderTypes, quads);
+            for(var quad : quads){
+                modelBuilder.addUnculledFace(quad);
+            }
         }
 
-        modelBuilder.setParticle(baseSprite);
+        modelBuilder.particle(baseSprite);
 
-        return modelBuilder.build();
+        return modelBuilder.build(getLayerRenderTypes(false));
     }
 
     @Override
@@ -137,7 +120,7 @@ public class WandModel implements IUnbakedGeometry<WandModel> {
                 if (!cache.containsKey(id))
                 {
                     WandModel unbaked = this.parent.withAbility(ability.getAbility());
-                    BakedModel bakedModel = unbaked.bake(owner, bakery, Material::sprite, BlockModelRotation.X0_Y0, this, new ResourceLocation("forge:bucket_override"));
+                    BakedModel bakedModel = unbaked.bake(owner, bakery, Material::sprite, BlockModelRotation.X0_Y0, this, new ResourceLocation(SpellsAndSorcerers.MODID, "ability_override"));
                     cache.put(id, bakedModel);
                     return bakedModel;
                 }

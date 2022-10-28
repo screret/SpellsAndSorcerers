@@ -4,7 +4,10 @@ import com.mojang.logging.LogUtils;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraftforge.client.event.ModelEvent;
+import net.minecraftforge.client.model.*;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
+import net.minecraftforge.client.model.obj.ObjLoader;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.*;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -22,6 +25,7 @@ import screret.sas.api.capability.WandAbilityProvider;
 import screret.sas.api.wand.ability.WandAbility;
 import screret.sas.api.wand.ability.WandAbilityRegistry;
 import screret.sas.block.ModBlocks;
+import screret.sas.client.model.WandModel;
 import screret.sas.enchantment.ModEnchantments;
 import screret.sas.item.ModCreativeTab;
 import screret.sas.item.ModItems;
@@ -102,13 +106,18 @@ public class SpellsAndSorcerers {
     }*/
 
     // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
-    @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
+    @Mod.EventBusSubscriber(modid = SpellsAndSorcerers.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class ClientModEvents {
 
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
             // Some client setup code
 
+        }
+
+        @SubscribeEvent
+        public static void onRegisterGeometryLoaders(ModelEvent.RegisterGeometryLoaders event) {
+            event.register("wand", WandModel.LOADER);
         }
     }
 }
