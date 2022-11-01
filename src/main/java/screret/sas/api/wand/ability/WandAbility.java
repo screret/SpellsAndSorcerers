@@ -26,7 +26,7 @@ public class WandAbility implements IWandAbility {
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> execute(Level level, LivingEntity player, ItemStack stack, WandAbilityInstance.Vec3Wrapped currentPosition, int timeCharged) {
+    public InteractionResultHolder<ItemStack> execute(Level level, LivingEntity user, ItemStack stack, WandAbilityInstance.Vec3Wrapped currentPosition, int timeCharged) {
         return InteractionResultHolder.fail(stack);
     }
 

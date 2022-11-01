@@ -11,10 +11,12 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import screret.sas.api.wand.ability.WandAbility;
 
+import java.util.EnumSet;
+
 public class HealAbility extends SubAbility {
 
     public HealAbility() {
-        super(20, 40, .25f, true, ParticleTypes.HAPPY_VILLAGER);
+        super(20, 40, .25f, true, ParticleTypes.HAPPY_VILLAGER, EnumSet.of(HitFlags.ENTITY));
     }
 
     @Override

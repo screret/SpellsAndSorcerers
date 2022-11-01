@@ -15,6 +15,8 @@ import org.jetbrains.annotations.Nullable;
 import screret.sas.Util;
 import screret.sas.api.wand.ability.WandAbility;
 
+import java.util.EnumSet;
+
 public class ExplodeAbility extends SubAbility {
 
     public static final DustParticleOptions PARTICLE = new DustParticleOptions(new Vector3f(Vec3.fromRGB24(0xAA0000)), 2.0F);
@@ -22,7 +24,7 @@ public class ExplodeAbility extends SubAbility {
 
 
     public ExplodeAbility() {
-        super(100, 60, 1, true, ExplodeAbility.PARTICLE);
+        super(100, 60, 1, true, ExplodeAbility.PARTICLE, EnumSet.of(HitFlags.BLOCK));
     }
 
     @Override

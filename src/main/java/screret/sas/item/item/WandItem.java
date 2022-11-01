@@ -33,7 +33,11 @@ public class WandItem extends Item {
         String name = "item.sas.basic";
         if(stack.getCapability(WandAbilityProvider.WAND_ABILITY).isPresent()){
             var cap = stack.getCapability(WandAbilityProvider.WAND_ABILITY).resolve().get();
-            name = "ability.sas." + cap.getAbility().getId().getPath();
+            var current = cap.getAbility();
+            while (current.getChildren() != null && current.getChildren().size() > 0) {
+                current = cap.getAbility().getChildren().get(0);
+            }
+            name = "ability.sas." + current.getId().getPath();
         }
         return Component.translatable(WAND_LANG_KEY, Component.translatable(name));
     }

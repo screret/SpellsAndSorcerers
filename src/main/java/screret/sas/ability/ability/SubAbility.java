@@ -15,6 +15,7 @@ import net.minecraft.world.phys.Vec3;
 import screret.sas.api.wand.ability.WandAbility;
 import screret.sas.api.wand.ability.WandAbilityInstance;
 
+import java.util.EnumSet;
 import java.util.List;
 
 public abstract class SubAbility extends WandAbility {
@@ -29,25 +30,37 @@ public abstract class SubAbility extends WandAbility {
         }
     };
 
-    public SubAbility(int useDuration, int cooldownDuration, float damagePerHit, boolean applyEnchants, ParticleOptions particle) {
+    private final EnumSet<HitFlags> hitFlags;
+
+    public SubAbility(int useDuration, int cooldownDuration, float damagePerHit, boolean applyEnchants, ParticleOptions particle, EnumSet<HitFlags> hitFlags) {
         super(useDuration, cooldownDuration, damagePerHit, applyEnchants, particle);
+        this.hitFlags = hitFlags;
     }
 
     @Override
     public InteractionResultHolder<ItemStack> execute(Level level, LivingEntity user, ItemStack stack, WandAbilityInstance.Vec3Wrapped currentPosition, int timeCharged) {
         if(level.isClientSide) return InteractionResultHolder.pass(stack);
-        AABB bounds = AABB.ofSize(currentPosition.real, 0.01, 0.01, 0.01);
-        List<? extends Entity> allHitPossibilities = level.getEntities(SubAbility.ANY_ENTITY_TYPE, bounds, entity -> entity != user);
-        if(allHitPossibilities.isEmpty()) {
-            doHit(stack, user, currentPosition.real, timeCharged);
-            return InteractionResultHolder.pass(stack);
+
+        if(hitFlags.contains(HitFlags.ENTITY)){
+            AABB bounds = AABB.ofSize(currentPosition.real, 0.01, 0.01, 0.01);
+            List<? extends Entity> allHitPossibilities = level.getEntities(SubAbility.ANY_ENTITY_TYPE, bounds, entity -> entity != user);
+            allHitPossibilities.sort((thisPart, next) -> (int)Math.round(next.position().distanceTo(currentPosition.real) - thisPart.position().distanceTo(currentPosition.real)));
+            if(allHitPossibilities.size() > 0) doHit(stack, user, (LivingEntity) allHitPossibilities.get(0), timeCharged);
         }
-        allHitPossibilities.sort((thisPart, next) -> (int)Math.round(next.position().distanceTo(currentPosition.real) - thisPart.position().distanceTo(currentPosition.real)));
-        doHit(stack, user, (LivingEntity) allHitPossibilities.get(0), timeCharged);
+        if(hitFlags.contains(HitFlags.BLOCK)) {
+            doHit(stack, user, currentPosition.real, timeCharged);
+        }
+
         return InteractionResultHolder.pass(stack);
     }
 
     public abstract void doHit(ItemStack usedItem, LivingEntity user, LivingEntity hitEnt, float timeCharged);
 
     public abstract void doHit(ItemStack usedItem, LivingEntity user, Vec3 hitPoint, float timeCharged);
+
+    public enum HitFlags {
+        NONE,
+        ENTITY,
+        BLOCK,
+    }
 }
