@@ -25,19 +25,19 @@ public abstract class ProjectileAbility extends WandAbility {
     protected final int distance;
 
 
-    public ProjectileAbility(int useDuration, int cooldownDuration, boolean applyEnchants, int distance) {
-        super(useDuration, cooldownDuration, 0, applyEnchants, new BlockParticleOption(ParticleTypes.BLOCK_MARKER, Blocks.BARRIER.defaultBlockState()));
+    public ProjectileAbility(int useDuration, int cooldownDuration, float damagePerHit, boolean applyEnchants, int distance) {
+        super(useDuration, cooldownDuration, damagePerHit, applyEnchants, new BlockParticleOption(ParticleTypes.BLOCK_MARKER, Blocks.BARRIER.defaultBlockState()));
         this.distance = distance;
     }
 
     @Override
     public InteractionResultHolder<ItemStack> execute(Level level, LivingEntity user, ItemStack stack, WandAbilityInstance.Vec3Wrapped currentPosition, int timeCharged) {
         if(!level.isClientSide){
-            level.addFreshEntity(spawnProjectile(level, user));
+            level.addFreshEntity(spawnProjectile(level, user, stack, timeCharged));
             return InteractionResultHolder.pass(stack);
         }
         return InteractionResultHolder.fail(stack);
     }
 
-    public abstract Projectile spawnProjectile(Level level, LivingEntity user);
+    public abstract Projectile spawnProjectile(Level level, LivingEntity user, ItemStack usedItem, int timeCharged);
 }

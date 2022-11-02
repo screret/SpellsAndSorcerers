@@ -30,7 +30,6 @@ public class WandModel implements IUnbakedGeometry<WandModel> {
 
     @Override
     public BakedModel bake(IGeometryBakingContext owner, ModelBakery bakery, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelTransform, ItemOverrides overrides, ResourceLocation modelLocation) {
-        SpellsAndSorcerers.LOGGER.debug("baking wand model " + modelLocation);
         return CompositeModel.Baked.builder(owner, spriteGetter.apply(new Material(InventoryMenu.BLOCK_ATLAS, modelLocation)), new WandAbilityOverrideHandler(this, owner, bakery, spriteGetter, modelTransform, modelLocation), owner.getTransforms()).addQuads(new RenderTypeGroup(RenderType.translucent(), ForgeRenderTypes.ITEM_UNSORTED_TRANSLUCENT.get())).build();
     }
 
@@ -40,7 +39,6 @@ public class WandModel implements IUnbakedGeometry<WandModel> {
     }
 
     public BakedModel bake(TextureAtlasSprite sprite, IGeometryBakingContext context, ModelBakery bakery, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelState, ItemOverrides overrides, ResourceLocation modelLocation) {
-        SpellsAndSorcerers.LOGGER.debug("baking wand model " + sprite.getName());
         var unbaked = UnbakedGeometryHelper.createUnbakedItemElements(0, sprite);
         var quads = UnbakedGeometryHelper.bakeElements(unbaked, $ -> sprite, modelState, modelLocation);
 

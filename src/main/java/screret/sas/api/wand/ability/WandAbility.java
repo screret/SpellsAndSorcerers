@@ -6,11 +6,11 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.Vec3;
-import screret.sas.SpellsAndSorcerers;
 import screret.sas.enchantment.ModEnchantments;
 
 public class WandAbility implements IWandAbility {
+
+    public static final String BASIC_ABILITY_KEY = "basic_ability", CROUCH_ABILITY_KEY = "crouch_ability";
 
     private final int useDuration, cooldownDuration;
     private final float damagePerHit;
@@ -56,17 +56,12 @@ public class WandAbility implements IWandAbility {
 
     @Override
     public float getDamagePerHit(ItemStack stack){
-        return damagePerHit + (damagePerHit / 5) * stack.getEnchantmentLevel(ModEnchantments.POWER.get());
+        return applyEnchants ? damagePerHit + (damagePerHit / 5) * stack.getEnchantmentLevel(ModEnchantments.POWER.get()) : damagePerHit;
     }
 
     @Override
     public ResourceLocation getKey() {
         return WandAbilityRegistry.WAND_ABILITIES_BUILTIN.get().getKey(this);
-    }
-
-    @Override
-    public ResourceLocation getModelLocation() {
-        return new ResourceLocation(SpellsAndSorcerers.WAND_ABILIY_PATH.getNamespace(), SpellsAndSorcerers.WAND_ABILIY_PATH.getPath() + getKey().getPath());
     }
 
     @Override

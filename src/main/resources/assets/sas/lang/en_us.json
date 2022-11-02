@@ -1,8 +1,9 @@
 {
   "item.sas.wand": "%s Wand",
   "ability.sas.basic": "Dummy",
-  "ability.sas.explosion": "Explosion",
+  "ability.sas.explode": "Explosion",
   "ability.sas.small_fireball": "Small Fireball",
+  "ability.sas.large_fireball": "Fireball",
   "ability.sas.damage": "Ray",
   "ability.sas.heal": "Healing",
   "ability.sas.sight": "Sight",

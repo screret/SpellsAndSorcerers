@@ -42,19 +42,19 @@ public class ModCreativeTab extends CreativeModeTab {
     private ItemStack addItem(WandAbility main, @Nullable WandAbility crouch){
         var tag = new CompoundTag();
         var ability = new WandAbilityInstance(main);
-        tag.put("basic_ability", ability.serializeNBT());
+        tag.put(WandAbility.BASIC_ABILITY_KEY, ability.serializeNBT());
         if(crouch != null) {
             var ability1 = new WandAbilityInstance(crouch);
-            tag.put("crouch_ability", ability1.serializeNBT());
+            tag.put(WandAbility.CROUCH_ABILITY_KEY, ability1.serializeNBT());
         }
         return new ItemStack(ModItems.WAND.get(), 1, tag);
     }
 
     private ItemStack addItem(WandAbilityInstance main, @Nullable WandAbilityInstance crouch){
         var tag = new CompoundTag();
-        tag.put("basic_ability", main.serializeNBT());
+        tag.put(WandAbility.BASIC_ABILITY_KEY, main.serializeNBT());
         if(crouch != null) {
-            tag.put("crouch_ability", crouch.serializeNBT());
+            tag.put(WandAbility.CROUCH_ABILITY_KEY, crouch.serializeNBT());
         }
         return new ItemStack(ModItems.WAND.get(), 1, tag);
     }

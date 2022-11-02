@@ -40,7 +40,7 @@ public class WandAbilityOverrideHandler extends ItemOverrides {
     protected final Function<Material, TextureAtlasSprite> spriteGetter;
     protected final ModelState modelTransform;
     protected final ResourceLocation modelLocation;
-    private Cache<ResourceLocation, BakedModel> bakedModelCache = CacheBuilder.newBuilder().maximumSize(1000).build();
+    private final Cache<ResourceLocation, BakedModel> bakedModelCache = CacheBuilder.newBuilder().maximumSize(1000).build();
 
     public WandAbilityOverrideHandler(WandModel model, IGeometryBakingContext owner, ModelBakery bakery, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelTransform, ResourceLocation modelLocation) {
         super();
@@ -68,7 +68,7 @@ public class WandAbilityOverrideHandler extends ItemOverrides {
     }
 
     protected BakedModel getBakedModel(BakedModel originalModel, ItemStack stack, @Nullable Level world, @Nullable LivingEntity entity, ResourceLocation key) {
-        return this.model.bake(Minecraft.getInstance().getModelManager().getAtlas(InventoryMenu.BLOCK_ATLAS).getSprite(new ResourceLocation(SpellsAndSorcerers.MODID, "item/wand/" + key.getPath())), this.owner, this.bakery, this.spriteGetter, this.modelTransform, this, this.modelLocation);
+        return this.model.bake(Minecraft.getInstance().getModelManager().getAtlas(InventoryMenu.BLOCK_ATLAS).getSprite(new ResourceLocation(key.getNamespace(), "item/wand/" + key.getPath())), this.owner, this.bakery, this.spriteGetter, this.modelTransform, this, this.modelLocation);
     }
 
     ResourceLocation getCacheKey(ItemStack stack) {

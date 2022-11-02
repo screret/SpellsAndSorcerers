@@ -2,6 +2,7 @@ package screret.sas.api.capability;
 
 import com.google.common.collect.Lists;
 import net.minecraft.nbt.CompoundTag;
+import screret.sas.api.wand.ability.WandAbility;
 import screret.sas.api.wand.ability.WandAbilityInstance;
 
 import java.util.List;
@@ -45,14 +46,14 @@ public class CapabilityWandAbility implements ICapabilityWandAbility {
     @Override
     public CompoundTag serializeNBT() {
         CompoundTag tag = new CompoundTag();
-        if(ability != null) tag.put("basic_ability", ability.serializeNBT());
-        if(crouchAbility != null) tag.put("crouch_ability", crouchAbility.serializeNBT());
+        if(ability != null) tag.put(WandAbility.BASIC_ABILITY_KEY, ability.serializeNBT());
+        if(crouchAbility != null) tag.put(WandAbility.CROUCH_ABILITY_KEY, crouchAbility.serializeNBT());
         return tag;
     }
 
     @Override
     public void deserializeNBT(CompoundTag nbt) {
-        ability.deserializeNBT(nbt.getCompound("basic_ability"));
-        if(crouchAbility != null) crouchAbility.deserializeNBT(nbt.getCompound("crouch_ability"));
+        ability.deserializeNBT(nbt.getCompound(WandAbility.BASIC_ABILITY_KEY));
+        if(crouchAbility != null) crouchAbility.deserializeNBT(nbt.getCompound(WandAbility.CROUCH_ABILITY_KEY));
     }
 }

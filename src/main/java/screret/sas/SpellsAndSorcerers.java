@@ -50,8 +50,6 @@ public class SpellsAndSorcerers {
 
     public static final CreativeModeTab SAS_TAB = new ModCreativeTab();
 
-    public static final ResourceLocation WAND_ABILIY_PATH = new ResourceLocation(SpellsAndSorcerers.MODID, "wand_ability/");
-
     public SpellsAndSorcerers() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
