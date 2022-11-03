@@ -98,8 +98,7 @@ public class WandItem extends Item {
                 if(user instanceof Player player){
                     player.getCooldowns().addCooldown(currentItem, cap.getCrouchAbility().getAbility().getCooldownDuration());
                 }
-            }
-            else {
+            } else {
                 returnValue = cap.getAbility().execute(level, user, stack, new WandAbilityInstance.Vec3Wrapped(user.getEyePosition()), timeCharged);
                 if(user instanceof Player player){
                     player.getCooldowns().addCooldown(currentItem, cap.getAbility().getAbility().getCooldownDuration());
@@ -113,7 +112,7 @@ public class WandItem extends Item {
     public boolean deductManaFromUser(LivingEntity user, ItemStack stack, int timeCharged){
         if(user.getCapability(ManaProvider.MANA).isPresent()){
             var manaCap = user.getCapability(ManaProvider.MANA).resolve().get();
-            var manaToDeduct = 5 + timeCharged * (1 + stack.getEnchantmentLevel(ModEnchantments.MANA_EFFICIENCY.get()));
+            var manaToDeduct = 1 + timeCharged / 2 * (1 + stack.getEnchantmentLevel(ModEnchantments.MANA_EFFICIENCY.get()));
             if(manaCap.getManaStored() < manaToDeduct) return false;
             manaCap.deductMana(manaToDeduct, false);
         }
