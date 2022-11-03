@@ -7,6 +7,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import screret.sas.SpellsAndSorcerers;
+import screret.sas.block.block.WandCraftingBlock;
 
 public class ModBlocks {
 
@@ -15,6 +16,6 @@ public class ModBlocks {
 
 
     // Creates a new Block with the id "sas:example_block", combining the namespace and path
-    public static final RegistryObject<Block> EXAMPLE_BLOCK = BLOCKS.register("example_block", () -> new Block(BlockBehaviour.Properties.of(Material.STONE)));
+    public static final RegistryObject<Block> WAND_CRAFTER = BLOCKS.register("wand_crafter", () -> new WandCraftingBlock(BlockBehaviour.Properties.of(Material.AMETHYST)));
 
 }

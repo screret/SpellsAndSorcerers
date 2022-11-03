@@ -5,6 +5,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraftforge.common.ForgeConfig;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
@@ -12,7 +13,9 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
@@ -22,9 +25,11 @@ import screret.sas.api.capability.mana.ICapabilityMana;
 import screret.sas.api.capability.mana.ManaProvider;
 import screret.sas.api.wand.ability.WandAbilityRegistry;
 import screret.sas.block.ModBlocks;
+import screret.sas.config.SASConfig;
 import screret.sas.enchantment.ModEnchantments;
 import screret.sas.item.ModCreativeTab;
 import screret.sas.item.ModItems;
+import screret.sas.recipe.ModRecipes;
 
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod(SpellsAndSorcerers.MODID)
@@ -55,6 +60,12 @@ public class SpellsAndSorcerers {
 
         WandAbilityRegistry.WAND_ABILITIES.register(modEventBus);
         ModWandAbilities.init();
+
+        ModRecipes.RECIPE_TYPES.register(modEventBus);
+        ModRecipes.RECIPE_SERIALIZERS.register(modEventBus);
+
+        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, SASConfig.clientSpec);
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, SASConfig.commonSpec);
 
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);

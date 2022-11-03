@@ -7,6 +7,7 @@ import net.minecraftforge.client.gui.overlay.ForgeGui;
 import net.minecraftforge.client.gui.overlay.IGuiOverlay;
 import screret.sas.SpellsAndSorcerers;
 import screret.sas.api.capability.mana.ManaProvider;
+import screret.sas.config.SASConfig;
 
 public class ManaBarOverlay implements IGuiOverlay {
 
@@ -23,8 +24,8 @@ public class ManaBarOverlay implements IGuiOverlay {
             gui.getMinecraft().getProfiler().push("manaBar");
             var capability = gui.getMinecraft().player.getCapability(ManaProvider.MANA).orElseThrow(() -> new IllegalStateException("Mana Capability is null"));
 
-            int left = screenWidth / 2 - 91;
-            int top = screenHeight - 57;
+            int left = screenWidth / 2 - SASConfig.CLIENT.manaBarX.get();
+            int top = screenHeight - SASConfig.CLIENT.manaBarY.get();
 
             int progress = (int) ((capability.getManaStored() / (float)capability.getMaxManaStored()) * 80);
             gui.blit(poseStack, left, top, 0, 0, 80, 5);
