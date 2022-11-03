@@ -1,13 +1,13 @@
 package screret.sas.item;
 
 import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import screret.sas.SpellsAndSorcerers;
 import screret.sas.block.ModBlocks;
+import screret.sas.item.item.WandCoreItem;
 import screret.sas.item.item.WandItem;
 
 public class ModItems {
@@ -17,15 +17,16 @@ public class ModItems {
 
 
     //BLOCK ITEMS
-    public static final RegistryObject<Item> EXAMPLE_BLOCK_ITEM = ITEMS.register("example_block", () -> new BlockItem(ModBlocks.EXAMPLE_BLOCK.get(), new Item.Properties().tab(CreativeModeTab.TAB_BUILDING_BLOCKS)));
+    public static final RegistryObject<Item> WAND_CRAFTER = ITEMS.register("wand_crafter", () -> new BlockItem(ModBlocks.WAND_CRAFTER.get(), new Item.Properties().tab(SpellsAndSorcerers.SAS_TAB)));
 
 
     // WANDS
     public static final RegistryObject<Item> WAND = ITEMS.register("wand", WandItem::new);
-    //public static final RegistryObject<Item> RAY_WAND = ITEMS.register("ray_wand", RayWand::new);
-    //public static final RegistryObject<Item> EXPLOSION_WAND = ITEMS.register("explosion_wand", ExplosionWand::new);
-    //public static final RegistryObject<Item> HEAL_WAND = ITEMS.register("heal_wand", HealWand::new);
+
+    public static final RegistryObject<Item> WAND_HANDLE = ITEMS.register("handle", () -> new Item(new Item.Properties().tab(SpellsAndSorcerers.SAS_TAB)));
 
 
-    //MISC ITEMS
+    //WAND CORES
+    public static final RegistryObject<Item> WAND_CORE = ITEMS.register("wand_core", WandCoreItem::new);
+
 }

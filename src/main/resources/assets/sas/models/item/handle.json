@@ -1,7 +1,6 @@
 {
-  "loader": "sas:wand",
   "parent": "minecraft:item/handheld",
   "textures": {
-    "layer0": "sas:item/wand/damage"
+    "layer0": "sas:item/handle"
   }
 }

@@ -1,4 +1,5 @@
 {
+  "item.sas.handle": "Wand Handle",
   "item.sas.wand": "%s Wand",
   "ability.sas.basic": "Dummy",
   "ability.sas.explode": "Explosion",

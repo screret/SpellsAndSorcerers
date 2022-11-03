@@ -110,6 +110,7 @@ public class WandItem extends Item {
 
 
     public boolean deductManaFromUser(LivingEntity user, ItemStack stack, int timeCharged){
+        if(user instanceof Player player && player.isCreative()) return true;
         if(user.getCapability(ManaProvider.MANA).isPresent()){
             var manaCap = user.getCapability(ManaProvider.MANA).resolve().get();
             var manaToDeduct = 1 + timeCharged / 4 * (6 - stack.getEnchantmentLevel(ModEnchantments.MANA_EFFICIENCY.get()));

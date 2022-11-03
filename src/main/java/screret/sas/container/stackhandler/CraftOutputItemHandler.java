@@ -5,6 +5,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.inventory.RecipeHolder;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
@@ -77,36 +78,27 @@ public class CraftOutputItemHandler extends SlotItemHandler {
     }
 
     @Override
-    public void onTake(Player player, ItemStack stack) {
-        this.checkTakeAchievements(stack);
-        ForgeHooks.setCraftingPlayer(player);
-        NonNullList<ItemStack> stacks = player.level.getRecipeManager().getRemainingItemsFor(ModRecipes.WAND_RECIPE_TYPE.get(), this.craftSlots, player.level);
-        Optional<WandRecipe> recipeOptional = player.level.getRecipeManager().getRecipeFor(ModRecipes.WAND_RECIPE_TYPE.get(), this.craftSlots, player.level);
-        ForgeHooks.setCraftingPlayer(null);
-        var lastUsedRecipe = this.getItemHandler() instanceof CraftResultStackHandler handler ? handler.getRecipeUsed() : null;
-        for(int i = 0; i < stacks.size(); ++i) {
-            ItemStack craftStack = this.craftSlots.getItem(i);
-            ItemStack slotStack = stacks.get(i);
-
-            if(!craftStack.isEmpty()){
-                if(lastUsedRecipe instanceof WandRecipe recipe){
-                    this.craftSlots.removeItem(i, recipe.getIngredientStack().getCount());
-                    craftStack = this.craftSlots.getItem(i);
-                } else if (recipeOptional.isPresent()) {
-                    this.craftSlots.removeItem(i, recipeOptional.get().getIngredientStack().getCount());
-                    craftStack = this.craftSlots.getItem(i);
-                }
+    public void onTake(Player pPlayer, ItemStack pStack) {
+        this.checkTakeAchievements(pStack);
+        net.minecraftforge.common.ForgeHooks.setCraftingPlayer(pPlayer);
+        NonNullList<ItemStack> ingredients = pPlayer.level.getRecipeManager().getRemainingItemsFor(ModRecipes.WAND_RECIPE_TYPE.get(), this.craftSlots, pPlayer.level);
+        net.minecraftforge.common.ForgeHooks.setCraftingPlayer(null);
+        for(int i = 0; i < ingredients.size(); ++i) {
+            ItemStack craftSlotItem = this.craftSlots.getItem(i);
+            ItemStack ingredient = ingredients.get(i);
+            if (!craftSlotItem.isEmpty()) {
+                this.craftSlots.removeItem(i, 1);
+                craftSlotItem = this.craftSlots.getItem(i);
             }
 
-
-            if (!slotStack.isEmpty()) {
-                if (craftStack.isEmpty()) {
-                    this.craftSlots.setItem(i, slotStack);
-                } else if (ItemStack.isSame(craftStack, slotStack) && ItemStack.tagMatches(craftStack, slotStack)) {
-                    slotStack.grow(craftStack.getCount());
-                    this.craftSlots.setItem(i, slotStack);
-                } else if (!this.player.getInventory().add(slotStack)) {
-                    this.player.drop(slotStack, false);
+            if (!ingredient.isEmpty()) {
+                if (craftSlotItem.isEmpty()) {
+                    this.craftSlots.setItem(i, ingredient);
+                } else if (ItemStack.isSame(craftSlotItem, ingredient) && ItemStack.tagMatches(craftSlotItem, ingredient)) {
+                    ingredient.grow(craftSlotItem.getCount());
+                    this.craftSlots.setItem(i, ingredient);
+                } else if (!this.player.getInventory().add(ingredient)) {
+                    this.player.drop(ingredient, false);
                 }
             }
         }
