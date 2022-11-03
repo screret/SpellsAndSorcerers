@@ -14,7 +14,7 @@ import java.util.function.Supplier;
 public class WandAbilityRegistry {
     public static final DeferredRegister<WandAbility> WAND_ABILITIES = DeferredRegister.create(new ResourceLocation(SpellsAndSorcerers.MODID, "wand_abilities"), SpellsAndSorcerers.MODID);
 
-    public static Supplier<IForgeRegistry<WandAbility>> WAND_ABILITIES_BUILTIN = WAND_ABILITIES.makeRegistry(() -> new RegistryBuilder<WandAbility>()/*.setDefaultKey(new ResourceLocation(SpellsAndSorcerers.MODID, "dummy"))*/);
+    public static Supplier<IForgeRegistry<WandAbility>> WAND_ABILITIES_BUILTIN = WAND_ABILITIES.makeRegistry(RegistryBuilder::new/*.setDefaultKey(new ResourceLocation(SpellsAndSorcerers.MODID, "dummy"))*/);
 
     public static void init() {}
 }

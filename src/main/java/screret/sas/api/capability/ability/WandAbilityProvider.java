@@ -1,11 +1,10 @@
-package screret.sas.api.capability;
+package screret.sas.api.capability.ability;
 
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraftforge.common.capabilities.*;
 import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
-import screret.sas.ability.ModWandAbilities;
 import screret.sas.api.wand.ability.WandAbilityInstance;
 
 import javax.annotation.Nullable;
@@ -35,7 +34,6 @@ public class WandAbilityProvider implements ICapabilitySerializable<CompoundTag>
     @Override
     public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side) {
         if (cap == WandAbilityProvider.WAND_ABILITY) {
-            cap.orEmpty(WandAbilityProvider.WAND_ABILITY, (LazyOptional<T>) optionalStorage);
             return optionalStorage.cast();
         }
         return LazyOptional.empty();

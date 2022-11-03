@@ -4,10 +4,7 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.block.model.ItemOverrides;
-import net.minecraft.client.renderer.texture.AtlasSet;
-import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.Material;
@@ -18,18 +15,14 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.client.model.data.ModelData;
 import net.minecraftforge.client.model.geometry.IGeometryBakingContext;
 import screret.sas.SpellsAndSorcerers;
-import screret.sas.ability.ModWandAbilities;
-import screret.sas.api.capability.WandAbilityProvider;
-import screret.sas.api.wand.ability.WandAbility;
+import screret.sas.api.capability.ability.WandAbilityProvider;
 import screret.sas.api.wand.ability.WandAbilityInstance;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
 public class WandAbilityOverrideHandler extends ItemOverrides {

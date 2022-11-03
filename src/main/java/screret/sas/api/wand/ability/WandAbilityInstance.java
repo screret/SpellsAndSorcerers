@@ -34,13 +34,14 @@ public class WandAbilityInstance implements INBTSerializable<CompoundTag> {
     public InteractionResultHolder<ItemStack> execute(Level level, LivingEntity user, ItemStack stack, Vec3Wrapped currentPos, int timeCharged) {
         var returnValue = InteractionResultHolder.fail(stack);
         returnValue = myAbility == null ? InteractionResultHolder.fail(stack) : myAbility.execute(level, user, stack, currentPos, timeCharged);
-        for (var child : this.getChildren()){
-            var val = child.execute(level, user, stack, currentPos, timeCharged).getResult();
-            if(val == InteractionResult.FAIL)
-                return InteractionResultHolder.fail(stack);
-            /*else if(val == InteractionResult.CONSUME)
-                return InteractionResultHolder.consume(stack);*/
+        if(this.getChildren() != null){
+            for (var child : this.getChildren()){
+                var val = child.execute(level, user, stack, currentPos, timeCharged).getResult();
+                if(val == InteractionResult.FAIL)
+                    return InteractionResultHolder.fail(stack);
+            }
         }
+
         return returnValue;
     }
 

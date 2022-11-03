@@ -1,4 +1,4 @@
-package screret.sas.api.capability;
+package screret.sas.api.capability.ability;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;

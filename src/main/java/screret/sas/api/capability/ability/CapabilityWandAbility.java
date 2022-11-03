@@ -1,4 +1,4 @@
-package screret.sas.api.capability;
+package screret.sas.api.capability.ability;
 
 import com.google.common.collect.Lists;
 import net.minecraft.nbt.CompoundTag;
