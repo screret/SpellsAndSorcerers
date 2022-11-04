@@ -24,4 +24,6 @@ public interface IWandAbility {
     float getDamagePerHit(ItemStack stack);
 
     ResourceLocation getKey();
+
+    int getColor();
 }

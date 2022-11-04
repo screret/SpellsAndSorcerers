@@ -19,12 +19,12 @@ import java.util.EnumSet;
 
 public class ExplodeAbility extends SubAbility {
 
-    public static final DustParticleOptions PARTICLE = new DustParticleOptions(new Vector3f(Vec3.fromRGB24(0xAA0000)), 2.0F);
+    public static final DustParticleOptions PARTICLE = new DustParticleOptions(new Vector3f(Vec3.fromRGB24(0xFFAA0000)), 2.0F);
     public static final Vec3 RANDOM_DEVIATION = new Vec3(0.125D, 0.125D, 0.125D);
 
 
     public ExplodeAbility() {
-        super(100, 60, 1, true, ExplodeAbility.PARTICLE, EnumSet.of(HitFlags.BLOCK));
+        super(100, 60, 1, true, ExplodeAbility.PARTICLE, EnumSet.of(HitFlags.BLOCK), 0xAA0000);
     }
 
     @Override

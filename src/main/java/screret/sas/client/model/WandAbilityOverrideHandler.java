@@ -17,6 +17,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.client.model.geometry.IGeometryBakingContext;
 import screret.sas.SpellsAndSorcerers;
+import screret.sas.Util;
 import screret.sas.api.capability.ability.WandAbilityProvider;
 import screret.sas.api.wand.ability.WandAbilityInstance;
 
@@ -71,6 +72,6 @@ public class WandAbilityOverrideHandler extends ItemOverrides {
                 current = cap.getAbility().getChildren().get(0);
             }
             return current.getId();
-        }).orElse(new ResourceLocation(SpellsAndSorcerers.MODID, "dummy"));
+        }).orElse(Util.resource("dummy"));
     }
 }

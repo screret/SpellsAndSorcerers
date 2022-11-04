@@ -16,7 +16,7 @@ import java.util.EnumSet;
 public class HealAbility extends SubAbility {
 
     public HealAbility() {
-        super(20, 40, .25f, true, ParticleTypes.HAPPY_VILLAGER, EnumSet.of(HitFlags.ENTITY));
+        super(20, 40, .25f, true, ParticleTypes.HAPPY_VILLAGER, EnumSet.of(HitFlags.ENTITY), 0xFF00ae2d);
     }
 
     @Override

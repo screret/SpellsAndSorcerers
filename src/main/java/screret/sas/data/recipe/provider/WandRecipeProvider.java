@@ -1,17 +1,20 @@
 package screret.sas.data.recipe.provider;
 
+import net.minecraft.advancements.critereon.InventoryChangeTrigger;
+import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeProvider;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.common.Tags;
-import net.minecraftforge.common.data.ForgeItemTagsProvider;
-import net.minecraftforge.registries.ForgeRegistries;
 import screret.sas.SpellsAndSorcerers;
+import screret.sas.Util;
 import screret.sas.ability.ModWandAbilities;
+import screret.sas.ability.ability.ProjectileAbility;
+import screret.sas.ability.ability.SubAbility;
 import screret.sas.api.wand.ability.WandAbility;
 import screret.sas.api.wand.ability.WandAbilityRegistry;
 import screret.sas.data.recipe.builder.WandRecipeBuilder;
@@ -28,35 +31,90 @@ public class WandRecipeProvider extends RecipeProvider {
 
     @Override
     protected void buildCraftingRecipes(Consumer<FinishedRecipe> consumer) {
-        ModCreativeTab tab = (ModCreativeTab) SpellsAndSorcerers.SAS_TAB;
-        for(WandAbility ability : WandAbilityRegistry.WAND_ABILITIES_BUILTIN.get().getValues()) {
-            getBuilder(tab, ability)
-                    .pattern(" C ")
-                    .pattern("LSL")
-                    .define('S', ModItems.WAND_HANDLE.get())
-                    .define('C', getWandCore(ability))
-                    .define('L', Tags.Items.LEATHER)
-                    .save(consumer, ability.getKey());
-        }
-        /*getBuilder(tab, ModWandAbilities.DAMAGE.get())
-                .pattern(" C ")
+        Util.addItems();
+        getBuilder(ModWandAbilities.DAMAGE.get())
+                .pattern("BCB")
                 .pattern("LSL")
                 .define('S', ModItems.WAND_HANDLE.get())
                 .define('C', getWandCore(ModWandAbilities.DAMAGE.get()))
                 .define('L', Tags.Items.LEATHER)
-                .save(consumer, new ResourceLocation(SpellsAndSorcerers.MODID, "damage_wand"));
-         */
+                .define('B', ModItems.SOUL_BOTTLE.get())
+                .group("wands")
+                .unlockedBy("has_core", hasCore(ModWandAbilities.DAMAGE.get()))
+                .save(consumer, Util.resource("damage_wand"));
+
+        getBuilder(ModWandAbilities.EXPLODE.get())
+                .pattern("BCB")
+                .pattern("LSL")
+                .define('S', ModItems.WAND_HANDLE.get())
+                .define('C', getWandCore(ModWandAbilities.EXPLODE.get()))
+                .define('L', Tags.Items.LEATHER)
+                .define('B', Items.TNT)
+                .group("wands")
+                .unlockedBy("has_core", hasCore(ModWandAbilities.EXPLODE.get()))
+                .save(consumer, Util.resource("explosion_wand"));
+
+        getBuilder(ModWandAbilities.LARGE_FIREBALL.get())
+                .pattern("BCB")
+                .pattern("LSL")
+                .define('S', ModItems.WAND_HANDLE.get())
+                .define('C', getWandCore(ModWandAbilities.LARGE_FIREBALL.get()))
+                .define('L', Tags.Items.LEATHER)
+                .define('B', Items.FIRE_CHARGE)
+                .group("wands")
+                .unlockedBy("has_core", hasCore(ModWandAbilities.LARGE_FIREBALL.get()))
+                .save(consumer, Util.resource("large_fireball_wand"));
+
+        getBuilder(ModWandAbilities.SMALL_FIREBALL.get())
+                .pattern("BCB")
+                .pattern("LSL")
+                .define('S', ModItems.WAND_HANDLE.get())
+                .define('C', getWandCore(ModWandAbilities.SMALL_FIREBALL.get()))
+                .define('L', Tags.Items.LEATHER)
+                .define('B', Items.FIREWORK_STAR)
+                .group("wands")
+                .unlockedBy("has_core", hasCore(ModWandAbilities.SMALL_FIREBALL.get()))
+                .save(consumer, Util.resource("small_fireball_wand"));
+
+        for(WandAbility ability : WandAbilityRegistry.WAND_ABILITIES_BUILTIN.get().getValues()) {
+            if(ability instanceof SubAbility || ability instanceof ProjectileAbility) {
+                getBuilder(ability)
+                        .pattern(" C ")
+                        .pattern("LSL")
+                        .define('S', ModItems.WAND_HANDLE.get())
+                        .define('C', getWandCore(ability))
+                        .define('L', Tags.Items.LEATHER)
+                        .group("wands")
+                        .unlockedBy("has_core", hasCore(ability))
+                        .save(consumer, ability.getKey());
+            }
+
+        }
+
     }
 
-    public WandRecipeBuilder getBuilder(ModCreativeTab tab, WandAbility ability){
-        return new WandRecipeBuilder(tab.getCustomWands().get(getLocationFromAbility(ability)));
-    }
-
-    public ResourceLocation getLocationFromAbility(WandAbility ability){
-        return WandAbilityRegistry.WAND_ABILITIES_BUILTIN.get().getKey(ability);
+    public WandRecipeBuilder getBuilder(WandAbility ability){
+        return new WandRecipeBuilder(Util.customWands.get(ability.getKey()));
     }
 
     public ItemStack getWandCore(WandAbility ability){
-        return ((ModCreativeTab) SpellsAndSorcerers.SAS_TAB).customWandCoreAdded.get(getLocationFromAbility(ability));
+        return Util.customWandCores.get(ability.getKey());
+    }
+
+    protected static InventoryChangeTrigger.TriggerInstance has(ItemStack stack) {
+        var saved = stack.serializeNBT();
+        var tag = new CompoundTag();
+        if(saved.contains("tag")){
+            tag = tag.merge(saved.getCompound("tag"));
+        }
+        if(saved.contains("ForgeCaps")){
+            tag.put("ForgeCaps", saved.getCompound("ForgeCaps"));
+        }
+        if(saved.contains("tag") || saved.contains("ForgeCaps")) return inventoryTrigger(ItemPredicate.Builder.item().of(stack.getItem()).hasNbt(tag).build());
+        else return inventoryTrigger(ItemPredicate.Builder.item().of(stack.getItem()).build());
+    }
+
+    protected static InventoryChangeTrigger.TriggerInstance hasCore(WandAbility ability) {
+        return has(Util.customWandCores.get(ability.getKey()));
     }
 }

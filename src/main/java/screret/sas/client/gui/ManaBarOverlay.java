@@ -6,12 +6,13 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.gui.overlay.ForgeGui;
 import net.minecraftforge.client.gui.overlay.IGuiOverlay;
 import screret.sas.SpellsAndSorcerers;
+import screret.sas.Util;
 import screret.sas.api.capability.mana.ManaProvider;
 import screret.sas.config.SASConfig;
 
 public class ManaBarOverlay implements IGuiOverlay {
 
-    public static final ResourceLocation MANA_BAR_LOCATION = new ResourceLocation(SpellsAndSorcerers.MODID, "textures/gui/mana_bar.png");
+    public static final ResourceLocation MANA_BAR_LOCATION = Util.resource("textures/gui/mana_bar.png");
 
     @Override
     public void render(ForgeGui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {

@@ -1,6 +1,14 @@
 {
+  "category.sas.wands": "Wand Crafting",
+  "container.sas.wand_table": "Wand Table",
+
+  "block.sas.wand_table": "Wand Table",
+
+  "item.sas.soul_bottle": "Bottle o' Souls",
   "item.sas.handle": "Wand Handle",
   "item.sas.wand": "%s Wand",
+  "item.sas.wand_core": "%s Core",
+
   "ability.sas.basic": "Dummy",
   "ability.sas.explode": "Explosion",
   "ability.sas.small_fireball": "Small Fireball",

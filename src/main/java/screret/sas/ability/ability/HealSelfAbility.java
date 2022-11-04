@@ -13,7 +13,7 @@ import java.util.EnumSet;
 
 public class HealSelfAbility extends WandAbility {
     public HealSelfAbility() {
-        super(10, 10, .25f, true, ParticleTypes.HAPPY_VILLAGER);
+        super(10, 10, .25f, true, ParticleTypes.HAPPY_VILLAGER, 0xFF00ae2d);
     }
 
     @Override

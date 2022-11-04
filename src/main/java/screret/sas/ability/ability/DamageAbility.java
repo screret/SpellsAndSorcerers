@@ -12,7 +12,7 @@ import java.util.EnumSet;
 public class DamageAbility extends SubAbility {
 
     public DamageAbility() {
-        super(0, 10, 1, true, ParticleTypes.SOUL_FIRE_FLAME, EnumSet.of(HitFlags.ENTITY));
+        super(0, 10, 1, true, ParticleTypes.SOUL_FIRE_FLAME, EnumSet.of(HitFlags.ENTITY, HitFlags.BLOCK), 0x54cbcfFF);
     }
 
     @Override

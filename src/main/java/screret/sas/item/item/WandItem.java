@@ -28,7 +28,7 @@ public class WandItem extends Item {
 
 
     public WandItem() {
-        super(new Properties().durability(100).rarity(Rarity.RARE));
+        super(new Properties().durability(100).rarity(Rarity.UNCOMMON));
     }
 
     @Override

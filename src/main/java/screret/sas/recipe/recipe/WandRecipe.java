@@ -18,13 +18,14 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.common.crafting.StrictNBTIngredient;
 import net.minecraftforge.items.IItemHandler;
 import screret.sas.SpellsAndSorcerers;
+import screret.sas.Util;
 import screret.sas.recipe.ModRecipes;
 
 import java.util.Map;
 
 public class WandRecipe implements Recipe<CraftingContainer> {
 
-    public static final ResourceLocation TYPE_ID = new ResourceLocation(SpellsAndSorcerers.MODID, "wand");
+    public static final ResourceLocation TYPE_ID = Util.resource("wand");
     public static final int MAX_SIZE_X = 3, MAX_SIZE_Y = 2;
 
     private final ResourceLocation id;
@@ -95,6 +96,11 @@ public class WandRecipe implements Recipe<CraftingContainer> {
     }
 
     @Override
+    public NonNullList<Ingredient> getIngredients() {
+        return ingredients;
+    }
+
+    @Override
     public ResourceLocation getId() {
         return this.id;
     }
@@ -122,6 +128,10 @@ public class WandRecipe implements Recipe<CraftingContainer> {
         }
 
         return astring;
+    }
+
+    public String toString(){
+        return getId().toString();
     }
 
     public static class RecipeType implements net.minecraft.world.item.crafting.RecipeType<WandRecipe> {

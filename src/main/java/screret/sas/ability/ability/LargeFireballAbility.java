@@ -14,7 +14,7 @@ public class LargeFireballAbility extends ProjectileAbility {
     private final int explosionPower = 1;
 
     public LargeFireballAbility() {
-        super(0, 20, 0.5f, true, 512);
+        super(0, 20, 0.5f, true, 512, 0xFFffa500);
     }
 
     @Override

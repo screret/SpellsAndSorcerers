@@ -9,11 +9,13 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.CraftingMenu;
 import screret.sas.SpellsAndSorcerers;
+import screret.sas.Util;
+import screret.sas.container.container.WandTableMenu;
 
-public class WandTableScreen extends AbstractContainerScreen<CraftingMenu> {
-    private static final ResourceLocation WAND_TABLE_LOCATION = new ResourceLocation(SpellsAndSorcerers.MODID, "textures/gui/container/wand_table.png");
+public class WandTableScreen extends AbstractContainerScreen<WandTableMenu> {
+    private static final ResourceLocation WAND_TABLE_LOCATION = Util.resource("textures/gui/container/wand_table.png");
 
-    public WandTableScreen(CraftingMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
+    public WandTableScreen(WandTableMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
     }
 

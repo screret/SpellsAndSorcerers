@@ -13,6 +13,7 @@ import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
 import net.minecraft.core.Registry;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeBuilder;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.TagParser;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
@@ -24,6 +25,8 @@ import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.common.crafting.StrictNBTIngredient;
 import net.minecraftforge.registries.ForgeRegistries;
+import screret.sas.SpellsAndSorcerers;
+import screret.sas.recipe.ModRecipes;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -107,7 +110,7 @@ public class WandRecipeBuilder implements RecipeBuilder {
    public void save(Consumer<FinishedRecipe> pFinishedRecipeConsumer, ResourceLocation pRecipeId) {
       this.ensureValid(pRecipeId);
       this.advancement.parent(ROOT_RECIPE_ADVANCEMENT).addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(pRecipeId)).rewards(AdvancementRewards.Builder.recipe(pRecipeId)).requirements(RequirementsStrategy.OR);
-      pFinishedRecipeConsumer.accept(new Result(pRecipeId, this.result, this.group == null ? "" : this.group, this.rows, this.key, this.advancement, new ResourceLocation(pRecipeId.getNamespace(), "recipes/" + this.result.getItem().getItemCategory().getRecipeFolderName() + "/" + pRecipeId.getPath())));
+      pFinishedRecipeConsumer.accept(new Result(pRecipeId, this.result, this.group == null ? "" : this.group, this.rows, this.key, this.advancement, new ResourceLocation(pRecipeId.getNamespace(), "recipes/" + SpellsAndSorcerers.SAS_TAB.getRecipeFolderName() + "/" + pRecipeId.getPath())));
    }
 
    /**
@@ -184,15 +187,21 @@ public class WandRecipeBuilder implements RecipeBuilder {
          if (this.result.getCount() > 1) {
             resultObject.addProperty("count", this.result.getCount());
          }
-         if(this.result.hasTag()){
-            resultObject.addProperty("nbt", this.result.getTag().toString());
+         var saved = this.result.serializeNBT();
+         var tag = new CompoundTag();
+         if(saved.contains("tag")){
+            tag = tag.merge(saved.getCompound("tag"));
          }
+         if(saved.contains("ForgeCaps")){
+            tag.put("ForgeCaps", saved.getCompound("ForgeCaps"));
+         }
+         resultObject.addProperty("nbt", tag.toString());
 
          pJson.add("result", resultObject);
       }
 
       public RecipeSerializer<?> getType() {
-         return RecipeSerializer.SHAPED_RECIPE;
+         return ModRecipes.WAND_RECIPE_SERIALIZER.get();
       }
 
       /**
@@ -211,7 +220,7 @@ public class WandRecipeBuilder implements RecipeBuilder {
       }
 
       /**
-       * Gets the ID for the advancement associated with this recipe. Should not be null if {@link #getAdvancementJson}
+       * Gets the ID for the advancement associated with this recipe. Should not be null if {@link RecipeBuilder#getAdvancementJson}
        * is non-null.
        */
       @Nullable

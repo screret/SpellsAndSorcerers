@@ -11,7 +11,7 @@ import screret.sas.Util;
 
 public class SmallFireballAbility extends ProjectileAbility {
     public SmallFireballAbility() {
-        super(0, 10, 0, true, 512);
+        super(0, 10, 0, true, 512, 0xFFffa500);
     }
 
     @Override

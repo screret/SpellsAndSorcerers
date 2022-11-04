@@ -16,6 +16,8 @@ import screret.sas.block.ModBlocks;
 import screret.sas.container.ModContainers;
 import screret.sas.container.stackhandler.CraftOutputItemHandler;
 import screret.sas.container.stackhandler.CraftResultStackHandler;
+import screret.sas.recipe.ModRecipes;
+import screret.sas.recipe.recipe.WandRecipe;
 
 import java.util.Optional;
 
@@ -42,6 +44,10 @@ public class WandTableMenu extends AbstractContainerMenu {
     private final ContainerLevelAccess access;
     private final Player player;
 
+    public WandTableMenu(int pContainerId, Inventory pPlayerInventory) {
+        this(pContainerId, pPlayerInventory, ContainerLevelAccess.NULL);
+    }
+
     public WandTableMenu(int pContainerId, Inventory pPlayerInventory, ContainerLevelAccess pAccess) {
         super(ModContainers.WAND_CRAFTING.get(), pContainerId);
         this.access = pAccess;
@@ -50,7 +56,7 @@ public class WandTableMenu extends AbstractContainerMenu {
 
         for(int y = 0; y < INPUT_Y_SIZE; ++y) {
             for(int x = 0; x < INPUT_X_SIZE; ++x) {
-                this.addSlot(new Slot(this.inputSlots, x + y * 3, 30 + x * 18, 17 + y * 18));
+                this.addSlot(new Slot(this.inputSlots, x + y * INPUT_X_SIZE, 30 + x * 18, 26 + y * 18));
             }
         }
 
@@ -69,21 +75,22 @@ public class WandTableMenu extends AbstractContainerMenu {
     protected static void slotChangedCraftingGrid(AbstractContainerMenu pMenu, Level pLevel, Player pPlayer, CraftingContainer pContainer, CraftResultStackHandler pResult) {
         if (!pLevel.isClientSide) {
             ServerPlayer serverplayer = (ServerPlayer)pPlayer;
-            ItemStack itemstack = ItemStack.EMPTY;
-            Optional<CraftingRecipe> optional = pLevel.getServer().getRecipeManager().getRecipeFor(RecipeType.CRAFTING, pContainer, pLevel);
+            ItemStack result = ItemStack.EMPTY;
+            Optional<WandRecipe> optional = pLevel.getServer().getRecipeManager().getRecipeFor(ModRecipes.WAND_RECIPE_TYPE.get(), pContainer, pLevel);
             if (optional.isPresent()) {
-                CraftingRecipe craftingrecipe = optional.get();
-                if (pResult.setRecipeUsed(pLevel, serverplayer, craftingrecipe)) {
-                    itemstack = craftingrecipe.assemble(pContainer);
+                WandRecipe recipe = optional.get();
+                if (pResult.setRecipeUsed(pLevel, serverplayer, recipe)) {
+                    result = recipe.assemble(pContainer);
                 }
             }
 
-            pResult.setStackInSlot(RESULT_SLOT, itemstack);
-            pMenu.setRemoteSlot(RESULT_SLOT, itemstack);
-            serverplayer.connection.send(new ClientboundContainerSetSlotPacket(pMenu.containerId, pMenu.incrementStateId(), 0, itemstack));
+            pResult.setStackInSlot(RESULT_SLOT, result);
+            pMenu.setRemoteSlot(RESULT_SLOT, result);
+            serverplayer.connection.send(new ClientboundContainerSetSlotPacket(pMenu.containerId, pMenu.incrementStateId(), 0, result));
         }
     }
 
+    @Override
     public void slotsChanged(Container container) {
         this.access.execute((level, pos) -> {
             slotChangedCraftingGrid(this, level, this.player, this.inputSlots, this.resultSlot);
@@ -152,7 +159,7 @@ public class WandTableMenu extends AbstractContainerMenu {
 
     @Override
     public boolean stillValid(Player pPlayer) {
-        return stillValid(access, pPlayer, ModBlocks.WAND_CRAFTER.get());
+        return stillValid(access, pPlayer, ModBlocks.WAND_TABLE.get());
     }
 
     public boolean canTakeItemForPickAll(ItemStack pStack, Slot pSlot) {

@@ -1,0 +1,29 @@
+{
+  "type": "sas:wand",
+  "group": "wands",
+  "key": {
+    "B": {
+      "item": "sas:soul_bottle"
+    },
+    "C": {
+      "type": "forge:nbt",
+      "count": 1,
+      "item": "sas:wand_core",
+      "nbt": "{ability:\"sas:damage\"}"
+    },
+    "L": {
+      "tag": "forge:leather"
+    },
+    "S": {
+      "item": "sas:handle"
+    }
+  },
+  "pattern": [
+    "BCB",
+    "LSL"
+  ],
+  "result": {
+    "item": "sas:wand",
+    "nbt": "{Damage:0,ForgeCaps:{basic_ability:{children:[{children:[],id:\"sas:damage\"}],id:\"sas:shoot_ray\"}}}"
+  }
+}

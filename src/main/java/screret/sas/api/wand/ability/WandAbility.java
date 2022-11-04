@@ -17,12 +17,15 @@ public class WandAbility implements IWandAbility {
     private final boolean applyEnchants;
     protected final ParticleOptions particle;
 
-    public WandAbility(int useDuration, int cooldownDuration, float damagePerHit, boolean applyEnchants, ParticleOptions particle){
+    private final int color;
+
+    public WandAbility(int useDuration, int cooldownDuration, float damagePerHit, boolean applyEnchants, ParticleOptions particle, int color){
         this.useDuration = useDuration;
         this.cooldownDuration = cooldownDuration;
         this.damagePerHit = damagePerHit;
         this.applyEnchants = applyEnchants;
         this.particle = particle;
+        this.color = color;
     }
 
     @Override
@@ -62,6 +65,11 @@ public class WandAbility implements IWandAbility {
     @Override
     public ResourceLocation getKey() {
         return WandAbilityRegistry.WAND_ABILITIES_BUILTIN.get().getKey(this);
+    }
+
+    @Override
+    public int getColor() {
+        return this.color;
     }
 
     @Override

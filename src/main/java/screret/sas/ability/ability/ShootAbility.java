@@ -23,8 +23,8 @@ public class ShootAbility extends WandAbility {
 
     private final Vec3 randomDeviation;
 
-    public ShootAbility(int useDuration, int cooldownDuration, float damagePerHit, boolean applyEnchants, int distance, ParticleOptions particle, Vec3 randomDeviation) {
-        super(useDuration, cooldownDuration, damagePerHit, applyEnchants, particle);
+    public ShootAbility(int useDuration, int cooldownDuration, float damagePerHit, boolean applyEnchants, int distance, ParticleOptions particle, Vec3 randomDeviation, int color) {
+        super(useDuration, cooldownDuration, damagePerHit, applyEnchants, particle, color);
         this.distance = distance;
         this.randomDeviation = randomDeviation;
     }

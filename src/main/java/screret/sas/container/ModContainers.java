@@ -13,7 +13,5 @@ public class ModContainers {
 
     public static final DeferredRegister<MenuType<?>> MENU_TYPES = DeferredRegister.create(ForgeRegistries.MENU_TYPES, SpellsAndSorcerers.MODID);
 
-    public static final RegistryObject<MenuType<WandTableMenu>> WAND_CRAFTING = MENU_TYPES.register("wand", () -> IForgeMenuType.create((id, inv, extraData) -> {
-        return new WandTableMenu(id, inv, ContainerLevelAccess.create(inv.player.level, extraData.readBlockPos()));
-    }));
+    public static final RegistryObject<MenuType<WandTableMenu>> WAND_CRAFTING = MENU_TYPES.register("wand_crafting", () -> IForgeMenuType.create((id, inv, extraData) -> new WandTableMenu(id, inv)));
 }

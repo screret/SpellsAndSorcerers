@@ -32,8 +32,8 @@ public abstract class SubAbility extends WandAbility {
 
     private final EnumSet<HitFlags> hitFlags;
 
-    public SubAbility(int useDuration, int cooldownDuration, float damagePerHit, boolean applyEnchants, ParticleOptions particle, EnumSet<HitFlags> hitFlags) {
-        super(useDuration, cooldownDuration, damagePerHit, applyEnchants, particle);
+    public SubAbility(int useDuration, int cooldownDuration, float damagePerHit, boolean applyEnchants, ParticleOptions particle, EnumSet<HitFlags> hitFlags, int color) {
+        super(useDuration, cooldownDuration, damagePerHit, applyEnchants, particle, color);
         this.hitFlags = hitFlags;
     }
 
@@ -46,8 +46,7 @@ public abstract class SubAbility extends WandAbility {
             List<? extends Entity> allHitPossibilities = level.getEntities(SubAbility.ANY_ENTITY_TYPE, bounds, entity -> entity != user);
             allHitPossibilities.sort((thisPart, next) -> (int)Math.round(next.position().distanceTo(currentPosition.real) - thisPart.position().distanceTo(currentPosition.real)));
             if(allHitPossibilities.size() > 0) doHit(stack, user, (LivingEntity) allHitPossibilities.get(0), timeCharged);
-        }
-        if(hitFlags.contains(HitFlags.BLOCK)) {
+        } else if(hitFlags.contains(HitFlags.BLOCK)) {
             doHit(stack, user, currentPosition.real, timeCharged);
         }
 

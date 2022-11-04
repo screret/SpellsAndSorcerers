@@ -25,8 +25,8 @@ public abstract class ProjectileAbility extends WandAbility {
     protected final int distance;
 
 
-    public ProjectileAbility(int useDuration, int cooldownDuration, float damagePerHit, boolean applyEnchants, int distance) {
-        super(useDuration, cooldownDuration, damagePerHit, applyEnchants, new BlockParticleOption(ParticleTypes.BLOCK_MARKER, Blocks.BARRIER.defaultBlockState()));
+    public ProjectileAbility(int useDuration, int cooldownDuration, float damagePerHit, boolean applyEnchants, int distance, int color) {
+        super(useDuration, cooldownDuration, damagePerHit, applyEnchants, new BlockParticleOption(ParticleTypes.BLOCK_MARKER, Blocks.BARRIER.defaultBlockState()), color);
         this.distance = distance;
     }
 

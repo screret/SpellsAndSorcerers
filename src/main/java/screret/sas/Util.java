@@ -1,28 +1,89 @@
 package screret.sas;
 
+import com.google.common.collect.Maps;
 import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
+import screret.sas.ability.ModWandAbilities;
+import screret.sas.api.wand.ability.WandAbility;
+import screret.sas.api.wand.ability.WandAbilityInstance;
+import screret.sas.api.wand.ability.WandAbilityRegistry;
+import screret.sas.item.ModItems;
 
+import java.util.Map;
 import java.util.function.Predicate;
 
 public class Util {
 
-    private static final float PI_FLOAT = (float) Math.PI;
-    private static final float PI_180 = (PI_FLOAT / 180F);
+    public static final Map<ResourceLocation, ItemStack> customWands = Maps.newHashMap();
+    public static final Map<ResourceLocation, ItemStack> customWandCores = Maps.newHashMap();
 
+    public static void addItems(){
+        addWand(new WandAbilityInstance(ModWandAbilities.SHOOT_RAY.get(), new WandAbilityInstance(ModWandAbilities.DAMAGE.get())), null);
+        addWand(new WandAbilityInstance(ModWandAbilities.SHOOT_HOLD_DOWN.get(), new WandAbilityInstance(ModWandAbilities.HEAL.get())), new WandAbilityInstance(ModWandAbilities.HEAL_SELF.get()));
+        addWand(new WandAbilityInstance(ModWandAbilities.SHOOT_ANGRY_RAY.get(), new WandAbilityInstance(ModWandAbilities.EXPLODE.get())), null);
 
-    public static double randomInRange(Level level, double min, double max) {
-        return (level.random.nextDouble() * (max - min)) + min;
+        addWand(ModWandAbilities.SMALL_FIREBALL.get(), null);
+        addWand(ModWandAbilities.LARGE_FIREBALL.get(), null);
+
+        for(WandAbility ability : WandAbilityRegistry.WAND_ABILITIES_BUILTIN.get().getValues()){
+            addWandCore(ability);
+        }
+    }
+
+    public static ItemStack addWand(WandAbility main, @Nullable WandAbility crouch){
+        var tag = new CompoundTag();
+        var ability = new WandAbilityInstance(main);
+        tag.put(WandAbility.BASIC_ABILITY_KEY, ability.serializeNBT());
+        if(crouch != null) {
+            var ability1 = new WandAbilityInstance(crouch);
+            tag.put(WandAbility.CROUCH_ABILITY_KEY, ability1.serializeNBT());
+        }
+        return customWands.put(main.getKey(), new ItemStack(ModItems.WAND.get(), 1, tag));
+    }
+
+    public static ItemStack addWand(WandAbilityInstance main, @Nullable WandAbilityInstance crouch){
+        var tag = new CompoundTag();
+        tag.put(WandAbility.BASIC_ABILITY_KEY, main.serializeNBT());
+        if(crouch != null) {
+            tag.put(WandAbility.CROUCH_ABILITY_KEY, crouch.serializeNBT());
+        }
+        var childestAbility = main;
+        while (childestAbility.getChildren() != null && childestAbility.getChildren().size() > 0){
+            childestAbility = childestAbility.getChildren().get(0);
+        }
+        var stack = new ItemStack(ModItems.WAND.get(), 1, tag);
+        return customWands.put(childestAbility.getId(), stack);
+    }
+
+    public static ItemStack addWandCore(WandAbility ability){
+        var coreStack = new ItemStack(ModItems.WAND_CORE.get(), 1);
+        var tag = new CompoundTag();
+        tag.putString("ability", ability.toString());
+        coreStack.setTag(tag);
+        return customWandCores.put(ability.getKey(), coreStack);
+    }
+
+    public static double randomInRange(RandomSource randomSource, double min, double max) {
+        return (randomSource.nextDouble() * (max - min)) + min;
+    }
+
+    public static ResourceLocation resource(String path){
+        return new ResourceLocation(SpellsAndSorcerers.MODID, path);
     }
 
     public static BlockHitResult getHitResult(Level level, LivingEntity entity, ClipContext.Fluid fluidInteractionMode, double distance) {
@@ -37,13 +98,13 @@ public class Util {
 
     public static EntityPosStuff getEntityPos(LivingEntity entity, double distance){
         EntityPosStuff stuff = new EntityPosStuff();
-        stuff.xRot = entity.getXRot();
-        stuff.yRot = entity.getYRot();
+        var xRot = entity.getXRot();
+        var yRot = entity.getYRot();
         stuff.from = entity.position();
-        float cosY = Mth.cos(-stuff.yRot * PI_180 - PI_FLOAT);
-        float sinY = Mth.sin(-stuff.yRot * PI_180 - PI_FLOAT);
-        float cosX = -Mth.cos(-stuff.xRot * PI_180);
-        float sinX = Mth.sin(-stuff.xRot * PI_180);
+        float cosY = Mth.cos(-yRot * Mth.DEG_TO_RAD - Mth.PI);
+        float sinY = Mth.sin(-yRot * Mth.DEG_TO_RAD - Mth.PI);
+        float cosX = -Mth.cos(-xRot * Mth.DEG_TO_RAD);
+        float sinX = Mth.sin(-xRot * Mth.DEG_TO_RAD);
         float sinCos = sinY * cosX;
         float cosCos = cosY * cosX;
         stuff.to = entity.getEyePosition().add((double)sinCos * distance, (double)sinX * distance, (double)cosCos * distance);
@@ -68,7 +129,6 @@ public class Util {
     }
 
     public static class EntityPosStuff {
-        public float xRot, yRot;
         public Vec3 from, to;
     }
 

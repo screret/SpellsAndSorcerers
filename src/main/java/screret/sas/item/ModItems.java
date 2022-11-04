@@ -2,6 +2,7 @@ package screret.sas.item;
 
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Rarity;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -17,7 +18,7 @@ public class ModItems {
 
 
     //BLOCK ITEMS
-    public static final RegistryObject<Item> WAND_CRAFTER = ITEMS.register("wand_crafter", () -> new BlockItem(ModBlocks.WAND_CRAFTER.get(), new Item.Properties().tab(SpellsAndSorcerers.SAS_TAB)));
+    public static final RegistryObject<Item> WAND_TABLE = ITEMS.register("wand_table", () -> new BlockItem(ModBlocks.WAND_TABLE.get(), new Item.Properties().tab(SpellsAndSorcerers.SAS_TAB)));
 
 
     // WANDS
@@ -26,7 +27,9 @@ public class ModItems {
     public static final RegistryObject<Item> WAND_HANDLE = ITEMS.register("handle", () -> new Item(new Item.Properties().tab(SpellsAndSorcerers.SAS_TAB)));
 
 
-    //WAND CORES
+    //OTHER ITEMS
     public static final RegistryObject<Item> WAND_CORE = ITEMS.register("wand_core", WandCoreItem::new);
+    public static final RegistryObject<Item> SOUL_BOTTLE = ITEMS.register("soul_bottle", () -> new Item(new Item.Properties().tab(SpellsAndSorcerers.SAS_TAB)));
+
 
 }
