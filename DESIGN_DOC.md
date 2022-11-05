@@ -1,7 +1,7 @@
 design document
 -----
 
-- ~~wands~~ DONE
+- ~~molular wands~~ DONE
 - ~~mana~~ DONE
 - custom wand crafting
 - **structures**

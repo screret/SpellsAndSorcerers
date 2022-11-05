@@ -8,7 +8,7 @@
             "items": [
               "sas:wand_core"
             ],
-            "nbt": "{ability:\"sas:damage\"}"
+            "nbt": "{ability:\"sas:heal\"}"
           }
         ]
       },
@@ -16,7 +16,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "sas:heal"
+        "recipe": "sas:heal_wand"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -29,7 +29,7 @@
   ],
   "rewards": {
     "recipes": [
-      "sas:heal"
+      "sas:heal_wand"
     ]
   }
 }

@@ -2,6 +2,12 @@
   "type": "sas:wand",
   "group": "wands",
   "key": {
+    "B": {
+      "type": "forge:nbt",
+      "count": 1,
+      "item": "minecraft:potion",
+      "nbt": "{Potion:\"minecraft:strong_healing\"}"
+    },
     "C": {
       "type": "forge:nbt",
       "count": 1,
@@ -16,7 +22,7 @@
     }
   },
   "pattern": [
-    " C ",
+    "BCB",
     "LSL"
   ],
   "result": {

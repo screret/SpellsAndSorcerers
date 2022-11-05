@@ -64,7 +64,7 @@ public class ClientModEvents {
     }
 
     @SubscribeEvent
-    public void registerItemColors(final RegisterColorHandlersEvent.Item event){
+    public static void registerItemColors(final RegisterColorHandlersEvent.Item event){
         event.register((stack, index) -> {
             if(stack.hasTag() && stack.getTag().contains("ability") && index == 1){
                 var colorLocation = new ResourceLocation(stack.getTag().getString("ability"));

@@ -9,6 +9,8 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.alchemy.PotionUtils;
+import net.minecraft.world.item.alchemy.Potions;
 import net.minecraftforge.common.Tags;
 import screret.sas.SpellsAndSorcerers;
 import screret.sas.Util;
@@ -76,20 +78,16 @@ public class WandRecipeProvider extends RecipeProvider {
                 .unlockedBy("has_core", hasCore(ModWandAbilities.SMALL_FIREBALL.get()))
                 .save(consumer, Util.resource("small_fireball_wand"));
 
-        for(WandAbility ability : WandAbilityRegistry.WAND_ABILITIES_BUILTIN.get().getValues()) {
-            if(ability instanceof SubAbility || ability instanceof ProjectileAbility) {
-                getBuilder(ability)
-                        .pattern(" C ")
-                        .pattern("LSL")
-                        .define('S', ModItems.WAND_HANDLE.get())
-                        .define('C', getWandCore(ability))
-                        .define('L', Tags.Items.LEATHER)
-                        .group("wands")
-                        .unlockedBy("has_core", hasCore(ability))
-                        .save(consumer, ability.getKey());
-            }
-
-        }
+        getBuilder(ModWandAbilities.HEAL.get())
+                .pattern("BCB")
+                .pattern("LSL")
+                .define('S', ModItems.WAND_HANDLE.get())
+                .define('C', getWandCore(ModWandAbilities.HEAL.get()))
+                .define('L', Tags.Items.LEATHER)
+                .define('B', PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.STRONG_HEALING))
+                .group("wands")
+                .unlockedBy("has_core", hasCore(ModWandAbilities.HEAL.get()))
+                .save(consumer, Util.resource("heal_wand"));
 
     }
 

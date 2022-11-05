@@ -21,7 +21,7 @@ public class SASConfig {
             manaBarY = builder
                     .comment("Mana bar's Y position from bottom of screen.")
                     .translation("sas.configgui.manaBarY")
-                    .defineInRange("manaBarY", -57, Integer.MIN_VALUE, Integer.MAX_VALUE);
+                    .defineInRange("manaBarY", 57, Integer.MIN_VALUE, Integer.MAX_VALUE);
         }
     }
 

@@ -25,7 +25,7 @@ public class ManaBarOverlay implements IGuiOverlay {
             gui.getMinecraft().getProfiler().push("manaBar");
             var capability = gui.getMinecraft().player.getCapability(ManaProvider.MANA).orElseThrow(() -> new IllegalStateException("Mana Capability is null"));
 
-            int left = screenWidth / 2 - SASConfig.CLIENT.manaBarX.get();
+            int left = screenWidth / 2 + SASConfig.CLIENT.manaBarX.get();
             int top = screenHeight - SASConfig.CLIENT.manaBarY.get();
 
             int progress = (int) ((capability.getManaStored() / (float)capability.getMaxManaStored()) * 80);
