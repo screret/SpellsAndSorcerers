@@ -38,6 +38,7 @@ import screret.sas.data.recipe.provider.WandRecipeProvider;
 import screret.sas.data.tag.SASBlockTagsProvider;
 import screret.sas.data.tag.SASItemTagsProvider;
 import screret.sas.enchantment.ModEnchantments;
+import screret.sas.entity.ModEntities;
 import screret.sas.item.ModCreativeTab;
 import screret.sas.item.ModItems;
 import screret.sas.recipe.ModRecipes;
@@ -79,6 +80,8 @@ public class SpellsAndSorcerers {
         ModRecipes.RECIPE_SERIALIZERS.register(modEventBus);
 
         ModContainers.MENU_TYPES.register(modEventBus);
+
+        ModEntities.ENTITY_TYPES.register(modEventBus);
 
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, SASConfig.clientSpec);
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, SASConfig.commonSpec);

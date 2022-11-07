@@ -3,7 +3,7 @@ design document
 
 - ~~molular wands~~ DONE
 - ~~mana~~ DONE
-- custom wand crafting
+- ~~custom wand crafting~~ DONE (but not quite)
 - **structures**
 - wizard mob (enemy)
 - wizard mob (ally)

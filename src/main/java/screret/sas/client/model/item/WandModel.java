@@ -1,4 +1,4 @@
-package screret.sas.client.model;
+package screret.sas.client.model.item;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
@@ -16,7 +16,6 @@ import net.minecraftforge.client.model.geometry.IGeometryBakingContext;
 import net.minecraftforge.client.model.geometry.IGeometryLoader;
 import net.minecraftforge.client.model.geometry.IUnbakedGeometry;
 import net.minecraftforge.client.model.geometry.UnbakedGeometryHelper;
-import screret.sas.SpellsAndSorcerers;
 
 import javax.annotation.Nonnull;
 import java.util.Collection;

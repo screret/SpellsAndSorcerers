@@ -76,4 +76,8 @@ public class WandAbility implements IWandAbility {
     public String toString() {
         return getKey().toString();
     }
+
+    public ParticleOptions getParticle(){
+        return particle;
+    }
 }

@@ -19,12 +19,14 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import screret.sas.ability.ModWandAbilities;
+import screret.sas.api.capability.ability.WandAbilityProvider;
 import screret.sas.api.wand.ability.WandAbility;
 import screret.sas.api.wand.ability.WandAbilityInstance;
 import screret.sas.api.wand.ability.WandAbilityRegistry;
 import screret.sas.item.ModItems;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Predicate;
 
 public class Util {
@@ -80,6 +82,13 @@ public class Util {
 
     public static double randomInRange(RandomSource randomSource, double min, double max) {
         return (randomSource.nextDouble() * (max - min)) + min;
+    }
+
+    public static Optional<WandAbilityInstance> getMainAbilityFromStack(ItemStack stack){
+        if(stack.getCapability(WandAbilityProvider.WAND_ABILITY).isPresent()){
+            return Optional.of(stack.getCapability(WandAbilityProvider.WAND_ABILITY).resolve().get().getAbility());
+        }
+        return Optional.empty();
     }
 
     public static ResourceLocation resource(String path){
