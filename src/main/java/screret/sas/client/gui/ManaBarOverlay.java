@@ -23,18 +23,21 @@ public class ManaBarOverlay implements IGuiOverlay {
         if (gui.shouldDrawSurvivalElements() && gui.getMinecraft().player != null)
         {
             gui.getMinecraft().getProfiler().push("manaBar");
-            var capability = gui.getMinecraft().player.getCapability(ManaProvider.MANA).orElseThrow(() -> new IllegalStateException("Mana Capability is null"));
 
-            int left = screenWidth / 2 + SASConfig.CLIENT.manaBarX.get();
-            int top = screenHeight - SASConfig.CLIENT.manaBarY.get();
+            if(gui.getMinecraft().player.getCapability(ManaProvider.MANA).isPresent()){
+                var capability = gui.getMinecraft().player.getCapability(ManaProvider.MANA).resolve().get();
+                int left = screenWidth / 2 + SASConfig.CLIENT.manaBarX.get();
+                int top = screenHeight - SASConfig.CLIENT.manaBarY.get();
 
-            int progress = (int) ((capability.getManaStored() / (float)capability.getMaxManaStored()) * 80);
-            gui.blit(poseStack, left, top, 0, 0, 80, 5);
-            if (progress > 0) {
-                gui.blit(poseStack, left, top, 0, 5, progress, 5);
+                int progress = (int) ((capability.getManaStored() / (float)capability.getMaxManaStored()) * 80);
+                gui.blit(poseStack, left, top, 0, 0, 80, 5);
+                if (progress > 0) {
+                    gui.blit(poseStack, left, top, 0, 5, progress, 5);
+                }
+
+                gui.getMinecraft().getProfiler().pop();
             }
 
-            gui.getMinecraft().getProfiler().pop();
         }
         RenderSystem.enableBlend();
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);

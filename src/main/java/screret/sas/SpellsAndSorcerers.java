@@ -14,8 +14,10 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.Event;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -23,15 +25,15 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.registries.RegisterEvent;
 import org.slf4j.Logger;
 import screret.sas.ability.ModWandAbilities;
 import screret.sas.api.capability.ability.ICapabilityWandAbility;
 import screret.sas.api.capability.mana.ICapabilityMana;
 import screret.sas.api.capability.mana.ManaProvider;
-import screret.sas.api.wand.ability.WandAbility;
-import screret.sas.api.wand.ability.WandAbilityInstance;
 import screret.sas.api.wand.ability.WandAbilityRegistry;
 import screret.sas.block.ModBlocks;
+import screret.sas.blockentity.ModBlockEntities;
 import screret.sas.config.SASConfig;
 import screret.sas.container.ModContainers;
 import screret.sas.data.recipe.provider.WandRecipeProvider;
@@ -39,12 +41,12 @@ import screret.sas.data.tag.SASBlockTagsProvider;
 import screret.sas.data.tag.SASItemTagsProvider;
 import screret.sas.enchantment.ModEnchantments;
 import screret.sas.entity.ModEntities;
+import screret.sas.entity.entity.WizardEntity;
 import screret.sas.item.ModCreativeTab;
 import screret.sas.item.ModItems;
 import screret.sas.recipe.ModRecipes;
 
 import static screret.sas.Util.addWand;
-import static screret.sas.Util.addWandCore;
 
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod(SpellsAndSorcerers.MODID)
@@ -64,6 +66,8 @@ public class SpellsAndSorcerers {
         modEventBus.addListener(this::commonSetup);
         modEventBus.addListener(this::registerCapabilities);
         modEventBus.addListener(this::gatherData);
+        modEventBus.addListener(this::registerEntityAttributes);
+
 
         WandAbilityRegistry.init();
         WandAbilityRegistry.WAND_ABILITIES.register(modEventBus);
@@ -82,6 +86,7 @@ public class SpellsAndSorcerers {
         ModContainers.MENU_TYPES.register(modEventBus);
 
         ModEntities.ENTITY_TYPES.register(modEventBus);
+        ModBlockEntities.BLOCK_ENTITIES.register(modEventBus);
 
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, SASConfig.clientSpec);
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, SASConfig.commonSpec);
@@ -116,6 +121,15 @@ public class SpellsAndSorcerers {
     public void attachCapabilitiesPlayer(final AttachCapabilitiesEvent<Entity> event) {
         if (!(event.getObject() instanceof Player)) return;
         event.addCapability(Util.resource("mana"), new ManaProvider());
+    }
+
+    public void registerEntityAttributes(final EntityAttributeCreationEvent event){
+        event.put(ModEntities.WIZARD_TYPE.get(), WizardEntity.createAttributes().build());
+    }
+
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public void onRegister(final RegisterEvent event){
+        Util.addItems();
     }
 
     @Mod.EventBusSubscriber(modid = SpellsAndSorcerers.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)

@@ -2,31 +2,68 @@
 	"format_version": "1.8.0",
 	"animations": {
 		"animation.wizard.idle": {
-			"loop": true
+			"loop": true,
+			"animation_length": 1,
+			"bones": {
+				"leftArm": {
+					"rotation": {
+						"vector": ["Math.cos(query.anim_time * 180) * 5", 0, 0]
+					}
+				},
+				"rightArm": {
+					"rotation": {
+						"vector": ["Math.cos(query.anim_time * 180) * -5", 0, 0]
+					}
+				}
+			}
 		},
 		"animation.wizard.attack": {
 			"loop": true,
-			"animation_length": 0.64,
+			"animation_length": 0.4,
 			"override_previous_animation": true,
 			"bones": {
 				"rightArm": {
 					"rotation": {
 						"0.0": {
-							"vector": [-62.77356, 22.52101, 101.14843],
-							"easing": "step",
-							"easingArgs": [2]
+							"vector": [-77.5, 20, 0]
 						},
-						"0.32": {
-							"vector": [-61.05808, -29.14034, 74.92946]
+						"0.2": {
+							"vector": [-110, 20, 0],
+							"easing": "linear"
 						},
-						"0.64": {
-							"vector": [-61.69777, 26.94616, 103.71297]
+						"0.4": {
+							"vector": [-77.5, 20, 0]
 						}
 					},
 					"position": {
-						"vector": [2, 0, 0],
-						"easing": "step",
-						"easingArgs": [2]
+						"vector": [2, -2, 0]
+					}
+				}
+			}
+		},
+		"animation.wizard.walk": {
+			"loop": true,
+			"animation_length": 1,
+			"override_previous_animation": true,
+			"bones": {
+				"leftFoot": {
+					"rotation": {
+						"vector": ["Math.cos(query.anim_time * 360 * move_speed) * -30", 0, 0]
+					}
+				},
+				"rightFoot": {
+					"rotation": {
+						"vector": ["Math.cos(query.anim_time * 360 * move_speed) * 30", 0, 0]
+					}
+				},
+				"leftArm": {
+					"rotation": {
+						"vector": ["Math.cos(query.anim_time * 360 * move_speed) * 25", 0, 0]
+					}
+				},
+				"rightArm": {
+					"rotation": {
+						"vector": ["Math.cos(query.anim_time * 360 * move_speed) * -25", 0, 0]
 					}
 				}
 			}

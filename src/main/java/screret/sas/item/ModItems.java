@@ -3,11 +3,13 @@ package screret.sas.item;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
+import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import screret.sas.SpellsAndSorcerers;
 import screret.sas.block.ModBlocks;
+import screret.sas.entity.ModEntities;
 import screret.sas.item.item.WandCoreItem;
 import screret.sas.item.item.WandItem;
 
@@ -30,6 +32,7 @@ public class ModItems {
     //OTHER ITEMS
     public static final RegistryObject<Item> WAND_CORE = ITEMS.register("wand_core", WandCoreItem::new);
     public static final RegistryObject<Item> SOUL_BOTTLE = ITEMS.register("soul_bottle", () -> new Item(new Item.Properties().tab(SpellsAndSorcerers.SAS_TAB)));
-
+    public static final RegistryObject<Item> WIZARD_SPAWN_EGG = ITEMS.register("wizard_spawn_egg", () -> new ForgeSpawnEggItem(ModEntities.WIZARD_TYPE, 0x002017, 0x959b9b, new Item.Properties().tab(SpellsAndSorcerers.SAS_TAB)));
+    public static final RegistryObject<Item> SUMMON_SIGN = ITEMS.register("summon_sign", () -> new BlockItem(ModBlocks.SUMMON_SIGN.get(), new Item.Properties().tab(SpellsAndSorcerers.SAS_TAB)));
 
 }

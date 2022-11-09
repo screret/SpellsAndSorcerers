@@ -7,7 +7,7 @@
 	"name": "wizard",
 	"model_identifier": "wizard",
 	"visible_box": [3, 3.5, 1.25],
-	"variable_placeholders": "",
+	"variable_placeholders": "\n",
 	"variable_placeholder_buttons": [],
 	"timeline_setups": [],
 	"resolution": {
@@ -458,7 +458,7 @@
 			"children": [
 				{
 					"name": "leftFoot",
-					"origin": [0, 0, 0],
+					"origin": [2, 12, 0],
 					"color": 0,
 					"uuid": "507b8ca9-1b63-f4d9-0775-e9defa761c00",
 					"export": true,
@@ -470,7 +470,7 @@
 				},
 				{
 					"name": "rightFoot",
-					"origin": [-3, 0, 0],
+					"origin": [-2, 12, 0],
 					"color": 0,
 					"uuid": "cb8f0172-e011-f4d3-edeb-caeda3f3362a",
 					"export": true,
@@ -563,7 +563,7 @@
 			"saved": true,
 			"uuid": "a623b41a-b660-fe35-b7ba-fdf7047688e8",
 			"relative_path": "../../textures/entity/wizard/wizard.png",
-			"source": "data:image/png;base64,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"
+			"source": "data:image/png;base64,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"
 		}
 	],
 	"animations": [
@@ -588,10 +588,10 @@
 			"name": "animation.wizard.attack",
 			"loop": "loop",
 			"override": true,
-			"length": 0.64,
+			"length": 0.4,
 			"snapping": 25,
-			"selected": true,
-			"saved": true,
+			"selected": false,
+			"saved": false,
 			"path": "C:\\Users\\OMISTAJA\\Desktop\\mc modit\\SpellsAndSorcerers\\src\\main\\resources\\assets\\sas\\animations\\wizard.animation.json",
 			"anim_time_update": "",
 			"blend_weight": "",
@@ -606,29 +606,13 @@
 							"channel": "rotation",
 							"data_points": [
 								{
-									"x": -62.77356,
-									"y": 22.52101,
-									"z": 101.14843
+									"x": -77.5,
+									"y": 20,
+									"z": 0
 								}
 							],
-							"uuid": "d8c35cec-0a94-f2eb-fca8-75788b2bcde4",
+							"uuid": "bd1b6978-6d24-7822-0bc0-968d79c40a18",
 							"time": 0,
-							"color": -1,
-							"interpolation": "linear",
-							"easing": "step",
-							"easingArgs": [2]
-						},
-						{
-							"channel": "rotation",
-							"data_points": [
-								{
-									"x": -61.05808,
-									"y": -29.14034,
-									"z": 74.92946
-								}
-							],
-							"uuid": "921824e2-9232-6e1c-3290-505f3ac2ba01",
-							"time": 0.32,
 							"color": -1,
 							"interpolation": "linear"
 						},
@@ -636,13 +620,28 @@
 							"channel": "rotation",
 							"data_points": [
 								{
-									"x": -61.69777,
-									"y": 26.94616,
-									"z": 103.71297
+									"x": "-110\n",
+									"y": "20",
+									"z": "0\n"
 								}
 							],
-							"uuid": "e63e109f-7ab7-0fd2-6fb3-5b791ce33af1",
-							"time": 0.64,
+							"uuid": "574eb9d7-44c2-2a28-68b5-845740dfbf53",
+							"time": 0.2,
+							"color": -1,
+							"interpolation": "linear",
+							"easing": "linear"
+						},
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": -77.5,
+									"y": 20,
+									"z": 0
+								}
+							],
+							"uuid": "d8e9eae3-08ba-88b8-a698-287bad732376",
+							"time": 0.4,
 							"color": -1,
 							"interpolation": "linear"
 						},
@@ -651,22 +650,342 @@
 							"data_points": [
 								{
 									"x": 2,
-									"y": 0,
+									"y": -2,
 									"z": 0
 								}
 							],
 							"uuid": "612ccf23-1855-24f5-1a4c-574c03da98da",
 							"time": 0,
 							"color": -1,
-							"interpolation": "linear",
-							"easing": "step",
-							"easingArgs": [2]
+							"interpolation": "linear"
+						}
+					]
+				}
+			}
+		},
+		{
+			"uuid": "28151c69-f560-ea5b-3d95-0d9ea6b442cb",
+			"name": "animation.wizard.walk",
+			"loop": "loop",
+			"override": true,
+			"length": 1.44,
+			"snapping": 25,
+			"selected": true,
+			"saved": false,
+			"path": "C:\\Users\\OMISTAJA\\Desktop\\mc modit\\SpellsAndSorcerers\\src\\main\\resources\\assets\\sas\\animations\\wizard.animation.json",
+			"anim_time_update": "",
+			"blend_weight": "",
+			"start_delay": "",
+			"loop_delay": "",
+			"animators": {
+				"507b8ca9-1b63-f4d9-0775-e9defa761c00": {
+					"name": "leftFoot",
+					"type": "bone",
+					"keyframes": [
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "-30\n",
+									"y": "0",
+									"z": "0"
+								}
+							],
+							"uuid": "9c860543-fb35-b740-6b51-903e1f5db910",
+							"time": 0,
+							"color": -1,
+							"interpolation": "linear"
+						},
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "30",
+									"y": 0,
+									"z": 0
+								}
+							],
+							"uuid": "621be0c5-5a8c-fcc1-6127-9839ed67d7d4",
+							"time": 0.36,
+							"color": -1,
+							"interpolation": "linear"
+						},
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "-30\n",
+									"y": 0,
+									"z": 0
+								}
+							],
+							"uuid": "e531b92c-a741-391b-9bab-a4c2718b2569",
+							"time": 0.72,
+							"color": -1,
+							"interpolation": "linear"
+						},
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "30",
+									"y": 0,
+									"z": 0
+								}
+							],
+							"uuid": "106ea028-d672-ebf3-ebeb-c9c203119c1f",
+							"time": 1.08,
+							"color": -1,
+							"interpolation": "linear"
+						},
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "-30",
+									"y": 0,
+									"z": 0
+								}
+							],
+							"uuid": "34c204b5-7aaa-a9dc-a7fa-5bd8d82c0fca",
+							"time": 1.44,
+							"color": -1,
+							"interpolation": "linear"
+						}
+					]
+				},
+				"cb8f0172-e011-f4d3-edeb-caeda3f3362a": {
+					"name": "rightFoot",
+					"type": "bone",
+					"keyframes": [
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "30\n",
+									"y": "0",
+									"z": "0"
+								}
+							],
+							"uuid": "c2c60b6a-667a-0ed6-ae0f-c5d0e1e11f68",
+							"time": 0,
+							"color": -1,
+							"interpolation": "linear"
+						},
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "-30\n",
+									"y": 0,
+									"z": 0
+								}
+							],
+							"uuid": "c310fade-1627-19aa-fc9e-b3ce6699568f",
+							"time": 0.36,
+							"color": -1,
+							"interpolation": "linear"
+						},
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "30",
+									"y": 0,
+									"z": 0
+								}
+							],
+							"uuid": "606bae2a-e87b-32d3-83d8-79f68089d6c8",
+							"time": 0.72,
+							"color": -1,
+							"interpolation": "linear"
+						},
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "-30\n",
+									"y": 0,
+									"z": 0
+								}
+							],
+							"uuid": "398afdd8-3f03-7183-9fb4-ead9779f7fd5",
+							"time": 1.08,
+							"color": -1,
+							"interpolation": "linear"
+						},
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "30",
+									"y": 0,
+									"z": 0
+								}
+							],
+							"uuid": "4dc91f1a-c728-7b5f-fe8d-e7aae8bd7061",
+							"time": 1.44,
+							"color": -1,
+							"interpolation": "linear"
+						}
+					]
+				},
+				"a865235b-bdfb-e2ef-053c-d3df77f77930": {
+					"name": "leftArm",
+					"type": "bone",
+					"keyframes": [
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "-25\n",
+									"y": "0",
+									"z": "0"
+								}
+							],
+							"uuid": "70b36380-be0d-997b-2d9b-200969d57eb4",
+							"time": 0,
+							"color": -1,
+							"interpolation": "linear"
+						},
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "25",
+									"y": 0,
+									"z": 0
+								}
+							],
+							"uuid": "29efab2e-5f91-d4d6-5209-d050b3353cf1",
+							"time": 0.36,
+							"color": -1,
+							"interpolation": "linear"
+						},
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "-25\n",
+									"y": 0,
+									"z": 0
+								}
+							],
+							"uuid": "940731ea-f8ad-b9fc-6c05-a146f59b77b9",
+							"time": 0.72,
+							"color": -1,
+							"interpolation": "linear"
+						},
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "25",
+									"y": 0,
+									"z": 0
+								}
+							],
+							"uuid": "cfce5ea2-253f-654d-58f0-562674aa3f87",
+							"time": 1.08,
+							"color": -1,
+							"interpolation": "linear"
+						},
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "-25\n",
+									"y": 0,
+									"z": 0
+								}
+							],
+							"uuid": "0f2246d9-6c8d-78fc-2091-d2584282f462",
+							"time": 1.44,
+							"color": -1,
+							"interpolation": "linear"
+						}
+					]
+				},
+				"cf503c00-3c11-f9ba-c375-e3e606a34616": {
+					"name": "rightArm",
+					"type": "bone",
+					"keyframes": [
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "25",
+									"y": "0",
+									"z": "0"
+								}
+							],
+							"uuid": "84fc5dcc-60c8-ff5b-4e45-07e55a232a74",
+							"time": 0,
+							"color": -1,
+							"interpolation": "linear"
+						},
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "-25\n",
+									"y": 0,
+									"z": 0
+								}
+							],
+							"uuid": "a76400e0-b1ba-db24-d18f-fce8bc6d0911",
+							"time": 0.36,
+							"color": -1,
+							"interpolation": "linear"
+						},
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "25",
+									"y": 0,
+									"z": 0
+								}
+							],
+							"uuid": "0e4bef66-dbed-56fe-ca2a-288252b0dd8b",
+							"time": 0.72,
+							"color": -1,
+							"interpolation": "linear"
+						},
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "-25\n",
+									"y": 0,
+									"z": 0
+								}
+							],
+							"uuid": "988f97aa-e488-592b-a88c-2fc51a73d3c5",
+							"time": 1.08,
+							"color": -1,
+							"interpolation": "linear"
+						},
+						{
+							"channel": "rotation",
+							"data_points": [
+								{
+									"x": "25",
+									"y": 0,
+									"z": 0
+								}
+							],
+							"uuid": "1682a306-a71a-08ae-a0d4-2cf89213dfd4",
+							"time": 1.44,
+							"color": -1,
+							"interpolation": "linear"
 						}
 					]
 				}
 			}
 		}
 	],
+	"animation_variable_placeholders": "\n",
 	"geckoSettings": {
 		"formatVersion": 2,
 		"modSDK": "Forge 1.12 - 1.16",

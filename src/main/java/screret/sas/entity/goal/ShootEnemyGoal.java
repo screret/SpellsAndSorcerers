@@ -3,13 +3,13 @@ package screret.sas.entity.goal;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
-import screret.sas.entity.entity.WizardMob;
+import screret.sas.entity.entity.WizardEntity;
 
 import javax.annotation.Nullable;
 import java.util.EnumSet;
 
 public class ShootEnemyGoal extends Goal {
-    private final WizardMob wizard;
+    private final WizardEntity wizard;
     @Nullable
     private LivingEntity target;
     private int attackTime = -1;
@@ -22,7 +22,7 @@ public class ShootEnemyGoal extends Goal {
 
     private int useTime;
 
-    public ShootEnemyGoal(WizardMob pRangedAttackMob, double pSpeedModifier, int pAttackIntervalMin, int pAttackIntervalMax, float pAttackRadius) {
+    public ShootEnemyGoal(WizardEntity pRangedAttackMob, double pSpeedModifier, int pAttackIntervalMin, int pAttackIntervalMax, float pAttackRadius) {
         this.wizard = pRangedAttackMob;
         this.speedModifier = pSpeedModifier;
         this.attackIntervalMin = pAttackIntervalMin;

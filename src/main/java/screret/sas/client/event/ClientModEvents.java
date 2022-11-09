@@ -2,8 +2,12 @@ package screret.sas.client.event;
 
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.texture.TextureAtlas;
+import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.InventoryMenu;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.level.BlockAndTintGetter;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -12,15 +16,21 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import screret.sas.SpellsAndSorcerers;
 import screret.sas.ability.ability.SubAbility;
 import screret.sas.api.wand.ability.WandAbilityRegistry;
+import screret.sas.block.ModBlocks;
+import screret.sas.block.block.SummonSignBlock;
+import screret.sas.blockentity.ModBlockEntities;
 import screret.sas.client.gui.ManaBarOverlay;
 import screret.sas.client.gui.WandTableScreen;
 import screret.sas.client.model.item.WandModel;
+import screret.sas.client.renderer.blockentity.SummonSignBERenderer;
 import screret.sas.client.renderer.entity.WizardRenderer;
 import screret.sas.container.ModContainers;
 import screret.sas.entity.ModEntities;
 import screret.sas.item.ModItems;
 import software.bernie.example.client.renderer.entity.ExampleGeoRenderer;
 import software.bernie.example.registry.EntityRegistry;
+import software.bernie.geckolib3.core.molang.LazyVariable;
+import software.bernie.geckolib3.resource.GeckoLibCache;
 
 @Mod.EventBusSubscriber(modid = SpellsAndSorcerers.MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ClientModEvents {
@@ -34,7 +44,9 @@ public class ClientModEvents {
 
     @SubscribeEvent
     public static void registerRenderers(final EntityRenderersEvent.RegisterRenderers event) {
+        GeckoLibCache.getInstance().parser.register(new LazyVariable("move_speed", () -> 0));
         event.registerEntityRenderer(ModEntities.WIZARD_TYPE.get(), WizardRenderer::new);
+        event.registerBlockEntityRenderer(ModBlockEntities.SUMMON_SIGN_BE.get(), SummonSignBERenderer::new);
     }
 
     @SubscribeEvent
@@ -78,5 +90,15 @@ public class ClientModEvents {
             }
             return 0xFFFFFFFF;
         }, ModItems.WAND_CORE.get());
+
+        event.register((itemStack, layer) -> {
+            BlockState blockstate = ((BlockItem)itemStack.getItem()).getBlock().defaultBlockState();
+            return event.getBlockColors().getColor(blockstate, null, null, layer);
+        }, ModItems.SUMMON_SIGN.get());
+    }
+
+    @SubscribeEvent
+    public static void registerBlockColors(final RegisterColorHandlersEvent.Block event){
+        event.register((pState, pLevel, pPos, pTintIndex) -> pState.getValue(SummonSignBlock.COLOR).getFireworkColor(), ModBlocks.SUMMON_SIGN.get());
     }
 }

@@ -1,6 +1,8 @@
 package screret.sas.ability.ability;
 
+import com.mojang.math.Vector3f;
 import net.minecraft.core.particles.BlockParticleOption;
+import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionResultHolder;
@@ -14,6 +16,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.phys.Vec3;
 import screret.sas.Util;
 import screret.sas.api.wand.ability.WandAbility;
 import screret.sas.api.wand.ability.WandAbilityInstance;
@@ -26,7 +29,8 @@ public abstract class ProjectileAbility extends WandAbility {
 
 
     public ProjectileAbility(int useDuration, int cooldownDuration, float damagePerHit, boolean applyEnchants, int distance, int color) {
-        super(useDuration, cooldownDuration, damagePerHit, applyEnchants, new BlockParticleOption(ParticleTypes.BLOCK_MARKER, Blocks.BARRIER.defaultBlockState()), color);
+        super(useDuration, cooldownDuration, damagePerHit, applyEnchants, new DustParticleOptions(new Vector3f(Vec3.fromRGB24(color)), 2.0F), color);
+        //oldParticle = new BlockParticleOption(ParticleTypes.BLOCK_MARKER, Blocks.BARRIER.defaultBlockState())
         this.distance = distance;
     }
 

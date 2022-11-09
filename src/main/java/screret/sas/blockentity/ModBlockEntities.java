@@ -6,10 +6,11 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import screret.sas.SpellsAndSorcerers;
 import screret.sas.block.ModBlocks;
+import screret.sas.blockentity.blockentity.SummonSignBE;
 
 public class ModBlockEntities {
 
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, SpellsAndSorcerers.MODID);
 
-    //public static final RegistryObject<BlockEntityType<WandCraftingBE>> WAND_CRAFTING_BE = BLOCK_ENTITIES.register("wand_crafter", () -> BlockEntityType.Builder.of(WandCraftingBE::new, ModBlocks.WAND_CRAFTER.get()).build(null));
+    public static final RegistryObject<BlockEntityType<SummonSignBE>> SUMMON_SIGN_BE = BLOCK_ENTITIES.register("summon_sign", () -> BlockEntityType.Builder.of(SummonSignBE::new, ModBlocks.SUMMON_SIGN.get()).build(null));
 }
