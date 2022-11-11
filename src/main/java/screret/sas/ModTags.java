@@ -14,6 +14,7 @@ public class ModTags {
         public static final TagKey<Item> GLASS_BOTTLES = forgeTag("glass_bottles");
 
 
+        public static final TagKey<Item> BOSS_SUMMON_ITEMS = tag("boss_summon_items");
 
 
         private static TagKey<Item> tag(String name)

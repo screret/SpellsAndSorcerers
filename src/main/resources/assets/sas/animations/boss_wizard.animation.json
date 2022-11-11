@@ -1,7 +1,7 @@
 {
 	"format_version": "1.8.0",
 	"animations": {
-		"animation.wizard.idle": {
+		"animation.boss_wizard.idle": {
 			"loop": true,
 			"animation_length": 1.56,
 			"bones": {
@@ -64,7 +64,7 @@
 				}
 			}
 		},
-		"animation.wizard.attack": {
+		"animation.boss_wizard.attack": {
 			"loop": true,
 			"animation_length": 1.56,
 			"bones": {
@@ -138,7 +138,7 @@
 				}
 			}
 		},
-		"animation.wizard.walk": {
+		"animation.boss_wizard.walk": {
 			"loop": true,
 			"animation_length": 1.56,
 			"bones": {

@@ -20,10 +20,14 @@ import screret.sas.blockentity.ModBlockEntities;
 import screret.sas.client.gui.ManaBarOverlay;
 import screret.sas.client.gui.WandTableScreen;
 import screret.sas.client.model.item.WandModel;
+import screret.sas.client.particle.ModParticles;
+import screret.sas.client.particle.particle.EyeParticle;
 import screret.sas.client.renderer.blockentity.SummonSignBERenderer;
+import screret.sas.client.renderer.entity.BossWizardRenderer;
 import screret.sas.client.renderer.entity.WizardRenderer;
 import screret.sas.container.ModContainers;
 import screret.sas.entity.ModEntities;
+import screret.sas.entity.entity.BossWizardEntity;
 import screret.sas.item.ModItems;
 import software.bernie.geckolib3.core.molang.LazyVariable;
 import software.bernie.geckolib3.resource.GeckoLibCache;
@@ -39,9 +43,15 @@ public class ClientModEvents {
     }
 
     @SubscribeEvent
+    public static void registerParticles(final RegisterParticleProvidersEvent event){
+        event.register(ModParticles.EYE.get(), EyeParticle.Provider::new);
+    }
+
+    @SubscribeEvent
     public static void registerRenderers(final EntityRenderersEvent.RegisterRenderers event) {
-        GeckoLibCache.getInstance().parser.register(new LazyVariable("move_speed", () -> 0));
         event.registerEntityRenderer(ModEntities.WIZARD.get(), WizardRenderer::new);
+        event.registerEntityRenderer(ModEntities.BOSS_WIZARD.get(), BossWizardRenderer::new);
+
         event.registerBlockEntityRenderer(ModBlockEntities.SUMMON_SIGN_BE.get(), SummonSignBERenderer::new);
     }
 

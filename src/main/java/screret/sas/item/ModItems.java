@@ -31,7 +31,9 @@ public class ModItems {
     //OTHER ITEMS
     public static final RegistryObject<Item> WAND_CORE = ITEMS.register("wand_core", WandCoreItem::new);
     public static final RegistryObject<Item> SOUL_BOTTLE = ITEMS.register("soul_bottle", () -> new Item(new Item.Properties().tab(SpellsAndSorcerers.SAS_TAB)));
-    public static final RegistryObject<Item> WIZARD_SPAWN_EGG = ITEMS.register("wizard_spawn_egg", () -> new ForgeSpawnEggItem(ModEntities.WIZARD, 0x002017, 0x959b9b, new Item.Properties().tab(SpellsAndSorcerers.SAS_TAB)));
     public static final RegistryObject<Item> SUMMON_SIGN = ITEMS.register("summon_sign", () -> new BlockItem(ModBlocks.SUMMON_SIGN.get(), new Item.Properties().tab(SpellsAndSorcerers.SAS_TAB)));
+
+    public static final RegistryObject<Item> WIZARD_SPAWN_EGG = ITEMS.register("wizard_spawn_egg", () -> new ForgeSpawnEggItem(ModEntities.WIZARD, 0x002017, 0x959b9b, new Item.Properties().tab(SpellsAndSorcerers.SAS_TAB)));
+    public static final RegistryObject<Item> BOSS_WIZARD_SPAWN_EGG = ITEMS.register("boss_wizard_spawn_egg", () -> new ForgeSpawnEggItem(ModEntities.BOSS_WIZARD, 0x9a080f, 0x959b9b, new Item.Properties().tab(SpellsAndSorcerers.SAS_TAB)));
 
 }

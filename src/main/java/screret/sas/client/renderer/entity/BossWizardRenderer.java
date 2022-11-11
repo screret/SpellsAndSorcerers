@@ -9,31 +9,30 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.item.ItemStack;
 import screret.sas.Util;
+import screret.sas.client.model.entity.BossWizardModel;
 import screret.sas.client.model.entity.WizardModel;
-import screret.sas.client.renderer.entity.layer.WizardHandLayer;
+import screret.sas.entity.entity.BossWizardEntity;
 import screret.sas.entity.entity.WizardEntity;
 import software.bernie.geckolib3.geo.render.built.GeoModel;
 import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
 
-public class WizardRenderer extends GeoEntityRenderer<WizardEntity> {
-    public WizardRenderer(EntityRendererProvider.Context renderManager) {
-        super(renderManager, new WizardModel());
+public class BossWizardRenderer extends GeoEntityRenderer<BossWizardEntity> {
+    public BossWizardRenderer(EntityRendererProvider.Context renderManager) {
+        super(renderManager, new BossWizardModel());
 
         //addLayer(new WizardHandLayer(this, renderManager));
     }
 
     @Override
-    public RenderType getRenderType(WizardEntity animatable, float partialTick, PoseStack poseStack,
+    public RenderType getRenderType(BossWizardEntity animatable, float partialTick, PoseStack poseStack,
                                     MultiBufferSource bufferSource, VertexConsumer buffer, int packedLight,
                                     ResourceLocation texture) {
         return RenderType.entityTranslucent(getTextureLocation(animatable));
     }
 
     @Override
-    public void render(GeoModel model, WizardEntity animatable, float partialTick, RenderType type,
+    public void render(GeoModel model, BossWizardEntity animatable, float partialTick, RenderType type,
                        PoseStack poseStack, MultiBufferSource bufferSource, VertexConsumer buffer,
                        int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
 
@@ -47,11 +46,6 @@ public class WizardRenderer extends GeoEntityRenderer<WizardEntity> {
                         (animatable.getRandom().nextDouble() - 0.5D), -animatable.getRandom().nextDouble(),
                         (animatable.getRandom().nextDouble() - 0.5D));
             }
-            poseStack.pushPose();
-            poseStack.translate(handWorldPos.x, handWorldPos.y, handWorldPos.z);
-            poseStack.mulPose(Vector3f.XP.rotationDegrees(model.getBone("rightArm").get().getRotationX()));
-            Minecraft.getInstance().getItemRenderer().renderStatic(animatable.getMainHandItem(), ItemTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, packedLight, packedOverlay, poseStack, bufferSource, 0);
-            poseStack.popPose();
         }
         super.render(model, animatable, partialTick, type, poseStack, bufferSource, buffer, packedLight, packedOverlay, red, green, blue, alpha);
     }

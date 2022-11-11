@@ -1,11 +1,11 @@
 design document
 -----
 
-- ~~molular wands~~ DONE
+- ~~modular wands~~ DONE
 - ~~mana~~ DONE
 - ~~custom wand crafting~~ DONE (but not quite)
 - **structures**
 - wizard mob (enemy)
-- wizard mob (ally)
+- ~~wizard mob (ally)~~ CANCELLED
 - **master wizards** (boss, drops wand core for better wand of boss type (must be killed with correct wand))
 - etc

@@ -35,8 +35,10 @@ import screret.sas.api.capability.mana.ManaProvider;
 import screret.sas.api.wand.ability.WandAbilityRegistry;
 import screret.sas.block.ModBlocks;
 import screret.sas.blockentity.ModBlockEntities;
+import screret.sas.client.particle.ModParticles;
 import screret.sas.config.SASConfig;
 import screret.sas.container.ModContainers;
+import screret.sas.data.recipe.provider.ModRecipeProvider;
 import screret.sas.data.recipe.provider.WandRecipeProvider;
 import screret.sas.data.tag.SASBlockTagsProvider;
 import screret.sas.data.tag.SASItemTagsProvider;
@@ -90,8 +92,10 @@ public class SpellsAndSorcerers {
         ModEntities.ENTITY_TYPES.register(modEventBus);
         ModBlockEntities.BLOCK_ENTITIES.register(modEventBus);
 
-        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, SASConfig.clientSpec);
-        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, SASConfig.commonSpec);
+        ModParticles.PARTICLES.register(modEventBus);
+
+        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, SASConfig.Client.clientSpec);
+        ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, SASConfig.Server.serverSpec);
 
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
@@ -112,6 +116,9 @@ public class SpellsAndSorcerers {
         gen.addProvider(event.includeServer(), new SASItemTagsProvider(gen, blockTags, existingFileHelper));
 
         gen.addProvider(event.includeServer(), new WandRecipeProvider(gen));
+        gen.addProvider(event.includeServer(), new ModRecipeProvider(gen));
+
+        //gen.addProvider(event.includeServer(), new ModBlockstateProvider(gen, existingFileHelper));
     }
 
     private void registerCapabilities(final RegisterCapabilitiesEvent event){

@@ -17,9 +17,12 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.control.FlyingMoveControl;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.animal.IronGolem;
 import net.minecraft.world.entity.boss.wither.WitherBoss;
 import net.minecraft.world.entity.monster.Monster;
@@ -58,6 +61,8 @@ public class BossWizardEntity extends Monster implements RangedAttackMob, IAnima
     private static final EntityDataAccessor<Boolean> IS_ATTACKING = SynchedEntityData.defineId(BossWizardEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> DATA_ID_INV = SynchedEntityData.defineId(BossWizardEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<String> DATA_SPELL_CASTING_ID = SynchedEntityData.defineId(BossWizardEntity.class, EntityDataSerializers.STRING);
+    private static final int INVULNERABLE_TICKS = 220;
+
     protected int spellCastingTickCount;
     private ResourceLocation currentSpell = ModWandAbilities.DUMMY.getId();
 
@@ -70,7 +75,19 @@ public class BossWizardEntity extends Monster implements RangedAttackMob, IAnima
 
     public BossWizardEntity(EntityType<BossWizardEntity> type, Level pLevel) {
         super(type, pLevel);
+        this.moveControl = new FlyingMoveControl(this, 10, true);
+        this.setHealth(this.getMaxHealth());
     }
+
+    @Override
+    protected PathNavigation createNavigation(Level pLevel) {
+        FlyingPathNavigation navigation = new FlyingPathNavigation(this, pLevel);
+        navigation.setCanOpenDoors(true);
+        navigation.setCanFloat(true);
+        navigation.setCanPassDoors(true);
+        return navigation;
+    }
+
 
     public boolean isAttacking(){
         return this.entityData.get(IS_ATTACKING);
@@ -81,12 +98,15 @@ public class BossWizardEntity extends Monster implements RangedAttackMob, IAnima
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return Monster.createMonsterAttributes().add(Attributes.MOVEMENT_SPEED, 1D).add(Attributes.FOLLOW_RANGE, 64.0D).add(Attributes.MAX_HEALTH, 200D).add(Attributes.ARMOR, 7.5D);
+        return Monster.createMonsterAttributes().add(Attributes.MOVEMENT_SPEED, .5D).add(Attributes.FOLLOW_RANGE, 64.0D).add(Attributes.MAX_HEALTH, 200D).add(Attributes.ARMOR, 7.5D);
     }
 
+    @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(IS_ATTACKING, false);
+        this.entityData.define(DATA_ID_INV, 0);
+        this.entityData.define(DATA_SPELL_CASTING_ID, ModWandAbilities.SHOOT_RAY.getId().toString());
     }
 
     @Override
@@ -105,11 +125,12 @@ public class BossWizardEntity extends Monster implements RangedAttackMob, IAnima
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, IronGolem.class, false));
     }
 
+    @Override
     protected void customServerAiStep() {
         if (this.getInvulnerableTicks() > 0) {
-            int k1 = this.getInvulnerableTicks() - 1;
-            this.bossEvent.setProgress(1.0F - (float)k1 / 220.0F);
-            if (k1 <= 0) {
+            int ticks = this.getInvulnerableTicks() - 1;
+            this.bossEvent.setProgress(1.0F - (float)ticks / INVULNERABLE_TICKS);
+            if (ticks <= 0) {
                 Explosion.BlockInteraction explosion = ForgeEventFactory.getMobGriefingEvent(this.level, this) ? Explosion.BlockInteraction.DESTROY : Explosion.BlockInteraction.NONE;
                 this.level.explode(this, this.getX(), this.getEyeY(), this.getZ(), 7.0F, false, explosion);
                 if (!this.isSilent()) {
@@ -117,7 +138,7 @@ public class BossWizardEntity extends Monster implements RangedAttackMob, IAnima
                 }
             }
 
-            this.setInvulnerableTicks(k1);
+            this.setInvulnerableTicks(ticks);
             if (this.tickCount % 10 == 0) {
                 this.heal(10.0F);
             }
@@ -141,6 +162,7 @@ public class BossWizardEntity extends Monster implements RangedAttackMob, IAnima
         return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
     }
 
+    @Override
     public boolean hurt(DamageSource pSource, float pAmount) {
         if (this.isInvulnerableTo(pSource)) {
             return false;
@@ -160,14 +182,18 @@ public class BossWizardEntity extends Monster implements RangedAttackMob, IAnima
         }
     }
 
+    @Override
     public void addAdditionalSaveData(CompoundTag pCompound) {
         super.addAdditionalSaveData(pCompound);
         pCompound.putInt("Invul", this.getInvulnerableTicks());
+        pCompound.putString("CurrentSpell", this.currentSpell.toString());
     }
 
+    @Override
     public void readAdditionalSaveData(CompoundTag pCompound) {
         super.readAdditionalSaveData(pCompound);
         this.setInvulnerableTicks(pCompound.getInt("Invul"));
+        currentSpell = new ResourceLocation(pCompound.getString("CurrentSpell"));
         if (this.hasCustomName()) {
             this.bossEvent.setName(this.getDisplayName());
         }
@@ -180,6 +206,12 @@ public class BossWizardEntity extends Monster implements RangedAttackMob, IAnima
 
     public void setInvulnerableTicks(int pInvulnerableTicks) {
         this.entityData.set(DATA_ID_INV, pInvulnerableTicks);
+    }
+
+    public void makeInvulnerable() {
+        this.setInvulnerableTicks(220);
+        this.bossEvent.setProgress(0.0F);
+        this.setHealth(this.getMaxHealth() / 3.0F);
     }
 
     public boolean isCastingSpell() {
@@ -219,7 +251,6 @@ public class BossWizardEntity extends Monster implements RangedAttackMob, IAnima
         if(event.getAnimatable().isAttacking()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.boss_wizard.attack", ILoopType.EDefaultLoopTypes.PLAY_ONCE));
         } else if(event.isMoving()){
-            GeckoLibCache.getInstance().parser.setValue("boss_wizard.move_speed", () -> event.getAnimatable().getSpeed());
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.boss_wizard.walk", ILoopType.EDefaultLoopTypes.LOOP));
         } else {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.boss_wizard.idle", ILoopType.EDefaultLoopTypes.LOOP));
