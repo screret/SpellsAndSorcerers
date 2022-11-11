@@ -79,7 +79,7 @@ public class WizardEntity extends SpellcasterIllager implements RangedAttackMob,
     protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(0, new FloatGoal(this));
-        this.goalSelector.addGoal(100, new SpellcasterCastingSpellGoal());
+        this.goalSelector.addGoal(10, new SpellcasterCastingSpellGoal());
         this.goalSelector.addGoal(2, new AvoidEntityGoal<>(this, Player.class, 8.0F, 0.6D, 1.0D));
         this.goalSelector.addGoal(4, new WizardSpellGoal());
         this.goalSelector.addGoal(8, new RandomStrollGoal(this, 0.6D));
@@ -219,6 +219,7 @@ public class WizardEntity extends SpellcasterIllager implements RangedAttackMob,
         @Override
         public void start() {
             super.start();
+            WizardEntity.this.lookAt(WizardEntity.this.getTarget(), WizardEntity.this.getMaxHeadYRot(), WizardEntity.this.getMaxHeadXRot());
             WizardEntity.this.setAttacking(true);
         }
 

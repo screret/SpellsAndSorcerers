@@ -1,0 +1,227 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"animation.wizard.idle": {
+			"loop": true,
+			"animation_length": 1.56,
+			"bones": {
+				"root": {
+					"rotation": {
+						"0.0": {
+							"vector": [-5, 0, 0]
+						},
+						"0.8": {
+							"vector": [7.5, 0, 0]
+						},
+						"1.56": {
+							"vector": [-5, 0, 0]
+						}
+					},
+					"position": {
+						"0.0": {
+							"vector": [0, 8, 0]
+						},
+						"0.8": {
+							"vector": [0, 8, 2]
+						},
+						"1.56": {
+							"vector": [0, 8, 0]
+						}
+					}
+				},
+				"head": {
+					"rotation": {
+						"0.0": {
+							"vector": [-12.5, 0, 0]
+						},
+						"0.8": {
+							"vector": [10, 0, 0],
+							"easing": "easeInOutBounce"
+						},
+						"1.56": {
+							"vector": [-12.5, 0, 0],
+							"easing": "easeInOutBounce"
+						}
+					}
+				},
+				"crown": {
+					"rotation": {
+						"vector": [0, 0, 35]
+					},
+					"position": {
+						"vector": [4, -1, 0]
+					}
+				},
+				"leftArm": {
+					"rotation": {
+						"vector": [0, 0, -10]
+					}
+				},
+				"rightArm": {
+					"rotation": {
+						"vector": [0, 0, 10]
+					}
+				}
+			}
+		},
+		"animation.wizard.attack": {
+			"loop": true,
+			"animation_length": 1.56,
+			"bones": {
+				"root": {
+					"rotation": {
+						"0.0": {
+							"vector": [-5, 0, 0]
+						},
+						"0.8": {
+							"vector": [7.5, 0, 0]
+						},
+						"1.56": {
+							"vector": [-5, 0, 0]
+						}
+					},
+					"position": {
+						"0.0": {
+							"vector": [0, 8, 0]
+						},
+						"0.8": {
+							"vector": [0, 8, 2]
+						},
+						"1.56": {
+							"vector": [0, 8, 0]
+						}
+					}
+				},
+				"head": {
+					"rotation": {
+						"0.0": {
+							"vector": [-12, 3, 15]
+						},
+						"0.8": {
+							"vector": [-27.5, 6.5, 30],
+							"easing": "easeInElastic",
+							"easingArgs": [0.5]
+						},
+						"1.56": {
+							"vector": [-12, 3, 15],
+							"easing": "easeInBounce"
+						}
+					}
+				},
+				"crown": {
+					"rotation": {
+						"vector": [0, 0, 35]
+					},
+					"position": {
+						"vector": [4, -1, 0]
+					}
+				},
+				"leftArm": {
+					"rotation": {
+						"vector": [0, 0, -10]
+					}
+				},
+				"rightArm": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 10]
+						},
+						"1.04": {
+							"vector": [-145, 0, -5]
+						},
+						"1.56": {
+							"vector": [0, 0, 10],
+							"easing": "easeOutElastic",
+							"easingArgs": [0.5]
+						}
+					}
+				}
+			}
+		},
+		"animation.wizard.walk": {
+			"loop": true,
+			"animation_length": 1.56,
+			"bones": {
+				"root": {
+					"rotation": {
+						"0.0": {
+							"vector": [12.5, 0, 0]
+						},
+						"0.8": {
+							"vector": [9, 0, 0]
+						},
+						"1.56": {
+							"vector": [12.5, 0, 0]
+						}
+					},
+					"position": {
+						"0.0": {
+							"vector": [0, 8, 0]
+						},
+						"0.8": {
+							"vector": [0, 8, -1]
+						},
+						"1.56": {
+							"vector": [0, 8, 0]
+						}
+					}
+				},
+				"head": {
+					"rotation": {
+						"0.0": {
+							"vector": [7.5, 0, 0]
+						},
+						"0.8": {
+							"vector": [5, 0, 0],
+							"easing": "easeInOutBounce"
+						},
+						"1.56": {
+							"vector": [7.5, 0, 0],
+							"easing": "easeInOutBounce"
+						}
+					}
+				},
+				"crown": {
+					"rotation": {
+						"vector": [0, 0, 35]
+					},
+					"position": {
+						"vector": [4, -1, 0]
+					}
+				},
+				"leftArm": {
+					"rotation": {
+						"0.0": {
+							"vector": [-20, 0, -10]
+						},
+						"0.72": {
+							"vector": [-7.5, 0, -10],
+							"easing": "easeInBack",
+							"easingArgs": [1]
+						},
+						"1.56": {
+							"vector": [-20, 0, -10],
+							"easing": "easeInOutElastic",
+							"easingArgs": [5]
+						}
+					}
+				},
+				"rightArm": {
+					"rotation": {
+						"0.0": {
+							"vector": [-7.5, 0, 10]
+						},
+						"0.72": {
+							"vector": [-20, 0, 10]
+						},
+						"1.56": {
+							"vector": [-7.5, 0, 10],
+							"easing": "easeInBounce"
+						}
+					}
+				}
+			}
+		}
+	},
+	"geckolib_format_version": 2
+}

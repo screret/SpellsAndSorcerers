@@ -3,6 +3,7 @@ package screret.sas.blockentity.blockentity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import screret.sas.block.block.SummonSignBlock;
 import screret.sas.blockentity.ModBlockEntities;
 import screret.sas.entity.entity.WizardEntity;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -23,7 +24,11 @@ public class SummonSignBE extends BlockEntity implements IAnimatable {
     }
 
     private PlayState predicate(AnimationEvent<SummonSignBE> event) {
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.summon_sign.idle", ILoopType.EDefaultLoopTypes.LOOP));
+        if(event.getAnimatable().getBlockState().getValue(SummonSignBlock.TRIGGERED).booleanValue()){
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.summon_sign.summon", ILoopType.EDefaultLoopTypes.LOOP));
+        }else{
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.summon_sign.idle", ILoopType.EDefaultLoopTypes.LOOP));
+        }
         return PlayState.CONTINUE;
     }
 

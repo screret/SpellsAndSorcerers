@@ -2,6 +2,7 @@ package screret.sas;
 
 import com.mojang.logging.LogUtils;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.stats.Stats;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -41,6 +42,7 @@ import screret.sas.data.tag.SASBlockTagsProvider;
 import screret.sas.data.tag.SASItemTagsProvider;
 import screret.sas.enchantment.ModEnchantments;
 import screret.sas.entity.ModEntities;
+import screret.sas.entity.entity.BossWizardEntity;
 import screret.sas.entity.entity.WizardEntity;
 import screret.sas.item.ModCreativeTab;
 import screret.sas.item.ModItems;
@@ -124,7 +126,8 @@ public class SpellsAndSorcerers {
     }
 
     public void registerEntityAttributes(final EntityAttributeCreationEvent event){
-        event.put(ModEntities.WIZARD_TYPE.get(), WizardEntity.createAttributes().build());
+        event.put(ModEntities.WIZARD.get(), WizardEntity.createAttributes().build());
+        event.put(ModEntities.BOSS_WIZARD.get(), BossWizardEntity.createAttributes().build());
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
@@ -147,7 +150,8 @@ public class SpellsAndSorcerers {
         public static void onRightclickBlockSoulSand(final PlayerInteractEvent.RightClickBlock event){
             if(event.getEntity().getItemInHand(event.getHand()).is(ModTags.Items.GLASS_BOTTLES) && event.getLevel().getBlockState(event.getHitVec().getBlockPos()).is(BlockTags.SOUL_FIRE_BASE_BLOCKS)) {
                 var stack = new ItemStack(ModItems.SOUL_BOTTLE.get());
-                ItemUtils.createFilledResult(event.getEntity().getUseItem(), event.getEntity(), stack, false);
+                event.getEntity().awardStat(Stats.ITEM_USED.get(event.getEntity().getUseItem().getItem()));
+                ItemUtils.createFilledResult(event.getEntity().getUseItem(), event.getEntity(), stack);
                 event.setUseItem(Event.Result.DENY);
                 event.setUseBlock(Event.Result.DENY);
             }

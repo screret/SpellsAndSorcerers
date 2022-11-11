@@ -6,7 +6,7 @@
 			"bones": {
 				"bone": {
 					"rotation": {
-						"vector": [0, "Math.cos(query.anim_time * 180) * 10", 0]
+						"vector": [0, "Math.mod(query.anim_time * 50, 360)", 0]
 					}
 				}
 			}
@@ -16,7 +16,7 @@
 			"bones": {
 				"bone": {
 					"rotation": {
-						"vector": [0, "Math.cos(query.anim_time * 360) * 10", 0]
+						"vector": [0, "Math.mod(query.anim_time * 100, 360)", 0]
 					}
 				}
 			}

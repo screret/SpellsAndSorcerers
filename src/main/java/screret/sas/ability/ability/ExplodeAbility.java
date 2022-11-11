@@ -34,8 +34,8 @@ public class ExplodeAbility extends SubAbility {
 
     @Override
     public void doHit(ItemStack usedItem, LivingEntity user, LivingEntity hitEnt, float timeCharged) {
-        //var explosionPower = getDamagePerHit(usedItem) * timeCharged / 8;
-        //hitEnt.level.explode(user, hitEnt.position().x, hitEnt.position().y, hitEnt.position().z, explosionPower, Explosion.BlockInteraction.BREAK);
+        var explosionPower = getDamagePerHit(usedItem) * timeCharged / 8;
+        user.level.explode(user, hitEnt.getX(), hitEnt.getY(), hitEnt.getZ(), explosionPower, Explosion.BlockInteraction.BREAK);
     }
 
     @Override
