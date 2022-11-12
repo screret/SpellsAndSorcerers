@@ -1,8 +1,9 @@
 {
-  "category.sas.wands": "Wand Crafting",
+  "itemGroup.sas": "Spellcasters & Sorcerers",
   "container.sas.wand_table": "Wand Table",
 
   "block.sas.wand_table": "Wand Table",
+  "block.sas.summon_sign": "Summoning Circle",
 
   "item.sas.soul_bottle": "Bottle o' Souls",
   "item.sas.handle": "Wand Handle",
@@ -16,5 +17,8 @@
   "ability.sas.damage": "Ray",
   "ability.sas.heal": "Healing",
   "ability.sas.sight": "Sight",
-  "ability.sas.transmutation": "Transmutation"
+  "ability.sas.transmutation": "Transmutation",
+
+  "entity.sas.boss_wizard": "Wizard Reborn",
+  "entity.sas.wizard": "Wizard"
 }

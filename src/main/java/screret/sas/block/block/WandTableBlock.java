@@ -47,7 +47,6 @@ public class WandTableBlock extends Block {
         if (pRandom.nextInt(16) == 0) {
             pLevel.addParticle(ParticleTypes.ENCHANT, pPos.getX() + 0.5D, pPos.getY() + 2.0D, pPos.getZ() + 0.5D, pPos.getX() - pRandom.nextFloat() + 0.25D, pPos.getY() - pRandom.nextFloat() + 1.0D, pPos.getZ() - pRandom.nextFloat() + 0.25D);
         }
-
     }
 
     @Override

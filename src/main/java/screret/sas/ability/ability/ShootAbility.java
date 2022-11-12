@@ -35,7 +35,7 @@ public class ShootAbility extends WandAbility {
             var distanceSqr = distance * distance;
             var hitResult = Util.getHitResult(level, user, (entity) -> entity != user, distanceSqr);
 
-            var userPos = user.getEyePosition().subtract(0.0, 0.35, 0.0);
+            var userPos = user instanceof Player ? user.getEyePosition().subtract(0.0, 0.35, 0.0) : user.getEyePosition();
             if (hitResult != null) {
                 if (particle != null)
                     Util.spawnParticlesInLine(level, userPos, hitResult.getLocation(), particle, ((int) userPos.distanceTo(hitResult.getLocation()) * 4), randomDeviation, false);

@@ -40,7 +40,7 @@ public class WandRecipeCategory implements IRecipeCategory<WandRecipe> {
         icon = guiHelper.createDrawableItemStack(new ItemStack(ModBlocks.WAND_TABLE.get()));
         background = guiHelper.createDrawable(GUI_TEXTURE, 0, 0, 116, 36);
         craftingGridHelper = guiHelper.createCraftingGridHelper();
-        localizedName = Component.translatable("category.sas.wands");
+        localizedName = Component.translatable("container.sas.wand_table");
     }
 
     @Override

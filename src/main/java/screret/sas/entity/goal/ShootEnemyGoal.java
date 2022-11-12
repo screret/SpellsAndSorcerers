@@ -1,15 +1,19 @@
 package screret.sas.entity.goal;
 
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
+import screret.sas.Util;
+import screret.sas.api.wand.ability.WandAbilityInstance;
+import screret.sas.entity.entity.BossWizardEntity;
 import screret.sas.entity.entity.WizardEntity;
 
 import javax.annotation.Nullable;
 import java.util.EnumSet;
 
 public class ShootEnemyGoal extends Goal {
-    private final WizardEntity wizard;
+    private final BossWizardEntity mob;
     @Nullable
     private LivingEntity target;
     private int attackTime = -1;
@@ -20,10 +24,12 @@ public class ShootEnemyGoal extends Goal {
     private final float attackRadius;
     private final float attackRadiusSqr;
 
-    private int useTime;
+    public ShootEnemyGoal(BossWizardEntity pRangedAttackMob, double pSpeedModifier, int pAttackInterval, float pAttackRadius) {
+        this(pRangedAttackMob, pSpeedModifier, pAttackInterval, pAttackInterval, pAttackRadius);
+    }
 
-    public ShootEnemyGoal(WizardEntity pRangedAttackMob, double pSpeedModifier, int pAttackIntervalMin, int pAttackIntervalMax, float pAttackRadius) {
-        this.wizard = pRangedAttackMob;
+    public ShootEnemyGoal(BossWizardEntity pRangedAttackMob, double pSpeedModifier, int pAttackIntervalMin, int pAttackIntervalMax, float pAttackRadius) {
+        this.mob = pRangedAttackMob;
         this.speedModifier = pSpeedModifier;
         this.attackIntervalMin = pAttackIntervalMin;
         this.attackIntervalMax = pAttackIntervalMax;
@@ -37,7 +43,7 @@ public class ShootEnemyGoal extends Goal {
      * method as well.
      */
     public boolean canUse() {
-        LivingEntity livingentity = this.wizard.getTarget();
+        LivingEntity livingentity = this.mob.getTarget();
         if (livingentity != null && livingentity.isAlive()) {
             this.target = livingentity;
             return true;
@@ -50,14 +56,7 @@ public class ShootEnemyGoal extends Goal {
      * Returns whether an in-progress EntityAIBase should continue executing
      */
     public boolean canContinueToUse() {
-        return this.canUse() || this.target.isAlive() && !this.wizard.getNavigation().isDone();
-    }
-
-    /**
-     * Execute a one shot task or start executing a continuous task
-     */
-    public void start() {
-        this.useTime = this.adjustedTickDelay(40 + this.wizard.getRandom().nextInt(40));
+        return this.canUse() || this.target.isAlive() && !this.mob.getNavigation().isDone();
     }
 
     /**
@@ -67,42 +66,57 @@ public class ShootEnemyGoal extends Goal {
         this.target = null;
         this.seeTime = 0;
         this.attackTime = -1;
+        this.mob.setCastingSpell(BossWizardEntity.DUMMY_SPELL);
+        this.mob.setIsAttacking(false);
     }
 
     public boolean requiresUpdateEveryTick() {
         return true;
     }
+
     /**
      * Keep ticking a continuous task that has already been started
      */
     public void tick() {
-        double distanceSqr = this.wizard.distanceToSqr(this.target.getX(), this.target.getY(), this.target.getZ());
-        boolean canSee = this.wizard.getSensing().hasLineOfSight(this.target);
-        if (canSee) {
+        double d0 = this.mob.distanceToSqr(this.target.getX(), this.target.getY(), this.target.getZ());
+        boolean flag = this.mob.getSensing().hasLineOfSight(this.target);
+        if (flag) {
             ++this.seeTime;
         } else {
             this.seeTime = 0;
         }
 
-        if (!(distanceSqr > (double)this.attackRadiusSqr) && this.seeTime >= 5) {
-            this.wizard.getNavigation().stop();
+        if (!(d0 > (double)this.attackRadiusSqr) && this.seeTime >= 5) {
+            this.mob.getNavigation().stop();
         } else {
-            this.wizard.getNavigation().moveTo(this.target, this.speedModifier);
+            this.mob.getNavigation().moveTo(this.target, this.speedModifier);
         }
 
-        this.wizard.getLookControl().setLookAt(this.target, 30.0F, 30.0F);
+        this.mob.getLookControl().setLookAt(this.target, this.mob.getMaxHeadYRot(), this.mob.getMaxHeadXRot());
         if (--this.attackTime == 0) {
-            if (!canSee) {
+            if (!flag) {
                 return;
             }
 
-            float maxDistance = (float)Math.sqrt(distanceSqr) / this.attackRadius;
-            float distanceFactor = Mth.clamp(maxDistance, 0.1F, 1.0F);
-            this.wizard.performRangedAttack(this.target, distanceFactor);
-            this.attackTime = Mth.floor(maxDistance * (float)(this.attackIntervalMax - this.attackIntervalMin) + (float)this.attackIntervalMin);
-        } else if (this.attackTime < 0) {
-            this.attackTime = Mth.floor(Mth.lerp(Math.sqrt(distanceSqr) / (double)this.attackRadius, (double)this.attackIntervalMin, (double)this.attackIntervalMax));
-        }
+            float f = (float)Math.sqrt(d0) / this.attackRadius;
+            float f1 = Mth.clamp(f, 0.1F, 1.0F);
+            if(this.target != null){
+                this.mob.setIsAttacking(true);
+                this.mob.playSound(this.mob.getCastingSound());
+                this.mob.setCastingSpell(getSpell(this.mob.getRandom()));
+                this.mob.performRangedAttack(this.target, f1);
+            }
 
+            this.attackTime = Mth.floor(f * (float)(this.attackIntervalMax - this.attackIntervalMin) + (float)this.attackIntervalMin);
+        } else if (this.attackTime < 0) {
+            this.attackTime = Mth.floor(Mth.lerp(Math.sqrt(d0) / (double)this.attackRadius, this.attackIntervalMin, this.attackIntervalMax));
+        }
+    }
+
+    protected WandAbilityInstance getSpell(RandomSource random){
+        if(WizardEntity.possibleWands == null){
+            WizardEntity.possibleWands = Util.customWands.values().stream().toList();
+        }
+        return Util.getMainAbilityFromStack(WizardEntity.possibleWands.get(random.nextInt(WizardEntity.possibleWands.size() - 1))).get();
     }
 }

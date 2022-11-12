@@ -41,13 +41,13 @@ public abstract class SubAbility extends WandAbility {
     public InteractionResultHolder<ItemStack> execute(Level level, LivingEntity user, ItemStack stack, WandAbilityInstance.Vec3Wrapped currentPosition, int timeCharged) {
         if(level.isClientSide) return InteractionResultHolder.pass(stack);
 
-        if(hitFlags.contains(HitFlags.ENTITY)){
+        if(hitFlags.contains(HitFlags.BLOCK)) {
+            doHit(stack, user, currentPosition.real, timeCharged);
+        } else if(hitFlags.contains(HitFlags.ENTITY)){
             AABB bounds = AABB.ofSize(currentPosition.real, 0.01, 0.01, 0.01);
             List<? extends Entity> allHitPossibilities = level.getEntities(SubAbility.ANY_ENTITY_TYPE, bounds, entity -> entity != user);
             allHitPossibilities.sort((thisPart, next) -> (int)Math.round(next.position().distanceTo(currentPosition.real) - thisPart.position().distanceTo(currentPosition.real)));
             if(allHitPossibilities.size() > 0) doHit(stack, user, (LivingEntity) allHitPossibilities.get(0), timeCharged);
-        } else if(hitFlags.contains(HitFlags.BLOCK)) {
-            doHit(stack, user, currentPosition.real, timeCharged);
         }
 
         return InteractionResultHolder.pass(stack);

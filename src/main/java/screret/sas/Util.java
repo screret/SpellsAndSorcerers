@@ -47,7 +47,7 @@ public class Util {
         }
     }
 
-    public static ItemStack addWand(WandAbility main, @Nullable WandAbility crouch){
+    public static ItemStack createWand(WandAbility main, @Nullable WandAbility crouch){
         var tag = new CompoundTag();
         var ability = new WandAbilityInstance(main);
         tag.put(WandAbility.BASIC_ABILITY_KEY, ability.serializeNBT());
@@ -55,7 +55,11 @@ public class Util {
             var ability1 = new WandAbilityInstance(crouch);
             tag.put(WandAbility.CROUCH_ABILITY_KEY, ability1.serializeNBT());
         }
-        return customWands.put(main.getKey(), new ItemStack(ModItems.WAND.get(), 1, tag));
+        return new ItemStack(ModItems.WAND.get(), 1, tag);
+    }
+
+    public static ItemStack addWand(WandAbility main, @Nullable WandAbility crouch){
+        return customWands.put(main.getKey(), createWand(main, crouch));
     }
 
     public static ItemStack addWand(WandAbilityInstance main, @Nullable WandAbilityInstance crouch){

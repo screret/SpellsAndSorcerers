@@ -21,17 +21,20 @@ import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.animal.IronGolem;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.*;
 import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.raid.Raider;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.Nullable;
 import screret.sas.Util;
 import screret.sas.api.wand.ability.WandAbilityInstance;
+import screret.sas.config.SASConfig;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
@@ -79,9 +82,9 @@ public class WizardEntity extends SpellcasterIllager implements RangedAttackMob,
     protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(0, new FloatGoal(this));
-        this.goalSelector.addGoal(10, new SpellcasterCastingSpellGoal());
-        this.goalSelector.addGoal(2, new AvoidEntityGoal<>(this, Player.class, 8.0F, 0.6D, 1.0D));
-        this.goalSelector.addGoal(4, new WizardSpellGoal());
+        this.goalSelector.addGoal(1, new SpellcasterCastingSpellGoal());
+        this.goalSelector.addGoal(4, new AvoidEntityGoal<>(this, Player.class, 8.0F, 0.6D, 1.0D));
+        this.goalSelector.addGoal(2, new WizardSpellGoal());
         this.goalSelector.addGoal(8, new RandomStrollGoal(this, 0.6D));
         this.goalSelector.addGoal(9, new LookAtPlayerGoal(this, Player.class, 3.0F, 1.0F));
         this.goalSelector.addGoal(10, new LookAtPlayerGoal(this, Mob.class, 8.0F));
@@ -95,11 +98,10 @@ public class WizardEntity extends SpellcasterIllager implements RangedAttackMob,
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty, MobSpawnType pReason, @javax.annotation.Nullable SpawnGroupData pSpawnData, @javax.annotation.Nullable CompoundTag pDataTag) {
         RandomSource randomsource = pLevel.getRandom();
         this.populateDefaultEquipmentSlots(randomsource, pDifficulty);
-        this.populateDefaultEquipmentEnchantments(randomsource, pDifficulty);
         return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
     }
 
-    private static List<ItemStack> possibleWands;
+    public static List<ItemStack> possibleWands;
 
     @Override
     protected void populateDefaultEquipmentSlots(RandomSource pRandom, DifficultyInstance pDifficulty) {
@@ -146,6 +148,29 @@ public class WizardEntity extends SpellcasterIllager implements RangedAttackMob,
     @Override
     public boolean hasPatrolTarget() {
         return super.hasPatrolTarget();
+    }
+
+    @Override
+    protected float getEquipmentDropChance(EquipmentSlot pSlot) {
+        if (pSlot == EquipmentSlot.MAINHAND || pSlot == EquipmentSlot.OFFHAND) {
+            return 0.025f;
+        }
+        return 0.0f;
+    }
+
+    @Override
+    protected void dropCustomDeathLoot(DamageSource pSource, int pLooting, boolean pRecentlyHit) {
+        super.dropCustomDeathLoot(pSource, pLooting, pRecentlyHit);
+        if(SASConfig.Server.dropWandCores.get()){
+            var toDrop = Util.getMainAbilityFromStack(this.getMainHandItem()).get();
+            while (toDrop.getChildren() != null && toDrop.getChildren().size() > 0) {
+                toDrop = toDrop.getChildren().get(0);
+            }
+            ItemEntity itementity = this.spawnAtLocation(Util.customWandCores.get(toDrop.getId()).copy());
+            if (itementity != null) {
+                itementity.setExtendedLifetime();
+            }
+        }
     }
 
     @Override

@@ -1,8 +1,8 @@
 {
   "values": [
-    "#forge:storage_blocks/lapis",
-    "#forge:dusts/glowstone",
-    "#forge:heads",
+    "minecraft:lapis_block",
+    "minecraft:glowstone_dust",
+    "minecraft:zombie_head",
     "sas:wand_core"
   ]
 }

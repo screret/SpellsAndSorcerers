@@ -43,6 +43,7 @@ public class SASConfig {
     public static class Server {
         public static final ForgeConfigSpec serverSpec;
         public static ForgeConfigSpec.BooleanValue useMana;
+        public static ForgeConfigSpec.BooleanValue dropWandCores;
 
         private static void setupConfig(ForgeConfigSpec.Builder builder){
             builder.comment("Spells & Sorcerers Common Configuration")
@@ -52,6 +53,10 @@ public class SASConfig {
                     .comment("Is Mana used?")
                     .translation("sas.configgui.useMana")
                     .define("useMana", true);
+            dropWandCores = builder
+                    .comment("Do wizards drop wand cores?")
+                    .translation("sas.configgui.dropWandCores")
+                    .define("dropWandCores", true);
         }
 
         static {
