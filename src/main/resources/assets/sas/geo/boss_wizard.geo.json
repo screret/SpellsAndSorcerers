@@ -3,7 +3,7 @@
 	"minecraft:geometry": [
 		{
 			"description": {
-				"identifier": "geometry.boss_wizard",
+				"identifier": "geometry.wizard",
 				"texture_width": 64,
 				"texture_height": 64,
 				"visible_bounds_width": 3,
@@ -36,9 +36,9 @@
 				{
 					"name": "crown",
 					"parent": "head",
-					"pivot": [0, 32, 0],
+					"pivot": [4, 30, 0],
 					"cubes": [
-						{"origin": [-2, 30, -2], "size": [4, 3, 4], "uv": [32, 0]}
+						{"origin": [1.5, 30, -2], "size": [4, 3, 4], "pivot": [2, 30, 0], "rotation": [0, 0, 35], "uv": [32, 0]}
 					]
 				},
 				{

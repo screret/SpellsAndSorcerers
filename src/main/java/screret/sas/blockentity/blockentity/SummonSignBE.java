@@ -83,10 +83,11 @@ public class SummonSignBE extends BlockEntity implements IAnimatable {
             }
 
             for (var itemEntity : itemEntities){
-                itemEntity.kill();
+                itemEntity.getItem().shrink(1);
             }
 
             BossWizardEntity boss = ModEntities.BOSS_WIZARD.get().create(pLevel);
+            boss.setSpawningPosition(pPos);
             boss.moveTo(pPos.getX() + 0.5f, pPos.getY() + 1.55D, pPos.getZ() + 0.5f, 0.0F, 0.0F);
             boss.makeInvulnerable();
             for(ServerPlayer serverplayer : pLevel.getEntitiesOfClass(ServerPlayer.class, boss.getBoundingBox().inflate(50.0D))) {
@@ -94,7 +95,7 @@ public class SummonSignBE extends BlockEntity implements IAnimatable {
             }
             pLevel.addFreshEntity(boss);
 
-            pLevel.setBlock(pPos, Blocks.AIR.defaultBlockState(), 11);
+            //pLevel.setBlock(pPos, Blocks.AIR.defaultBlockState(), 11);
         }
     }
 

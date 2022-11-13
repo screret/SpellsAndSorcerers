@@ -1,7 +1,7 @@
 package screret.sas.entity.entity;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.*;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -57,14 +57,13 @@ public class BossWizardEntity extends Monster implements RangedAttackMob, IAnima
     private static final Predicate<LivingEntity> LIVING_ENTITY_SELECTOR = (mob) -> mob.getMobType() != MobType.ILLAGER && mob.attackable();
     private static final EntityDataAccessor<Boolean> IS_ATTACKING = SynchedEntityData.defineId(BossWizardEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> DATA_ID_INV = SynchedEntityData.defineId(BossWizardEntity.class, EntityDataSerializers.INT);
-    private static final int INVULNERABLE_TICKS = 220;
+    private static final int INVULNERABLE_TICKS = 75;
     public static final WandAbilityInstance DUMMY_SPELL = new WandAbilityInstance(ModWandAbilities.DUMMY.get());
 
 
     protected int spellCastingTickCount;
     private WandAbilityInstance currentSpell = DUMMY_SPELL;
     private final ServerBossEvent bossEvent = new ServerBossEvent(this.getDisplayName(), BossEvent.BossBarColor.GREEN, BossEvent.BossBarOverlay.PROGRESS);
-    private final float attackRadius = 64, attackRadiusSqr = attackRadius * attackRadius;
     private BlockPos spawnPos;
 
     private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
@@ -73,6 +72,7 @@ public class BossWizardEntity extends Monster implements RangedAttackMob, IAnima
         super(type, pLevel);
         this.moveControl = new FlyingMoveControl(this, 10, true);
         this.setHealth(this.getMaxHealth());
+        this.setItemSlot(EquipmentSlot.MAINHAND, createBossWand());
     }
 
     @Override
@@ -83,7 +83,6 @@ public class BossWizardEntity extends Monster implements RangedAttackMob, IAnima
         navigation.setCanPassDoors(true);
         return navigation;
     }
-
 
     public boolean isAttacking(){
         return this.entityData.get(IS_ATTACKING);
@@ -105,7 +104,6 @@ public class BossWizardEntity extends Monster implements RangedAttackMob, IAnima
             this.noActionTime = 0;
         }
     }
-
 
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createMonsterAttributes()
@@ -192,9 +190,6 @@ public class BossWizardEntity extends Monster implements RangedAttackMob, IAnima
                 if (!(entity1 instanceof Player) && entity1 instanceof LivingEntity living && living.getMobType() == this.getMobType()) {
                     return false;
                 } else {
-                    if(entity1 instanceof LivingEntity living){
-                        this.setTarget(living);
-                    }
                     return super.hurt(pSource, pAmount);
                 }
             }
@@ -231,6 +226,7 @@ public class BossWizardEntity extends Monster implements RangedAttackMob, IAnima
         super.addAdditionalSaveData(pCompound);
         pCompound.putInt("Invul", this.getInvulnerableTicks());
         pCompound.put("CurrentSpell", this.currentSpell.serializeNBT());
+        pCompound.put("SpawnPos", this.newIntList(spawnPos.getX(), spawnPos.getY(), spawnPos.getZ()));
     }
 
     @Override
@@ -241,7 +237,8 @@ public class BossWizardEntity extends Monster implements RangedAttackMob, IAnima
         if (this.hasCustomName()) {
             this.bossEvent.setName(this.getDisplayName());
         }
-
+        var spawnPosTag = pCompound.getList("SpawnPos", Tag.TAG_INT);
+        this.spawnPos = new BlockPos(spawnPosTag.getInt(0), spawnPosTag.getInt(1), spawnPosTag.getInt(2));
     }
 
     public int getInvulnerableTicks() {
@@ -289,7 +286,9 @@ public class BossWizardEntity extends Monster implements RangedAttackMob, IAnima
     }
 
     private PlayState predicate(AnimationEvent<BossWizardEntity> event) {
-        if(event.getAnimatable().isAttacking()) {
+        if(event.getAnimatable().getInvulnerableTicks() > 0){
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.boss_wizard.spawn", ILoopType.EDefaultLoopTypes.PLAY_ONCE));
+        } else if(event.getAnimatable().isAttacking()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.boss_wizard.attack", ILoopType.EDefaultLoopTypes.LOOP));
         } else if(event.isMoving()){
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.boss_wizard.walk", ILoopType.EDefaultLoopTypes.LOOP));
@@ -337,6 +336,16 @@ public class BossWizardEntity extends Monster implements RangedAttackMob, IAnima
         wandItem.enchant(ModEnchantments.POWER.get(), 5);
         wandItem.enchant(ModEnchantments.QUICK_CHARGE.get(), 3);
         return wandItem;
+    }
+
+    protected ListTag newIntList(int... pNumbers) {
+        ListTag listtag = new ListTag();
+
+        for(int number : pNumbers) {
+            listtag.add(IntTag.valueOf(number));
+        }
+
+        return listtag;
     }
 
     class WizardDoNothingGoal extends Goal {

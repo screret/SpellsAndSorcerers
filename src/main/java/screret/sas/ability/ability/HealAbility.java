@@ -20,8 +20,9 @@ public class HealAbility extends SubAbility {
     }
 
     @Override
-    public void doHit(ItemStack usedItem, LivingEntity user, LivingEntity hitEnt, float timeCharged) {
+    public boolean doHit(ItemStack usedItem, LivingEntity user, LivingEntity hitEnt, float timeCharged) {
         hitEnt.heal(getDamagePerHit(usedItem));
+        return true;
     }
 
     @Override
@@ -30,6 +31,9 @@ public class HealAbility extends SubAbility {
     }
 
     @Override
-    public void doHit(ItemStack usedItem, LivingEntity user, Vec3 hitPoint, float timeCharged) { }
+    public boolean doHit(ItemStack usedItem, LivingEntity user, Vec3 hitPoint, float timeCharged)
+    {
+        return false;
+    }
 
 }

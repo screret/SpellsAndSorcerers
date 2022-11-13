@@ -35,20 +35,22 @@ public class ExplodeAbility extends SubAbility {
     }
 
     @Override
-    public void doHit(ItemStack usedItem, LivingEntity user, LivingEntity hitEnt, float timeCharged) {
+    public boolean doHit(ItemStack usedItem, LivingEntity user, LivingEntity hitEnt, float timeCharged) {
         var explosionPower = getDamagePerHit(usedItem) * timeCharged / 8;
         Explosion.BlockInteraction explosion = user instanceof Player ?
                 Explosion.BlockInteraction.BREAK : ForgeEventFactory.getMobGriefingEvent(user.level, user) ?
                 Explosion.BlockInteraction.DESTROY : Explosion.BlockInteraction.NONE;
         user.level.explode(user, hitEnt.getX(), hitEnt.getY(), hitEnt.getZ(), explosionPower, explosion);
+        return true;
     }
 
     @Override
-    public void doHit(ItemStack usedItem, LivingEntity user, Vec3 hitPoint, float timeCharged) {
+    public boolean doHit(ItemStack usedItem, LivingEntity user, Vec3 hitPoint, float timeCharged) {
         var explosionPower = getDamagePerHit(usedItem) * timeCharged / 8;
         Explosion.BlockInteraction explosion = user instanceof Player ?
                 Explosion.BlockInteraction.BREAK : ForgeEventFactory.getMobGriefingEvent(user.level, user) ?
                 Explosion.BlockInteraction.DESTROY : Explosion.BlockInteraction.NONE;
         user.level.explode(user, hitPoint.x, hitPoint.y, hitPoint.z, explosionPower, explosion);
+        return true;
     }
 }

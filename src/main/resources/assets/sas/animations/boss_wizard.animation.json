@@ -3,63 +3,29 @@
 	"animations": {
 		"animation.boss_wizard.idle": {
 			"loop": true,
-			"animation_length": 1.56,
+			"animation_length": 2,
 			"bones": {
 				"root": {
 					"rotation": {
-						"0.0": {
-							"vector": [-5, 0, 0]
-						},
-						"0.8": {
-							"vector": [7.5, 0, 0]
-						},
-						"1.56": {
-							"vector": [-5, 0, 0]
-						}
+						"vector": ["Math.cos(query.anim_time * 180) * 5", 0, 0]
 					},
 					"position": {
-						"0.0": {
-							"vector": [0, 8, 0]
-						},
-						"0.8": {
-							"vector": [0, 8, 2]
-						},
-						"1.56": {
-							"vector": [0, 8, 0]
-						}
+						"vector": [0, 8, "Math.cos(query.anim_time * 180)"]
 					}
 				},
 				"head": {
 					"rotation": {
-						"0.0": {
-							"vector": [-12.5, 0, 0]
-						},
-						"0.8": {
-							"vector": [10, 0, 0],
-							"easing": "easeInOutBounce"
-						},
-						"1.56": {
-							"vector": [-12.5, 0, 0],
-							"easing": "easeInOutBounce"
-						}
-					}
-				},
-				"crown": {
-					"rotation": {
-						"vector": [0, 0, 35]
-					},
-					"position": {
-						"vector": [4, -1, 0]
+						"vector": ["Math.cos(query.anim_time * 180) * -7.5", 0, 0]
 					}
 				},
 				"leftArm": {
 					"rotation": {
-						"vector": [0, 0, -10]
+						"vector": [0, 0, "-10 + Math.cos(query.anim_time * 180) * 3 + Math.random(-.25, .25)"]
 					}
 				},
 				"rightArm": {
 					"rotation": {
-						"vector": [0, 0, 10]
+						"vector": [0, 0, "10 - Math.cos(query.anim_time * 180) * 3 + Math.random(-.25, .25)"]
 					}
 				}
 			}
@@ -114,7 +80,7 @@
 				"head": {
 					"rotation": {
 						"0.0": {
-							"vector": [-12.5, 0, 0]
+							"vector": [10, 0, 0]
 						},
 						"0.8": {
 							"vector": [10, 0, 0],
@@ -138,14 +104,6 @@
 						"5.0": {
 							"vector": [-12.5, 0, 0]
 						}
-					}
-				},
-				"crown": {
-					"rotation": {
-						"vector": [0, 0, 35]
-					},
-					"position": {
-						"vector": [4, -1, 0]
 					}
 				},
 				"leftArm": {
@@ -225,14 +183,6 @@
 						}
 					}
 				},
-				"crown": {
-					"rotation": {
-						"vector": [0, 0, 35]
-					},
-					"position": {
-						"vector": [4, -1, 0]
-					}
-				},
 				"leftArm": {
 					"rotation": {
 						"0.0": {
@@ -261,6 +211,117 @@
 						"1.56": {
 							"vector": [-7.5, 0, 10],
 							"easing": "easeInBounce"
+						}
+					}
+				}
+			}
+		},
+		"animation.boss_wizard.spawn": {
+			"animation_length": 3.76,
+			"bones": {
+				"root": {
+					"rotation": {
+						"2.08": {
+							"vector": [5, 0, 0]
+						},
+						"3.76": {
+							"vector": [-5, 0, 0]
+						}
+					},
+					"position": {
+						"0.0": {
+							"vector": [0, -35, 0]
+						},
+						"1.36": {
+							"vector": [0, -12.64, 0],
+							"easing": "easeOutCubic"
+						},
+						"1.76": {
+							"vector": [0, -12.64, 0],
+							"easing": "easeOutQuint"
+						},
+						"3.16": {
+							"vector": [0, 6, 0],
+							"easing": "easeInElastic"
+						},
+						"3.76": {
+							"vector": [0, 8, 0],
+							"easing": "easeInBack"
+						}
+					}
+				},
+				"head": {
+					"rotation": {
+						"0.04": {
+							"vector": [-60, 0, 0]
+						},
+						"0.6": {
+							"vector": [-35, 0, 20],
+							"easing": "easeInOutBounce",
+							"easingArgs": [0.5]
+						},
+						"1.28": {
+							"vector": [12.5, 0, -12.5],
+							"easing": "easeInElastic"
+						},
+						"2.2": {
+							"vector": [5, 0, 0],
+							"easing": "easeInElastic"
+						}
+					}
+				},
+				"leftArm": {
+					"rotation": {
+						"0.0": {
+							"vector": [-190, 0, 0]
+						},
+						"0.44": {
+							"vector": [-87.5, 0, 0]
+						},
+						"1.28": {
+							"vector": [-45, 0, 0],
+							"easing": "easeInElastic"
+						},
+						"2.08": {
+							"vector": [-45, 0, 0]
+						},
+						"3.04": {
+							"vector": [2.5, 0, 0],
+							"easing": "easeOutBack",
+							"easingArgs": [3.5]
+						},
+						"3.76": {
+							"vector": [6, 0, 0],
+							"easing": "easeOutBack",
+							"easingArgs": [3.5]
+						}
+					}
+				},
+				"rightArm": {
+					"rotation": {
+						"0.0": {
+							"vector": [-190, 0, 0]
+						},
+						"0.36": {
+							"vector": [-190, 0, 0]
+						},
+						"1.28": {
+							"vector": [-55, 0, 0],
+							"easing": "easeInOutSine"
+						},
+						"2.08": {
+							"vector": [-37.5, 0, 0],
+							"easing": "easeInBack"
+						},
+						"2.96": {
+							"vector": [-2.5, 0, 0],
+							"easing": "easeOutBack",
+							"easingArgs": [3.5]
+						},
+						"3.76": {
+							"vector": [7.5, 0, 0],
+							"easing": "easeOutBack",
+							"easingArgs": [3.5]
 						}
 					}
 				}

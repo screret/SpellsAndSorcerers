@@ -12,14 +12,18 @@ import java.util.EnumSet;
 public class DamageAbility extends SubAbility {
 
     public DamageAbility() {
-        super(0, 10, 1, true, ParticleTypes.SOUL_FIRE_FLAME, EnumSet.of(HitFlags.ENTITY, HitFlags.BLOCK), 0x54cbcfFF);
+        super(0, 10, 1, true, ParticleTypes.SOUL_FIRE_FLAME, EnumSet.of(HitFlags.ENTITY), 0x54cbcfFF);
     }
 
     @Override
-    public void doHit(ItemStack usedItem, LivingEntity user, LivingEntity hitEnt, float timeCharged) {
+    public boolean doHit(ItemStack usedItem, LivingEntity user, LivingEntity hitEnt, float timeCharged) {
         hitEnt.hurt(DamageSource.indirectMagic(user, user), getDamagePerHit(usedItem));
+        return true;
     }
 
     @Override
-    public void doHit(ItemStack usedItem, LivingEntity user, Vec3 hitPoint, float timeCharged) { }
+    public boolean doHit(ItemStack usedItem, LivingEntity user, Vec3 hitPoint, float timeCharged)
+    {
+        return false;
+    }
 }
