@@ -1,16 +1,13 @@
 package screret.sas.ability.ability;
 
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.entity.EntityTypeTest;
 import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import screret.sas.api.wand.ability.WandAbility;
 import screret.sas.api.wand.ability.WandAbilityInstance;
@@ -20,12 +17,12 @@ import java.util.List;
 
 public abstract class SubAbility extends WandAbility {
 
-    private static final EntityTypeTest<Entity, ?> ANY_ENTITY_TYPE = new EntityTypeTest<>() {
-        public Entity tryCast(Entity entity) {
-            return entity;
+    private static final EntityTypeTest<Entity, LivingEntity> ANY_LIVING_ENTITY_TYPE = new EntityTypeTest<>() {
+        public LivingEntity tryCast(Entity entity) {
+            return entity instanceof LivingEntity living ? living : null;
         }
 
-        public Class<? extends Entity> getBaseClass() {
+        public Class<LivingEntity> getBaseClass() {
             return LivingEntity.class;
         }
     };
@@ -45,9 +42,9 @@ public abstract class SubAbility extends WandAbility {
             doHit(stack, user, currentPosition.real, timeCharged);
         } else if(hitFlags.contains(HitFlags.ENTITY)){
             AABB bounds = AABB.ofSize(currentPosition.real, 0.01, 0.01, 0.01);
-            List<? extends Entity> allHitPossibilities = level.getEntities(SubAbility.ANY_ENTITY_TYPE, bounds, entity -> entity != user);
+            List<LivingEntity> allHitPossibilities = level.getEntities(SubAbility.ANY_LIVING_ENTITY_TYPE, bounds, entity -> entity != user);
             allHitPossibilities.sort((thisPart, next) -> (int)Math.round(next.position().distanceTo(currentPosition.real) - thisPart.position().distanceTo(currentPosition.real)));
-            if(allHitPossibilities.size() > 0) doHit(stack, user, (LivingEntity) allHitPossibilities.get(0), timeCharged);
+            if(allHitPossibilities.size() > 0) doHit(stack, user, allHitPossibilities.get(0), timeCharged);
         }
 
         return InteractionResultHolder.pass(stack);

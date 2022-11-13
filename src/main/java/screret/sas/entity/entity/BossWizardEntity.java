@@ -1,5 +1,6 @@
 package screret.sas.entity.entity;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -35,6 +36,7 @@ import net.minecraftforge.event.ForgeEventFactory;
 import screret.sas.Util;
 import screret.sas.ability.ModWandAbilities;
 import screret.sas.api.wand.ability.WandAbilityInstance;
+import screret.sas.blockentity.blockentity.SummonSignBE;
 import screret.sas.config.SASConfig;
 import screret.sas.enchantment.ModEnchantments;
 import screret.sas.entity.goal.ShootEnemyGoal;
@@ -63,6 +65,7 @@ public class BossWizardEntity extends Monster implements RangedAttackMob, IAnima
     private WandAbilityInstance currentSpell = DUMMY_SPELL;
     private final ServerBossEvent bossEvent = new ServerBossEvent(this.getDisplayName(), BossEvent.BossBarColor.GREEN, BossEvent.BossBarOverlay.PROGRESS);
     private final float attackRadius = 64, attackRadiusSqr = attackRadius * attackRadius;
+    private BlockPos spawnPos;
 
     private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
 
@@ -88,6 +91,10 @@ public class BossWizardEntity extends Monster implements RangedAttackMob, IAnima
 
     public void setIsAttacking(boolean isAttacking) {
         this.entityData.set(IS_ATTACKING, isAttacking);
+    }
+
+    public void setSpawningPosition(BlockPos pos){
+        this.spawnPos = pos;
     }
 
     @Override
@@ -131,11 +138,15 @@ public class BossWizardEntity extends Monster implements RangedAttackMob, IAnima
     @Override
     protected void customServerAiStep() {
         if (this.getInvulnerableTicks() > 0) {
+            if(!(this.level.getBlockEntity(this.spawnPos) instanceof SummonSignBE)){
+                this.discard();
+            }
             int ticks = this.getInvulnerableTicks() - 1;
             this.bossEvent.setProgress(1.0F - (float)ticks / INVULNERABLE_TICKS);
             if (ticks <= 0) {
                 Explosion.BlockInteraction explosion = ForgeEventFactory.getMobGriefingEvent(this.level, this) ? Explosion.BlockInteraction.DESTROY : Explosion.BlockInteraction.NONE;
                 this.level.explode(this, this.getX(), this.getEyeY(), this.getZ(), 7.0F, false, explosion);
+                this.setInvulnerable(false);
                 if (!this.isSilent()) {
                     this.level.globalLevelEvent(LevelEvent.SOUND_WITHER_BOSS_SPAWN, this.blockPosition(), 0);
                 }
@@ -243,6 +254,7 @@ public class BossWizardEntity extends Monster implements RangedAttackMob, IAnima
 
     public void makeInvulnerable() {
         this.setInvulnerableTicks(INVULNERABLE_TICKS);
+        this.setInvulnerable(true);
         this.bossEvent.setProgress(0.0F);
         this.setHealth(this.getMaxHealth() / 3.0F);
     }

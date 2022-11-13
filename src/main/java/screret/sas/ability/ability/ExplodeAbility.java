@@ -5,12 +5,14 @@ import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.event.ForgeEventFactory;
 import org.jetbrains.annotations.Nullable;
 import screret.sas.Util;
 import screret.sas.api.wand.ability.WandAbility;
@@ -35,12 +37,18 @@ public class ExplodeAbility extends SubAbility {
     @Override
     public void doHit(ItemStack usedItem, LivingEntity user, LivingEntity hitEnt, float timeCharged) {
         var explosionPower = getDamagePerHit(usedItem) * timeCharged / 8;
-        user.level.explode(user, hitEnt.getX(), hitEnt.getY(), hitEnt.getZ(), explosionPower, Explosion.BlockInteraction.BREAK);
+        Explosion.BlockInteraction explosion = user instanceof Player ?
+                Explosion.BlockInteraction.BREAK : ForgeEventFactory.getMobGriefingEvent(user.level, user) ?
+                Explosion.BlockInteraction.DESTROY : Explosion.BlockInteraction.NONE;
+        user.level.explode(user, hitEnt.getX(), hitEnt.getY(), hitEnt.getZ(), explosionPower, explosion);
     }
 
     @Override
     public void doHit(ItemStack usedItem, LivingEntity user, Vec3 hitPoint, float timeCharged) {
         var explosionPower = getDamagePerHit(usedItem) * timeCharged / 8;
-        user.level.explode(user, hitPoint.x, hitPoint.y, hitPoint.z, explosionPower, Explosion.BlockInteraction.BREAK);
+        Explosion.BlockInteraction explosion = user instanceof Player ?
+                Explosion.BlockInteraction.BREAK : ForgeEventFactory.getMobGriefingEvent(user.level, user) ?
+                Explosion.BlockInteraction.DESTROY : Explosion.BlockInteraction.NONE;
+        user.level.explode(user, hitPoint.x, hitPoint.y, hitPoint.z, explosionPower, explosion);
     }
 }
