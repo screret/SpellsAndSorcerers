@@ -75,7 +75,7 @@ public class SummonSignBlock extends BaseEntityBlock {
         if(pState.getValue(SummonSignBlock.TRIGGERED)){
             Vec3 pos = new Vec3(pPos.getX() + 0.5D, pPos.getY() + 1.0D, pPos.getZ() + 0.5D);
             for (int i = 0; i < 10; ++i){
-                pLevel.addParticle(ParticleTypes.ENCHANT, pPos.getX() + pRandom.nextDouble(), pPos.getY() + 0.5D + pRandom.nextDouble(), pPos.getZ() + pRandom.nextDouble(), 0D, -3D - pRandom.nextDouble(), 0D);
+                pLevel.addParticle(ParticleTypes.ENCHANT, pPos.getX() + pRandom.nextDouble(), pPos.getY() + 2D + pRandom.nextDouble(), pPos.getZ() + pRandom.nextDouble(), 0D, -3D - pRandom.nextDouble(), 0D);
             }
             if(pRandom.nextInt(4) == 0){
                 pLevel.addParticle(ModParticles.EYE.get(), true, pos.x, pos.y, pos.z, 0, 1D, 0);
