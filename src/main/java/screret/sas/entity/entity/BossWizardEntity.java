@@ -153,7 +153,7 @@ public class BossWizardEntity extends Monster implements RangedAttackMob, IAnima
             }
 
             this.setInvulnerableTicks(ticks);
-            if (this.tickCount % 10 == 0) {
+            if (this.tickCount % 5 == 0) {
                 this.heal(10.0F);
             }
 

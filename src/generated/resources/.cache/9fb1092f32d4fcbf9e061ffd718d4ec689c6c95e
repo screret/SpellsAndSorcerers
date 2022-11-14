@@ -1,11 +1,3 @@
-// 1.19.2	2022-11-14T14:23:11.5568546	Recipes
-37550357ccd052e2cf4ec51dd3352825dda8ea35 data/sas/advancements/recipes/sas/damage_wand.json
-9fc825f3c67ed98324ae72bc9afa3c1a70719e24 data/sas/advancements/recipes/sas/explosion_wand.json
-f6bf39aab1150d2e342fcc9d863cab713ba76de0 data/sas/advancements/recipes/sas/heal_wand.json
-2fdc7c0480d89705a9446863ad2eba84fdb359ce data/sas/advancements/recipes/sas/large_fireball_wand.json
-1807d62b496327f7868523456a54ad0957114384 data/sas/advancements/recipes/sas/small_fireball_wand.json
-9d27885acce162807803d78b4b8ed7d4efa6eb1b data/sas/recipes/damage_wand.json
-804ca24664e39cd05215d4fd7ae9afdc1b680b8d data/sas/recipes/explosion_wand.json
-cb17184bccaf5e5d55c72eb949c0982be42eec84 data/sas/recipes/heal_wand.json
-a011124e68b9ac6a015846e867c1bc1aedb20fc0 data/sas/recipes/large_fireball_wand.json
-b7e51c7a5d7ab78a164e9cfa08b7a2fa0f684cb9 data/sas/recipes/small_fireball_wand.json
+// 1.19.2	2022-11-14T14:27:04.122114	Recipes
+7713b3fd7386e06ecb3cdd56b14090d8334d9462 data/sas/advancements/recipes/sas/wand_table.json
+423a726b0cd0e95602d0d1c91282cd7025fe7bd7 data/sas/recipes/wand_table.json

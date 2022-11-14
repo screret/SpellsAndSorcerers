@@ -38,10 +38,12 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class SummonSignBE extends BlockEntity implements IAnimatable {
+    private static final int REQUIRED_ITEMS_COUNT = 4;
     private static final int TICKS_TO_SPAWN = 100;
     public static final VoxelShape INSIDE = Block.box(-1D, 0.0D, -1D, 17.0D, 16.0D, 17.0D);
 
     private int ticksToSpawn = -1;
+    private boolean hasSpawned = false;
     private AnimationFactory factory = GeckoLibUtil.createFactory(this);
 
     public SummonSignBE(BlockPos pPos, BlockState pBlockState) {
@@ -74,14 +76,14 @@ public class SummonSignBE extends BlockEntity implements IAnimatable {
     public static void serverTick(Level pLevel, BlockPos pPos, BlockState pState, SummonSignBE pBlockEntity) {
         if (pPos.getY() >= pLevel.getMinBuildHeight() && pLevel.getDifficulty() != Difficulty.PEACEFUL) {
             var itemEntities = getItemsAt(pLevel, pBlockEntity);
-            Supplier<Stream<ItemStack>> items = () -> itemEntities.stream().map(ItemEntity::getItem);
+            Stream<ItemStack> items = itemEntities.stream().map(ItemEntity::getItem);
             var requiredItems = ForgeRegistries.ITEMS.tags().getTag(ModTags.Items.BOSS_SUMMON_ITEMS);
             Set<Item> requiredSet = requiredItems.stream().collect(Collectors.toSet());
             var counter = new RequiredCounter();
-            if(!items.get().allMatch(item -> testForTag(requiredSet, item, counter))){
+            if(!items.allMatch(item -> testForTag(requiredSet, item, counter))){
                 return;
             }
-            if(itemEntities.size() >= counter.count){
+            if(itemEntities.size() < REQUIRED_ITEMS_COUNT){
                 return;
             }
 
@@ -100,14 +102,19 @@ public class SummonSignBE extends BlockEntity implements IAnimatable {
                 itemEntity.getItem().shrink(1);
             }
 
-            BossWizardEntity boss = ModEntities.BOSS_WIZARD.get().create(pLevel);
-            boss.setSpawningPosition(pPos);
-            boss.moveTo(pPos.getX() + 0.5f, pPos.getY() + 1.55D, pPos.getZ() + 0.5f, 0.0F, 0.0F);
-            boss.makeInvulnerable();
-            for(ServerPlayer serverplayer : pLevel.getEntitiesOfClass(ServerPlayer.class, boss.getBoundingBox().inflate(50.0D))) {
-                CriteriaTriggers.SUMMONED_ENTITY.trigger(serverplayer, boss);
+            if(!pBlockEntity.hasSpawned){
+                BossWizardEntity boss = ModEntities.BOSS_WIZARD.get().create(pLevel);
+                boss.setSpawningPosition(pPos);
+                boss.moveTo(pPos.getX() + 0.5f, pPos.getY() + 1.55D, pPos.getZ() + 0.5f, 0.0F, 0.0F);
+                boss.makeInvulnerable();
+                for(ServerPlayer serverplayer : pLevel.getEntitiesOfClass(ServerPlayer.class, boss.getBoundingBox().inflate(50.0D))) {
+                    CriteriaTriggers.SUMMONED_ENTITY.trigger(serverplayer, boss);
+                }
+                pLevel.addFreshEntity(boss);
+                pBlockEntity.hasSpawned = true;
+                pBlockEntity.setChanged();
             }
-            pLevel.addFreshEntity(boss);
+
 
             //pLevel.setBlock(pPos, Blocks.AIR.defaultBlockState(), 11);
         }
@@ -117,11 +124,13 @@ public class SummonSignBE extends BlockEntity implements IAnimatable {
     protected void saveAdditional(CompoundTag pTag) {
         super.saveAdditional(pTag);
         pTag.putInt("TimeToSpawn", this.ticksToSpawn);
+        pTag.putBoolean("HasSpawned", this.hasSpawned);
     }
 
     @Override
     public void load(CompoundTag pTag) {
         if(pTag.contains("TimeToSpawn")) this.ticksToSpawn = pTag.getInt("TimeToSpawn");
+        if(pTag.contains("HasSpawned")) this.hasSpawned = pTag.getBoolean("HasSpawned");
     }
 
 
