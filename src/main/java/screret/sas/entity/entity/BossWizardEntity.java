@@ -31,6 +31,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LevelEvent;
 import net.minecraftforge.event.ForgeEventFactory;
 import screret.sas.Util;
@@ -142,8 +143,9 @@ public class BossWizardEntity extends Monster implements RangedAttackMob, IAnima
             int ticks = this.getInvulnerableTicks() - 1;
             this.bossEvent.setProgress(1.0F - (float)ticks / INVULNERABLE_TICKS);
             if (ticks <= 0) {
-                Explosion.BlockInteraction explosion = ForgeEventFactory.getMobGriefingEvent(this.level, this) ? Explosion.BlockInteraction.DESTROY : Explosion.BlockInteraction.NONE;
-                this.level.explode(this, this.getX(), this.getEyeY(), this.getZ(), 7.0F, false, explosion);
+                //Explosion.BlockInteraction explosion = ForgeEventFactory.getMobGriefingEvent(this.level, this) ? Explosion.BlockInteraction.DESTROY : Explosion.BlockInteraction.NONE;
+                //this.level.explode(this, this.getX(), this.getEyeY(), this.getZ(), 7.0F, false, explosion);
+                this.level.setBlockAndUpdate(this.spawnPos, Blocks.AIR.defaultBlockState());
                 this.setInvulnerable(false);
                 if (!this.isSilent()) {
                     this.level.globalLevelEvent(LevelEvent.SOUND_WITHER_BOSS_SPAWN, this.blockPosition(), 0);
@@ -224,7 +226,7 @@ public class BossWizardEntity extends Monster implements RangedAttackMob, IAnima
     @Override
     public void addAdditionalSaveData(CompoundTag pCompound) {
         super.addAdditionalSaveData(pCompound);
-        pCompound.putInt("Invul", this.getInvulnerableTicks());
+        pCompound.putInt("InvulTime", this.getInvulnerableTicks());
         pCompound.put("CurrentSpell", this.currentSpell.serializeNBT());
         pCompound.put("SpawnPos", this.newIntList(spawnPos.getX(), spawnPos.getY(), spawnPos.getZ()));
     }
@@ -232,7 +234,7 @@ public class BossWizardEntity extends Monster implements RangedAttackMob, IAnima
     @Override
     public void readAdditionalSaveData(CompoundTag pCompound) {
         super.readAdditionalSaveData(pCompound);
-        this.setInvulnerableTicks(pCompound.getInt("Invul"));
+        this.setInvulnerableTicks(pCompound.getInt("InvulTime"));
         currentSpell = new WandAbilityInstance(pCompound.getCompound("CurrentSpell"));
         if (this.hasCustomName()) {
             this.bossEvent.setName(this.getDisplayName());

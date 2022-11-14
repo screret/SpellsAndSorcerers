@@ -40,6 +40,7 @@ import screret.sas.config.SASConfig;
 import screret.sas.container.ModContainers;
 import screret.sas.data.recipe.provider.ModRecipeProvider;
 import screret.sas.data.recipe.provider.WandRecipeProvider;
+import screret.sas.data.tag.SASBiomeTagsProvider;
 import screret.sas.data.tag.SASBlockTagsProvider;
 import screret.sas.data.tag.SASItemTagsProvider;
 import screret.sas.enchantment.ModEnchantments;
@@ -49,6 +50,10 @@ import screret.sas.entity.entity.WizardEntity;
 import screret.sas.item.ModCreativeTab;
 import screret.sas.item.ModItems;
 import screret.sas.recipe.ModRecipes;
+import screret.sas.world.generation.structure.ModStructurePieceTypes;
+import screret.sas.world.generation.structure.ModStructureSets;
+import screret.sas.world.generation.structure.ModStructureTypes;
+import screret.sas.world.generation.structure.ModStructures;
 
 import static screret.sas.Util.addWand;
 
@@ -94,6 +99,11 @@ public class SpellsAndSorcerers {
 
         ModParticles.PARTICLES.register(modEventBus);
 
+        ModStructureTypes.STRUCTURE_TYPES.register(modEventBus);
+        ModStructurePieceTypes.STRUCTURE_PIECE_TYPES.register(modEventBus);
+        ModStructures.STRUCTURES.register(modEventBus);
+        ModStructureSets.STRUCTURE_SETS.register(modEventBus);
+
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, SASConfig.Client.clientSpec);
         ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, SASConfig.Server.serverSpec);
 
@@ -117,6 +127,8 @@ public class SpellsAndSorcerers {
 
         gen.addProvider(event.includeServer(), new WandRecipeProvider(gen));
         gen.addProvider(event.includeServer(), new ModRecipeProvider(gen));
+
+        gen.addProvider(event.includeServer(), new SASBiomeTagsProvider(gen, existingFileHelper));
 
         //gen.addProvider(event.includeServer(), new ModBlockstateProvider(gen, existingFileHelper));
     }
@@ -159,8 +171,6 @@ public class SpellsAndSorcerers {
                 var stack = new ItemStack(ModItems.SOUL_BOTTLE.get());
                 event.getEntity().awardStat(Stats.ITEM_USED.get(event.getEntity().getUseItem().getItem()));
                 ItemUtils.createFilledResult(event.getEntity().getUseItem(), event.getEntity(), stack);
-                event.setUseItem(Event.Result.DENY);
-                event.setUseBlock(Event.Result.DENY);
             }
         }
     }

@@ -1,12 +1,8 @@
 package screret.sas.blockentity.blockentity;
 
-import com.mojang.math.Vector3f;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.DustColorTransitionOptions;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.entity.EntitySelector;
@@ -15,17 +11,15 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.tags.ITag;
 import screret.sas.ModTags;
 import screret.sas.SpellsAndSorcerers;
 import screret.sas.block.block.SummonSignBlock;
 import screret.sas.blockentity.ModBlockEntities;
-import screret.sas.client.particle.ModParticles;
 import screret.sas.entity.ModEntities;
 import screret.sas.entity.entity.BossWizardEntity;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -39,12 +33,13 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
 import java.util.*;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class SummonSignBE extends BlockEntity implements IAnimatable {
     private static final int TICKS_TO_SPAWN = 100;
-    public static final VoxelShape INSIDE = Block.box(-0.5D, 0.0D, -0.5D, 16.5D, 16.0D, 16.5D);
+    public static final VoxelShape INSIDE = Block.box(-1D, 0.0D, -1D, 17.0D, 16.0D, 17.0D);
 
     private int ticksToSpawn = -1;
     private AnimationFactory factory = GeckoLibUtil.createFactory(this);
@@ -59,26 +54,45 @@ public class SummonSignBE extends BlockEntity implements IAnimatable {
                 .collect(Collectors.toSet());
     }
 
+    public static boolean testForTag(Set<Item> tag, ItemStack pStack, RequiredCounter counter) {
+        if (pStack != null) {
+            for (var item : tag) {
+                if (pStack.is(item)) {
+                    tag.remove(item);
+                    counter.count++;
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private static class RequiredCounter {
+        int count = 0;
+    }
+
     public static void serverTick(Level pLevel, BlockPos pPos, BlockState pState, SummonSignBE pBlockEntity) {
         if (pPos.getY() >= pLevel.getMinBuildHeight() && pLevel.getDifficulty() != Difficulty.PEACEFUL) {
             var itemEntities = getItemsAt(pLevel, pBlockEntity);
-            var items = itemEntities.stream().map(ItemEntity::getItem).map(ItemStack::getItem).collect(Collectors.toSet());
+            Supplier<Stream<ItemStack>> items = () -> itemEntities.stream().map(ItemEntity::getItem);
             var requiredItems = ForgeRegistries.ITEMS.tags().getTag(ModTags.Items.BOSS_SUMMON_ITEMS);
-            for (var item : requiredItems){
-                if(!items.contains(item)){
-                    pBlockEntity.ticksToSpawn = -1;
-                    pState.setValue(SummonSignBlock.TRIGGERED, false);
-                    return;
-                }
+            Set<Item> requiredSet = requiredItems.stream().collect(Collectors.toSet());
+            var counter = new RequiredCounter();
+            if(!items.get().allMatch(item -> testForTag(requiredSet, item, counter))){
+                return;
+            }
+            if(itemEntities.size() >= counter.count){
+                return;
             }
 
             if(pBlockEntity.ticksToSpawn < 0){
                 pBlockEntity.ticksToSpawn = TICKS_TO_SPAWN;
-                pState.setValue(SummonSignBlock.TRIGGERED, true);
-                setChanged(pLevel, pPos, pState);
+                pBlockEntity.setChanged();
+                pLevel.setBlockAndUpdate(pPos, pState.setValue(SummonSignBlock.TRIGGERED, true));
                 return;
             } else if(pBlockEntity.ticksToSpawn > 0){
                 --pBlockEntity.ticksToSpawn;
+                pBlockEntity.setChanged();
                 return;
             }
 
