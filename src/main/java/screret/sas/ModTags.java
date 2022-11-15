@@ -45,6 +45,7 @@ public class ModTags {
 
     public static final class Biomes {
         public static final TagKey<Biome> HAS_RITUAL_SPOT = tag("has_structure/ritual_spot");
+        public static final TagKey<Biome> HAS_WIZARD_TOWER = tag("has_structure/wizard_tower");
 
 
         private static TagKey<Biome> tag(String name)

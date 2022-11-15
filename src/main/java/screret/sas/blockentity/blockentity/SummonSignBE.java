@@ -33,7 +33,6 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
 import java.util.*;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -61,9 +60,9 @@ public class SummonSignBE extends BlockEntity implements IAnimatable {
             for (var item : tag) {
                 if (pStack.is(item)) {
                     tag.remove(item);
-                    counter.count++;
                     return true;
                 }
+                counter.count++;
             }
         }
         return false;
@@ -76,33 +75,35 @@ public class SummonSignBE extends BlockEntity implements IAnimatable {
     public static void serverTick(Level pLevel, BlockPos pPos, BlockState pState, SummonSignBE pBlockEntity) {
         if (pPos.getY() >= pLevel.getMinBuildHeight() && pLevel.getDifficulty() != Difficulty.PEACEFUL) {
             var itemEntities = getItemsAt(pLevel, pBlockEntity);
-            Stream<ItemStack> items = itemEntities.stream().map(ItemEntity::getItem);
-            var requiredItems = ForgeRegistries.ITEMS.tags().getTag(ModTags.Items.BOSS_SUMMON_ITEMS);
-            Set<Item> requiredSet = requiredItems.stream().collect(Collectors.toSet());
-            var counter = new RequiredCounter();
-            if(!items.allMatch(item -> testForTag(requiredSet, item, counter))){
-                return;
-            }
-            if(itemEntities.size() < REQUIRED_ITEMS_COUNT){
-                return;
-            }
-
-            if(pBlockEntity.ticksToSpawn < 0){
-                pBlockEntity.ticksToSpawn = TICKS_TO_SPAWN;
-                pBlockEntity.setChanged();
-                pLevel.setBlockAndUpdate(pPos, pState.setValue(SummonSignBlock.TRIGGERED, true));
-                return;
-            } else if(pBlockEntity.ticksToSpawn > 0){
-                --pBlockEntity.ticksToSpawn;
-                pBlockEntity.setChanged();
-                return;
-            }
-
-            for (var itemEntity : itemEntities){
-                itemEntity.getItem().shrink(1);
-            }
-
             if(!pBlockEntity.hasSpawned){
+                Stream<ItemStack> items = itemEntities.stream().map(ItemEntity::getItem);
+                var requiredItems = ForgeRegistries.ITEMS.tags().getTag(ModTags.Items.BOSS_SUMMON_ITEMS);
+                Set<Item> requiredSet = requiredItems.stream().collect(Collectors.toSet());
+                var counter = new RequiredCounter();
+                if(!items.allMatch(item -> testForTag(requiredSet, item, counter))){
+                    pLevel.setBlockAndUpdate(pPos, pState.setValue(SummonSignBlock.TRIGGERED, false));
+                    return;
+                }
+                if(itemEntities.size() < requiredItems.size()){
+                    pLevel.setBlockAndUpdate(pPos, pState.setValue(SummonSignBlock.TRIGGERED, false));
+                    return;
+                }
+
+                if(pBlockEntity.ticksToSpawn < 0){
+                    pBlockEntity.ticksToSpawn = TICKS_TO_SPAWN;
+                    pBlockEntity.setChanged();
+                    pLevel.setBlockAndUpdate(pPos, pState.setValue(SummonSignBlock.TRIGGERED, true));
+                    return;
+                } else if(pBlockEntity.ticksToSpawn > 0){
+                    --pBlockEntity.ticksToSpawn;
+                    pBlockEntity.setChanged();
+                    return;
+                }
+
+                for (var itemEntity : itemEntities){
+                    itemEntity.getItem().shrink(1);
+                }
+                
                 BossWizardEntity boss = ModEntities.BOSS_WIZARD.get().create(pLevel);
                 boss.setSpawningPosition(pPos);
                 boss.moveTo(pPos.getX() + 0.5f, pPos.getY() + 1.55D, pPos.getZ() + 0.5f, 0.0F, 0.0F);

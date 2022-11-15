@@ -17,5 +17,6 @@ public class SASBiomeTagsProvider extends BiomeTagsProvider {
 
     protected void addTags() {
         tag(ModTags.Biomes.HAS_RITUAL_SPOT).add(Biomes.PLAINS).add(Biomes.FROZEN_PEAKS).add(Biomes.MEADOW).add(Biomes.BIRCH_FOREST);
+        tag(ModTags.Biomes.HAS_WIZARD_TOWER).add(Biomes.DARK_FOREST).add(Biomes.SPARSE_JUNGLE).add(Biomes.MEADOW).add(Biomes.ICE_SPIKES);
     }
 }

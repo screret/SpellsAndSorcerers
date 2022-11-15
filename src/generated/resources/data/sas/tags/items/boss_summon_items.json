@@ -1,8 +1,10 @@
 {
+  "__comment": "ONLY USE ITEM VALUES, TAGS WILL BREAK THIS",
+
   "values": [
-    "#forge:dusts/glowstone",
-    "#forge:storage_blocks/lapis",
-    "#forge:heads",
-    "sas:wand_core"
+    "sas:wand_core",
+    "minecraft:glowstone_dust",
+    "minecraft:lapis_block",
+    "minecraft:zombie_head"
   ]
 }

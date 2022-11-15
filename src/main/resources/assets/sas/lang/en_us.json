@@ -4,8 +4,10 @@
 
   "block.sas.wand_table": "Wand Table",
   "block.sas.summon_sign": "Summoning Circle",
+  "block.sas.palantir": "Palantír",
 
   "item.sas.soul_bottle": "Bottle o' Souls",
+  "item.sas.cthulhu_eye": "Eye of Cthulhu",
   "item.sas.handle": "Wand Handle",
   "item.sas.wand": "%s Wand",
   "item.sas.wand_core": "%s Core",

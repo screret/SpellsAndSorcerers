@@ -22,6 +22,7 @@ import screret.sas.client.gui.WandTableScreen;
 import screret.sas.client.model.item.WandModel;
 import screret.sas.client.particle.ModParticles;
 import screret.sas.client.particle.particle.EyeParticle;
+import screret.sas.client.renderer.blockentity.PalantirBERenderer;
 import screret.sas.client.renderer.blockentity.SummonSignBERenderer;
 import screret.sas.client.renderer.entity.BossWizardRenderer;
 import screret.sas.client.renderer.entity.WizardRenderer;
@@ -53,6 +54,8 @@ public class ClientModEvents {
         event.registerEntityRenderer(ModEntities.BOSS_WIZARD.get(), BossWizardRenderer::new);
 
         event.registerBlockEntityRenderer(ModBlockEntities.SUMMON_SIGN_BE.get(), SummonSignBERenderer::new);
+        event.registerBlockEntityRenderer(ModBlockEntities.PALANTIR_BE.get(), PalantirBERenderer::new);
+
     }
 
     @SubscribeEvent

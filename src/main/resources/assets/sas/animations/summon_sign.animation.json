@@ -6,7 +6,7 @@
 			"bones": {
 				"bone": {
 					"rotation": {
-						"vector": [0, "Math.mod(query.anim_time * 50, 360)", 0]
+						"vector": [0, 0, 0]
 					}
 				}
 			}

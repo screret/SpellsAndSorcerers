@@ -20,6 +20,7 @@ public class ModItems {
 
     //BLOCK ITEMS
     public static final RegistryObject<Item> WAND_TABLE = ITEMS.register("wand_table", () -> new BlockItem(ModBlocks.WAND_TABLE.get(), new Item.Properties().tab(SpellsAndSorcerers.SAS_TAB)));
+    public static final RegistryObject<Item> PALANTIR = ITEMS.register("palantir", () -> new BlockItem(ModBlocks.PALANTIR.get(), new Item.Properties().tab(SpellsAndSorcerers.SAS_TAB)));
 
 
     // WANDS
@@ -31,6 +32,8 @@ public class ModItems {
     //OTHER ITEMS
     public static final RegistryObject<Item> WAND_CORE = ITEMS.register("wand_core", WandCoreItem::new);
     public static final RegistryObject<Item> SOUL_BOTTLE = ITEMS.register("soul_bottle", () -> new Item(new Item.Properties().tab(SpellsAndSorcerers.SAS_TAB)));
+    public static final RegistryObject<Item> CTHULHU_EYE = ITEMS.register("cthulhu_eye", () -> new Item(new Item.Properties().tab(SpellsAndSorcerers.SAS_TAB)));
+
     public static final RegistryObject<Item> SUMMON_SIGN = ITEMS.register("summon_sign", () -> new BlockItem(ModBlocks.SUMMON_SIGN.get(), new Item.Properties().tab(SpellsAndSorcerers.SAS_TAB)));
 
     public static final RegistryObject<Item> WIZARD_SPAWN_EGG = ITEMS.register("wizard_spawn_egg", () -> new ForgeSpawnEggItem(ModEntities.WIZARD, 0x002017, 0x959b9b, new Item.Properties().tab(SpellsAndSorcerers.SAS_TAB)));

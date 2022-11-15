@@ -20,6 +20,6 @@ public class SASItemTagsProvider extends ItemTagsProvider {
     @Override
     protected void addTags() {
         tag(ModTags.Items.GLASS_BOTTLES).add(Items.GLASS_BOTTLE);
-        tag(ModTags.Items.BOSS_SUMMON_ITEMS).addTags(Tags.Items.DUSTS_GLOWSTONE, Tags.Items.STORAGE_BLOCKS_LAPIS, Tags.Items.HEADS).add(ModItems.WAND_CORE.get());
+        tag(ModTags.Items.BOSS_SUMMON_ITEMS).add(ModItems.WAND_CORE.get(), Items.GLOWSTONE_DUST, Items.LAPIS_BLOCK, Items.ZOMBIE_HEAD);
     }
 }

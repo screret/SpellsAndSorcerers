@@ -18,24 +18,30 @@ public interface ICapabilityMana extends INBTSerializable<Tag> {
      */
     int deductMana(int maxExtract, boolean simulate);
 
+
     /**
-     * Returns the amount of energy currently stored.
+     * Sets the maximum mana amount.
+     */
+    void setMaxMana(int max);
+
+    /**
+     * Returns the amount of mana currently stored.
      */
     int getManaStored();
 
     /**
-     * Returns the maximum amount of energy that can be stored.
+     * Returns the maximum amount of mana that can be stored.
      */
     int getMaxManaStored();
 
     /**
-     * Returns if this storage can have energy extracted.
+     * Returns if this storage can have mana extracted.
      * If this is false, then any calls to extractEnergy will return 0.
      */
     boolean canExtract();
 
     /**
-     * Used to determine if this storage can receive energy.
+     * Used to determine if this storage can receive mana.
      * If this is false, then any calls to receiveEnergy will return 0.
      */
     boolean canReceive();

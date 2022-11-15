@@ -46,7 +46,7 @@ public class WizardModel extends AnimatedGeoModel<WizardEntity> {
         AnimationData manager = animatable.getFactory().getOrCreateAnimationData(instanceId);
         int unpausedMultiplier = !Minecraft.getInstance().isPaused() || manager.shouldPlayWhilePaused ? 1 : 0;
 
-        head.setRotationX(head.getRotationX() + extraData.headPitch * Mth.HALF_PI * unpausedMultiplier);
-        head.setRotationY(head.getRotationY() + extraData.netHeadYaw * Mth.HALF_PI * unpausedMultiplier);
+        head.setRotationX(head.getRotationX() + extraData.headPitch * Mth.DEG_TO_RAD * unpausedMultiplier);
+        head.setRotationY(head.getRotationY() + extraData.netHeadYaw * Mth.DEG_TO_RAD * unpausedMultiplier);
     }
 }

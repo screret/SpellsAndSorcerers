@@ -17,7 +17,6 @@ import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -50,10 +49,6 @@ import screret.sas.entity.entity.WizardEntity;
 import screret.sas.item.ModCreativeTab;
 import screret.sas.item.ModItems;
 import screret.sas.recipe.ModRecipes;
-import screret.sas.world.generation.structure.ModStructurePieceTypes;
-import screret.sas.world.generation.structure.ModStructureSets;
-import screret.sas.world.generation.structure.ModStructureTypes;
-import screret.sas.world.generation.structure.ModStructures;
 
 import static screret.sas.Util.addWand;
 
@@ -98,11 +93,6 @@ public class SpellsAndSorcerers {
         ModBlockEntities.BLOCK_ENTITIES.register(modEventBus);
 
         ModParticles.PARTICLES.register(modEventBus);
-
-        ModStructureTypes.STRUCTURE_TYPES.register(modEventBus);
-        ModStructurePieceTypes.STRUCTURE_PIECE_TYPES.register(modEventBus);
-        ModStructures.STRUCTURES.register(modEventBus);
-        ModStructureSets.STRUCTURE_SETS.register(modEventBus);
 
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, SASConfig.Client.clientSpec);
         ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, SASConfig.Server.serverSpec);

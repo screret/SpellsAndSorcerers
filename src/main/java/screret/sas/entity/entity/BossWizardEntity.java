@@ -110,7 +110,7 @@ public class BossWizardEntity extends Monster implements RangedAttackMob, IAnima
         return Monster.createMonsterAttributes()
                 .add(Attributes.MOVEMENT_SPEED, 0.5D)
                 .add(Attributes.FLYING_SPEED, 0.5D)
-                .add(Attributes.FOLLOW_RANGE, 64.0D)
+                .add(Attributes.FOLLOW_RANGE, 32.0D)
                 .add(Attributes.MAX_HEALTH, 400.0D)
                 .add(Attributes.ARMOR, 7.5D);
     }
@@ -140,6 +140,12 @@ public class BossWizardEntity extends Monster implements RangedAttackMob, IAnima
             if(!(this.level.getBlockEntity(this.spawnPos) instanceof SummonSignBE)){
                 this.discard();
             }
+            if(this.level.getBlockState(this.spawnPos.above(2)) != Blocks.AIR.defaultBlockState()){
+                this.level.setBlockAndUpdate(this.spawnPos.above(2), Blocks.AIR.defaultBlockState());
+                this.level.setBlockAndUpdate(this.spawnPos.above(), Blocks.AIR.defaultBlockState());
+
+            }
+
             int ticks = this.getInvulnerableTicks() - 1;
             this.bossEvent.setProgress(1.0F - (float)ticks / INVULNERABLE_TICKS);
             if (ticks <= 0) {
@@ -153,7 +159,7 @@ public class BossWizardEntity extends Monster implements RangedAttackMob, IAnima
             }
 
             this.setInvulnerableTicks(ticks);
-            if (this.tickCount % 5 == 0) {
+            if (this.tickCount % 2 == 0) {
                 this.heal(10.0F);
             }
 
@@ -335,7 +341,7 @@ public class BossWizardEntity extends Monster implements RangedAttackMob, IAnima
 
     private static ItemStack createBossWand(){
         var wandItem = Util.createWand(ModWandAbilities.LARGE_FIREBALL.get(), ModWandAbilities.HEAL_SELF.get());
-        wandItem.enchant(ModEnchantments.POWER.get(), 5);
+        wandItem.enchant(ModEnchantments.POWER.get(), 1);
         wandItem.enchant(ModEnchantments.QUICK_CHARGE.get(), 3);
         return wandItem;
     }

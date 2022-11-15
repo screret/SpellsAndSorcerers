@@ -9,3 +9,6 @@ design document
 - ~~wizard mob (ally)~~ CANCELLED
 - ~~**master wizards** (boss, drops wand core for better wand of boss type (must be killed with correct wand))~~ DONE
 - potion distillation machine
+
+
+7685484292284261461

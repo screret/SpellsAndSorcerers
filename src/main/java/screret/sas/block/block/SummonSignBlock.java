@@ -34,7 +34,7 @@ public class SummonSignBlock extends BaseEntityBlock {
     public static final BooleanProperty TRIGGERED = BlockStateProperties.TRIGGERED;
 
     public SummonSignBlock() {
-        super(BlockBehaviour.Properties.of(Material.PORTAL).lightLevel((state) -> state.getValue(TRIGGERED) ? 9 : 2).strength(0).noOcclusion());
+        super(BlockBehaviour.Properties.of(Material.PORTAL).lightLevel((state) -> state.getValue(TRIGGERED) ? 9 : 2).strength(-1.0F, 3600F).noOcclusion());
         this.registerDefaultState(this.stateDefinition.any().setValue(COLOR, DyeColor.RED).setValue(TRIGGERED, false));
     }
 

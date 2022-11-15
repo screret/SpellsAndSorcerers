@@ -12,6 +12,7 @@ import org.jetbrains.annotations.NotNull;
 import screret.sas.api.capability.ability.CapabilityWandAbility;
 import screret.sas.api.capability.ability.ICapabilityWandAbility;
 import screret.sas.api.wand.ability.WandAbilityInstance;
+import screret.sas.config.SASConfig;
 
 import javax.annotation.Nullable;
 
@@ -29,7 +30,7 @@ public class ManaProvider implements ICapabilitySerializable<Tag> {
     @NotNull
     public CapabilityMana createCapability(){
         if(backend == null){
-            backend = new CapabilityMana(100, 100, 100, 100);
+            backend = new CapabilityMana(SASConfig.Server.maxDefaultMana.get(), SASConfig.Server.maxDefaultMana.get(), SASConfig.Server.maxDefaultMana.get(), SASConfig.Server.maxDefaultMana.get());
         }
         return backend;
     }

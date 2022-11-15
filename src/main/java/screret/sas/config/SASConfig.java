@@ -43,6 +43,8 @@ public class SASConfig {
     public static class Server {
         public static final ForgeConfigSpec serverSpec;
         public static ForgeConfigSpec.BooleanValue useMana;
+        public static ForgeConfigSpec.IntValue maxDefaultMana;
+
         public static ForgeConfigSpec.BooleanValue dropWandCores;
 
         private static void setupConfig(ForgeConfigSpec.Builder builder){
@@ -53,6 +55,10 @@ public class SASConfig {
                     .comment("Is Mana used?")
                     .translation("sas.configgui.useMana")
                     .define("useMana", true);
+            maxDefaultMana = builder
+                    .comment("Maximum default mana (no potion effects)")
+                    .translation("sas.configgui.maxDefaultMana")
+                    .defineInRange("maxDefaultMana", 100, 0, Integer.MAX_VALUE);
             dropWandCores = builder
                     .comment("Do wizards drop wand cores?")
                     .translation("sas.configgui.dropWandCores")
