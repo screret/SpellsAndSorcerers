@@ -15,7 +15,11 @@ public class ModTags {
 
     public static final class Items {
         public static final TagKey<Item> GLASS_BOTTLES = forgeTag("glass_bottles");
-
+        public static final TagKey<Item> GLINT_ORES = forgeTag("ores/glint");
+        public static final TagKey<Item> GLINT_GEMS = forgeTag("gems/glint");
+        public static final TagKey<Item> SOULSTEEL_INGOTS = forgeTag("ingots/soulsteel");
+        public static final TagKey<Item> SOULSTEEL_NUGGETS = forgeTag("nuggets/soulsteel");
+        public static final TagKey<Item> SOULSTEEL_BLOCKS = forgeTag("storage_blocks/soulsteel");
 
         public static final TagKey<Item> BOSS_SUMMON_ITEMS = tag("boss_summon_items");
 
@@ -32,6 +36,9 @@ public class ModTags {
 
     public static final class Blocks {
 
+        public static final TagKey<Block> BASE_STONE_END = forgeTag("base_stone_end");
+        public static final TagKey<Block> GLINT_ORES = forgeTag("ores/glint");
+        public static final TagKey<Block> SOULSTEEL_BLOCKS = forgeTag("storage_blocks/soulsteel");
 
         private static TagKey<Block> tag(String name)
         {

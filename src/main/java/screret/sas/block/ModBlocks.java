@@ -1,6 +1,10 @@
 package screret.sas.block;
 
+import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.DropExperienceBlock;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.material.Material;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -15,9 +19,11 @@ public class ModBlocks {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, SpellsAndSorcerers.MODID);
 
 
-    // Creates a new Block with the id "sas:example_block", combining the namespace and path
     public static final RegistryObject<Block> WAND_TABLE = BLOCKS.register("wand_table", WandTableBlock::new);
     public static final RegistryObject<Block> SUMMON_SIGN = BLOCKS.register("summon_sign", SummonSignBlock::new);
     public static final RegistryObject<Block> PALANTIR = BLOCKS.register("palantir", PalantirBlock::new);
 
+
+    public static final RegistryObject<Block> SOULSTEEL_BLOCK = BLOCKS.register("soulsteel_block", () -> new Block(BlockBehaviour.Properties.of(Material.HEAVY_METAL).strength(5.0F)));
+    public static final RegistryObject<Block> GLINT_ORE = BLOCKS.register("glint_ore", () -> new DropExperienceBlock(BlockBehaviour.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(3.0F, 9.0F), UniformInt.of(5, 10)));
 }

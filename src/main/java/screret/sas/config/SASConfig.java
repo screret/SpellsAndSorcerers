@@ -1,15 +1,6 @@
 package screret.sas.config;
 
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.common.Tags;
-import net.minecraftforge.registries.ForgeRegistries;
-import org.apache.commons.lang3.tuple.Pair;
-import screret.sas.item.ModItems;
-
-import java.util.Arrays;
-import java.util.List;
 
 public class SASConfig {
 
@@ -31,6 +22,8 @@ public class SASConfig {
                     .comment("Mana bar's Y position from bottom of screen.")
                     .translation("sas.configgui.manaBarY")
                     .defineInRange("manaBarY", 57, Integer.MIN_VALUE, Integer.MAX_VALUE);
+
+            builder.pop();
         }
 
         static {
@@ -43,18 +36,24 @@ public class SASConfig {
     public static class Server {
         public static final ForgeConfigSpec serverSpec;
         public static ForgeConfigSpec.BooleanValue useMana;
+        public static ForgeConfigSpec.BooleanValue armorGiveEffects;
+
         public static ForgeConfigSpec.IntValue maxDefaultMana;
 
         public static ForgeConfigSpec.BooleanValue dropWandCores;
 
         private static void setupConfig(ForgeConfigSpec.Builder builder){
-            builder.comment("Spells & Sorcerers Common Configuration")
-                    .push("common");
+            builder.comment("Spells & Sorcerers Server Configuration")
+                    .push("server");
 
             useMana = builder
                     .comment("Is Mana used?")
                     .translation("sas.configgui.useMana")
                     .define("useMana", true);
+            armorGiveEffects = builder
+                    .comment("Does Soulsteel armor give potion effects?")
+                    .translation("sas.configgui.armorGiveEffects")
+                    .define("armorGiveEffects", true);
             maxDefaultMana = builder
                     .comment("Maximum default mana (no potion effects)")
                     .translation("sas.configgui.maxDefaultMana")
@@ -63,6 +62,8 @@ public class SASConfig {
                     .comment("Do wizards drop wand cores?")
                     .translation("sas.configgui.dropWandCores")
                     .define("dropWandCores", true);
+
+            builder.pop();
         }
 
         static {

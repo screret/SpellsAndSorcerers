@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "soulsteel_ingot",
+  "key": {
+    "#": {
+      "tag": "forge:nuggets/soulsteel"
+    }
+  },
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "result": {
+    "item": "sas:soulsteel_ingot"
+  }
+}

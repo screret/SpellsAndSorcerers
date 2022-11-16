@@ -2,14 +2,7 @@
 	"format_version": "1.8.0",
 	"animations": {
 		"animation.summon_sign.idle": {
-			"loop": true,
-			"bones": {
-				"bone": {
-					"rotation": {
-						"vector": [0, 0, 0]
-					}
-				}
-			}
+			"loop": true
 		},
 		"animation.summon_sign.summon": {
 			"loop": true,

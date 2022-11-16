@@ -28,6 +28,8 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.RegisterEvent;
 import org.slf4j.Logger;
 import screret.sas.ability.ModWandAbilities;
+import screret.sas.alchemy.effect.ModMobEffects;
+import screret.sas.alchemy.potion.ModPotions;
 import screret.sas.api.capability.ability.ICapabilityWandAbility;
 import screret.sas.api.capability.mana.ICapabilityMana;
 import screret.sas.api.capability.mana.ManaProvider;
@@ -77,15 +79,17 @@ public class SpellsAndSorcerers {
         WandAbilityRegistry.WAND_ABILITIES.register(modEventBus);
         ModWandAbilities.init();
 
-        // Register the Deferred Register to the mod event bus so blocks get registered
         ModBlocks.BLOCKS.register(modEventBus);
-        // Register the Deferred Register to the mod event bus so items get registered
         ModItems.ITEMS.register(modEventBus);
+
         ModEnchantments.ENCHANTS.register(modEventBus);
         ModEnchantments.ENCHANTS_MINECRAFT.register(modEventBus);
 
         ModRecipes.RECIPE_TYPES.register(modEventBus);
         ModRecipes.RECIPE_SERIALIZERS.register(modEventBus);
+
+        ModMobEffects.EFFECTS.register(modEventBus);
+        ModPotions.POTIONS.register(modEventBus);
 
         ModContainers.MENU_TYPES.register(modEventBus);
 
@@ -103,7 +107,9 @@ public class SpellsAndSorcerers {
 
     private void commonSetup(final FMLCommonSetupEvent event) {
         // Some common setup code
-
+        event.enqueueWork(() ->  {
+            ModPotions.registerPotionMixes();
+        });
     }
 
     public void gatherData(GatherDataEvent event)

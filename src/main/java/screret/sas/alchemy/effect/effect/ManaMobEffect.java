@@ -5,9 +5,7 @@ import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.player.Player;
-import screret.sas.api.capability.mana.CapabilityMana;
 import screret.sas.api.capability.mana.ManaProvider;
-import screret.sas.config.SASConfig;
 
 public class ManaMobEffect extends MobEffect {
     public ManaMobEffect(MobEffectCategory pCategory, int pColor) {
@@ -17,7 +15,7 @@ public class ManaMobEffect extends MobEffect {
     public void removeAttributeModifiers(LivingEntity pLivingEntity, AttributeMap pAttributeMap, int pAmplifier) {
         if(pLivingEntity instanceof Player player){
             player.getCapability(ManaProvider.MANA).ifPresent((cap) -> {
-                cap.setMaxMana(SASConfig.Server.maxDefaultMana.get());
+                cap.setMaxManaStored(cap.getMaxManaStored() - 25 * (pAmplifier + 1));
             });
         }
         super.removeAttributeModifiers(pLivingEntity, pAttributeMap, pAmplifier);
@@ -26,7 +24,7 @@ public class ManaMobEffect extends MobEffect {
     public void addAttributeModifiers(LivingEntity pLivingEntity, AttributeMap pAttributeMap, int pAmplifier) {
         if(pLivingEntity instanceof Player player){
             player.getCapability(ManaProvider.MANA).ifPresent((cap) -> {
-                cap.setMaxMana(cap.getMaxManaStored() + (pAmplifier + 1) * 25);
+                cap.setMaxManaStored(cap.getMaxManaStored() + 25 * (pAmplifier + 1));
             });
         }
         super.addAttributeModifiers(pLivingEntity, pAttributeMap, pAmplifier);

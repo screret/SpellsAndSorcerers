@@ -21,5 +21,10 @@ public class SASItemTagsProvider extends ItemTagsProvider {
     protected void addTags() {
         tag(ModTags.Items.GLASS_BOTTLES).add(Items.GLASS_BOTTLE);
         tag(ModTags.Items.BOSS_SUMMON_ITEMS).add(ModItems.WAND_CORE.get(), Items.GLOWSTONE_DUST, Items.LAPIS_BLOCK, Items.ZOMBIE_HEAD);
+        tag(ModTags.Items.GLINT_ORES).add(ModItems.GLINT_ORE.get());
+        tag(ModTags.Items.GLINT_GEMS).add(ModItems.GLINT.get());
+        tag(ModTags.Items.SOULSTEEL_INGOTS).add(ModItems.SOULSTEEL_INGOT.get());
+        tag(ModTags.Items.SOULSTEEL_BLOCKS).add(ModItems.SOULSTEEL_BLOCK.get());
+        tag(ModTags.Items.SOULSTEEL_NUGGETS).add(ModItems.SOULSTEEL_NUGGET.get());
     }
 }

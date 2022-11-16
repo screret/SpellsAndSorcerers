@@ -22,7 +22,7 @@ public interface ICapabilityMana extends INBTSerializable<Tag> {
     /**
      * Sets the maximum mana amount.
      */
-    void setMaxMana(int max);
+    void setMaxManaStored(int max);
 
     /**
      * Returns the amount of mana currently stored.

@@ -22,16 +22,16 @@ import screret.sas.client.gui.WandTableScreen;
 import screret.sas.client.model.item.WandModel;
 import screret.sas.client.particle.ModParticles;
 import screret.sas.client.particle.particle.EyeParticle;
+import screret.sas.client.renderer.armor.SoulsteelArmorRenderer;
 import screret.sas.client.renderer.blockentity.PalantirBERenderer;
 import screret.sas.client.renderer.blockentity.SummonSignBERenderer;
 import screret.sas.client.renderer.entity.BossWizardRenderer;
 import screret.sas.client.renderer.entity.WizardRenderer;
 import screret.sas.container.ModContainers;
 import screret.sas.entity.ModEntities;
-import screret.sas.entity.entity.BossWizardEntity;
 import screret.sas.item.ModItems;
-import software.bernie.geckolib3.core.molang.LazyVariable;
-import software.bernie.geckolib3.resource.GeckoLibCache;
+import screret.sas.item.item.ModArmorItem;
+import software.bernie.geckolib3.renderers.geo.GeoArmorRenderer;
 
 @Mod.EventBusSubscriber(modid = SpellsAndSorcerers.MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ClientModEvents {
@@ -55,7 +55,11 @@ public class ClientModEvents {
 
         event.registerBlockEntityRenderer(ModBlockEntities.SUMMON_SIGN_BE.get(), SummonSignBERenderer::new);
         event.registerBlockEntityRenderer(ModBlockEntities.PALANTIR_BE.get(), PalantirBERenderer::new);
+    }
 
+    @SubscribeEvent
+    public static void registerArmorRenderers(final EntityRenderersEvent.AddLayers event) {
+        GeoArmorRenderer.registerArmorRenderer(ModArmorItem.class, SoulsteelArmorRenderer::new);
     }
 
     @SubscribeEvent

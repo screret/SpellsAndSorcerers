@@ -1,1 +1,4 @@
-// 1.19.2	2022-11-04T15:05:55.204205	Tags for minecraft:block
+// 1.19.2	2022-11-16T13:27:49.2610277	Tags for minecraft:block
+9994f212884e8264af96eaba34aa7e89696d8994 data/forge/tags/blocks/base_stone_end.json
+23aec45c507500c97e45b55c106c982172596d23 data/forge/tags/blocks/ores/glint.json
+285e0257e2bc9d7707baec95ddd4312f80a30d10 data/forge/tags/blocks/storage_blocks/soulsteel.json

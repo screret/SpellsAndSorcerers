@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "soulsteel_ingot",
+  "ingredients": [
+    {
+      "item": "sas:glint"
+    },
+    {
+      "item": "sas:glint"
+    },
+    {
+      "item": "sas:soul_bottle"
+    },
+    {
+      "item": "sas:soul_bottle"
+    }
+  ],
+  "result": {
+    "item": "sas:soulsteel_ingot"
+  }
+}
