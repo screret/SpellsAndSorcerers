@@ -3,10 +3,10 @@
   "group": "soulsteel_ingot",
   "ingredients": [
     {
-      "item": "sas:glint"
+      "tag": "forge:gems/glint"
     },
     {
-      "item": "sas:glint"
+      "tag": "forge:gems/glint"
     },
     {
       "item": "sas:soul_bottle"

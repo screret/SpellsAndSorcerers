@@ -1,3 +1,7 @@
 {
-  "parent": "geckolib3:block/box"
+  "parent": "builtin/entity",
+  "texture_size": [
+    16,
+    32
+  ]
 }

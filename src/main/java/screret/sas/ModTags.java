@@ -35,10 +35,9 @@ public class ModTags {
     }
 
     public static final class Blocks {
-
-        public static final TagKey<Block> BASE_STONE_END = forgeTag("base_stone_end");
         public static final TagKey<Block> GLINT_ORES = forgeTag("ores/glint");
         public static final TagKey<Block> SOULSTEEL_BLOCKS = forgeTag("storage_blocks/soulsteel");
+
 
         private static TagKey<Block> tag(String name)
         {

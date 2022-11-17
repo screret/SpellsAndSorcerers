@@ -1,6 +1,7 @@
 package screret.sas.item.item;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.InteractionHand;
@@ -11,7 +12,10 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import screret.sas.SpellsAndSorcerers;
+import screret.sas.ability.ModWandAbilities;
 import screret.sas.api.capability.ability.ICapabilityWandAbility;
 import screret.sas.api.capability.ability.WandAbilityProvider;
 import screret.sas.api.capability.mana.ManaProvider;
@@ -21,6 +25,7 @@ import screret.sas.client.item.WandItemClientExtensions;
 import screret.sas.enchantment.ModEnchantments;
 
 import javax.annotation.Nullable;
+import java.util.function.Consumer;
 
 public class WandItem extends Item {
 
@@ -52,8 +57,12 @@ public class WandItem extends Item {
             var main = new WandAbilityInstance(nbt.getCompound(WandAbility.BASIC_ABILITY_KEY));
 
             WandAbilityInstance crouch = null;
-            if(nbt.contains(WandAbility.CROUCH_ABILITY_KEY, 10)){
+            if(nbt.contains(WandAbility.CROUCH_ABILITY_KEY, Tag.TAG_COMPOUND)){
                 crouch = new WandAbilityInstance(nbt.getCompound(WandAbility.CROUCH_ABILITY_KEY));
+            }
+
+            if(crouch == null && main.getAbility() != null && main.getAbility().equals(ModWandAbilities.HEAL.get())){
+                crouch = new WandAbilityInstance(ModWandAbilities.HEAL_SELF.get());
             }
             return new WandAbilityProvider(main, crouch);
         }
@@ -146,7 +155,7 @@ public class WandItem extends Item {
         return UseAnim.CUSTOM;
     }
 
-    public void initializeClient(java.util.function.Consumer<net.minecraftforge.client.extensions.common.IClientItemExtensions> consumer) {
+    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
         consumer.accept(new WandItemClientExtensions());
     }
 

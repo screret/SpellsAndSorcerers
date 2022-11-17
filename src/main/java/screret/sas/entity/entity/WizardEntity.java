@@ -106,6 +106,9 @@ public class WizardEntity extends SpellcasterIllager implements RangedAttackMob,
     @Override
     protected void populateDefaultEquipmentSlots(RandomSource pRandom, DifficultyInstance pDifficulty) {
         if(possibleWands == null){
+            if(Util.customWands.isEmpty()){
+                Util.addItems();
+            }
             possibleWands = Util.customWands.values().stream().toList();
         }
         this.setItemSlot(EquipmentSlot.MAINHAND, possibleWands.get(pRandom.nextInt(possibleWands.size() - 1)));

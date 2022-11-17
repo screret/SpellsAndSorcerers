@@ -14,13 +14,16 @@ import net.minecraft.world.level.block.entity.EnchantmentTableBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 import screret.sas.blockentity.ModBlockEntities;
 import screret.sas.blockentity.blockentity.PalantirBE;
 
 public class PalantirBlock extends BaseEntityBlock {
-    protected static final VoxelShape SHAPE = Block.box(4.0D, 0.0D, 4.0D, 12.0D, 8.0D, 12.0D);
+    private static final VoxelShape BASE = Block.box(4.0D, 0.0D, 4.0D, 12.0D, 2.0D, 12.0D);
+    private static final VoxelShape TOP = Block.box(5.0D, 2.0D, 5.0D, 11.0D, 8.0D, 11.0D);
+    protected static final VoxelShape SHAPE = Shapes.or(BASE, TOP);
 
 
     public PalantirBlock() {

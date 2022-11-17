@@ -11,6 +11,7 @@ import screret.sas.SpellsAndSorcerers;
 import screret.sas.block.ModBlocks;
 import screret.sas.entity.ModEntities;
 import screret.sas.item.item.ModArmorItem;
+import screret.sas.item.item.PalantirItem;
 import screret.sas.item.item.WandCoreItem;
 import screret.sas.item.item.WandItem;
 import screret.sas.item.material.ModArmorMaterials;
@@ -27,7 +28,7 @@ public class ModItems {
     //BLOCK ITEMS
     public static final RegistryObject<Item> WAND_TABLE = ITEMS.register("wand_table", blockItem(ModBlocks.WAND_TABLE));
     public static final RegistryObject<Item> SUMMON_SIGN = ITEMS.register("summon_sign", blockItem(ModBlocks.SUMMON_SIGN));
-    public static final RegistryObject<Item> PALANTIR = ITEMS.register("palantir", blockItem(ModBlocks.PALANTIR));
+    public static final RegistryObject<Item> PALANTIR = ITEMS.register("palantir", PalantirItem::new);
     public static final RegistryObject<Item> SOULSTEEL_BLOCK = ITEMS.register("soulsteel_block", blockItem(ModBlocks.SOULSTEEL_BLOCK));
     public static final RegistryObject<Item> GLINT_ORE = ITEMS.register("glint_ore", blockItem(ModBlocks.GLINT_ORE));
 
@@ -39,7 +40,7 @@ public class ModItems {
 
 
     //OTHER ITEMS
-    public static final RegistryObject<Item> WAND_HANDLE = ITEMS.register("handle", basicItem());
+    public static final RegistryObject<Item> HANDLE = ITEMS.register("handle", basicItem());
     public static final RegistryObject<Item> SOUL_BOTTLE = ITEMS.register("soul_bottle", () -> new Item(basicItemProperties().craftRemainder(Items.GLASS_BOTTLE)));
     public static final RegistryObject<Item> CTHULHU_EYE = ITEMS.register("cthulhu_eye", basicItem());
     public static final RegistryObject<Item> SOULSTEEL_INGOT = ITEMS.register("soulsteel_ingot", basicItem());

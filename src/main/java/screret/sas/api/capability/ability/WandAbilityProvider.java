@@ -5,6 +5,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraftforge.common.capabilities.*;
 import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
+import screret.sas.SpellsAndSorcerers;
 import screret.sas.api.wand.ability.WandAbilityInstance;
 
 import javax.annotation.Nullable;

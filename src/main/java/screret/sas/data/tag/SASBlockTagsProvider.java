@@ -18,9 +18,10 @@ public class SASBlockTagsProvider extends BlockTagsProvider {
     }
 
     protected void addTags() {
-        tag(ModTags.Blocks.BASE_STONE_END).add(Blocks.END_STONE);
         tag(ModTags.Blocks.GLINT_ORES).add(ModBlocks.GLINT_ORE.get());
         tag(ModTags.Blocks.SOULSTEEL_BLOCKS).add(ModBlocks.SOULSTEEL_BLOCK.get());
+
         tag(Tags.Blocks.NEEDS_NETHERITE_TOOL).add(ModBlocks.GLINT_ORE.get());
+        tag(BlockTags.MINEABLE_WITH_PICKAXE).add(ModBlocks.GLINT_ORE.get());
     }
 }

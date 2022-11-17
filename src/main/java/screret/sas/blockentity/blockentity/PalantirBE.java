@@ -21,7 +21,7 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
 public class PalantirBE extends BlockEntity implements IAnimatable {
-    private static final float MAX_LOOK_X_INCREASE = 2f, MAX_LOOK_Y_INCREASE = 2f;
+    private static final float MAX_LOOK_X_INCREASE = 3f, MAX_LOOK_Y_INCREASE = 3f;
 
     public float xRot, yRot;
 
@@ -49,16 +49,16 @@ public class PalantirBE extends BlockEntity implements IAnimatable {
     }
 
     public static void eyeAnimationTick(Level pLevel, BlockPos pPos, BlockState pState, PalantirBE pBlockEntity) {
-        Player player = pLevel.getNearestPlayer((double)pPos.getX() + 0.5D, (double)pPos.getY() + 0.5D, (double)pPos.getZ() + 0.5D, 3.0D, false);
+        Player player = pLevel.getNearestPlayer((double)pPos.getX() + 0.5D, (double)pPos.getY() + 0.5D, (double)pPos.getZ() + 0.3125D, 3.0D, false);
         if (player != null) {
             double x = player.getX() - ((double)pPos.getX() + 0.5D);
             double y = player.getZ() - ((double)pPos.getZ() + 0.5D);
-            double z = player.getEyeY() - ((double) pPos.getY() + 0.3125D);
+            double z = player.getEyeY() - ((double)pPos.getY() + 0.3125D);
 
 
             double distanceXY = Math.sqrt(x * x + y * y);
-            float toY = (float)(Mth.atan2(y, x) * Mth.RAD_TO_DEG) + 90.0F;
             float toX = (float) -(Mth.atan2(z, distanceXY) * Mth.RAD_TO_DEG);
+            float toY = (float) -(Mth.atan2(y, x) * Mth.RAD_TO_DEG) + 90.0F;
             pBlockEntity.xRot = pBlockEntity.rotlerp(pBlockEntity.xRot, toX, MAX_LOOK_X_INCREASE);
             pBlockEntity.yRot = pBlockEntity.rotlerp(pBlockEntity.yRot, toY, MAX_LOOK_Y_INCREASE);
         } else {

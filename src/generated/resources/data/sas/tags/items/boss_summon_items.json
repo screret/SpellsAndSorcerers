@@ -1,7 +1,7 @@
 {
   "__comment": "DO NOT ADD TAG VALUES HERE; ONLY ITEMS",
   "values": [
-    "minecraft:air",
+    "sas:wand_core",
     "minecraft:glowstone_dust",
     "minecraft:lapis_block",
     "minecraft:zombie_head"

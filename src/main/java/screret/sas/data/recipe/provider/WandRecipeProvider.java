@@ -6,21 +6,15 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraftforge.common.Tags;
-import screret.sas.SpellsAndSorcerers;
 import screret.sas.Util;
 import screret.sas.ability.ModWandAbilities;
-import screret.sas.ability.ability.ProjectileAbility;
-import screret.sas.ability.ability.SubAbility;
 import screret.sas.api.wand.ability.WandAbility;
-import screret.sas.api.wand.ability.WandAbilityRegistry;
 import screret.sas.data.recipe.builder.WandRecipeBuilder;
-import screret.sas.item.ModCreativeTab;
 import screret.sas.item.ModItems;
 
 import java.util.function.Consumer;
@@ -37,7 +31,7 @@ public class WandRecipeProvider extends RecipeProvider {
         getBuilder(ModWandAbilities.DAMAGE.get())
                 .pattern("BCB")
                 .pattern("LSL")
-                .define('S', ModItems.WAND_HANDLE.get())
+                .define('S', ModItems.HANDLE.get())
                 .define('C', getWandCore(ModWandAbilities.DAMAGE.get()))
                 .define('L', Tags.Items.LEATHER)
                 .define('B', ModItems.SOUL_BOTTLE.get())
@@ -48,7 +42,7 @@ public class WandRecipeProvider extends RecipeProvider {
         getBuilder(ModWandAbilities.EXPLODE.get())
                 .pattern("BCB")
                 .pattern("LSL")
-                .define('S', ModItems.WAND_HANDLE.get())
+                .define('S', ModItems.HANDLE.get())
                 .define('C', getWandCore(ModWandAbilities.EXPLODE.get()))
                 .define('L', Tags.Items.LEATHER)
                 .define('B', Items.TNT)
@@ -59,7 +53,7 @@ public class WandRecipeProvider extends RecipeProvider {
         getBuilder(ModWandAbilities.LARGE_FIREBALL.get())
                 .pattern("BCB")
                 .pattern("LSL")
-                .define('S', ModItems.WAND_HANDLE.get())
+                .define('S', ModItems.HANDLE.get())
                 .define('C', getWandCore(ModWandAbilities.LARGE_FIREBALL.get()))
                 .define('L', Tags.Items.LEATHER)
                 .define('B', Items.FIRE_CHARGE)
@@ -70,7 +64,7 @@ public class WandRecipeProvider extends RecipeProvider {
         getBuilder(ModWandAbilities.SMALL_FIREBALL.get())
                 .pattern("BCB")
                 .pattern("LSL")
-                .define('S', ModItems.WAND_HANDLE.get())
+                .define('S', ModItems.HANDLE.get())
                 .define('C', getWandCore(ModWandAbilities.SMALL_FIREBALL.get()))
                 .define('L', Tags.Items.LEATHER)
                 .define('B', Items.FIREWORK_STAR)
@@ -81,7 +75,7 @@ public class WandRecipeProvider extends RecipeProvider {
         getBuilder(ModWandAbilities.HEAL.get())
                 .pattern("BCB")
                 .pattern("LSL")
-                .define('S', ModItems.WAND_HANDLE.get())
+                .define('S', ModItems.HANDLE.get())
                 .define('C', getWandCore(ModWandAbilities.HEAL.get()))
                 .define('L', Tags.Items.LEATHER)
                 .define('B', PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.STRONG_HEALING))

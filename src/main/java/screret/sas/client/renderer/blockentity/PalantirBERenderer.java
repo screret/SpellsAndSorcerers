@@ -7,12 +7,8 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
-import screret.sas.block.block.SummonSignBlock;
 import screret.sas.blockentity.blockentity.PalantirBE;
-import screret.sas.blockentity.blockentity.SummonSignBE;
 import screret.sas.client.model.blockentity.PalantirModel;
-import screret.sas.client.model.blockentity.SummonSignModel;
-import software.bernie.geckolib3.core.util.Color;
 import software.bernie.geckolib3.renderers.geo.GeoBlockRenderer;
 
 public class PalantirBERenderer extends GeoBlockRenderer<PalantirBE> {
@@ -22,6 +18,6 @@ public class PalantirBERenderer extends GeoBlockRenderer<PalantirBE> {
 
     @Override
     public RenderType getRenderType(PalantirBE animatable, float partialTick, PoseStack poseStack, @Nullable MultiBufferSource bufferSource, @Nullable VertexConsumer buffer, int packedLight, ResourceLocation texture) {
-        return RenderType.entityTranslucentEmissive(getTextureLocation(animatable));
+        return RenderType.entityTranslucentCull(getTextureLocation(animatable));
     }
 }

@@ -7,7 +7,7 @@
       {
         "target": {
           "predicate_type": "minecraft:tag_match",
-          "tag": "forge:base_stone_end"
+          "tag": "forge:end_stones"
         },
         "state": {
           "Name": "sas:glint_ore"

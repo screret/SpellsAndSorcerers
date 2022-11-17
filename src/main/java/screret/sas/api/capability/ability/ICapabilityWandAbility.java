@@ -11,9 +11,7 @@ import screret.sas.api.wand.ability.WandAbilityInstance;
 
 import java.util.List;
 
-public interface ICapabilityWandAbility extends INBTSerializable<CompoundTag>{
-
-    //void execute(IWandAbility ability, Level level, Player player, InteractionHand hand);
+public interface ICapabilityWandAbility extends INBTSerializable<CompoundTag> {
 
     WandAbilityInstance getCrouchAbility();
 

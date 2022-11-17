@@ -2,6 +2,7 @@ package screret.sas.api.capability.ability;
 
 import com.google.common.collect.Lists;
 import net.minecraft.nbt.CompoundTag;
+import screret.sas.SpellsAndSorcerers;
 import screret.sas.api.wand.ability.WandAbility;
 import screret.sas.api.wand.ability.WandAbilityInstance;
 
