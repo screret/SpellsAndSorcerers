@@ -23,17 +23,23 @@ public class ClientForgeEvents {
     private static Vec3 randPos;
 
     @SubscribeEvent
-    public static final void renderEyeHallucinations(final RenderLevelStageEvent event){
+    public static void renderEyeHallucinations(final RenderLevelStageEvent event){
         if(event.getStage() == RenderLevelStageEvent.Stage.AFTER_SKY){
             if(Minecraft.getInstance().player.getInventory().contains(new ItemStack(ModItems.CTHULHU_EYE.get()))){
                 var level = Minecraft.getInstance().level;
-                if(hallucination == null){
-                    hallucination = ModEntities.BOSS_WIZARD.get().create(level);
-                }
-
                 var clientPlayer = Minecraft.getInstance().player;
                 var camEntPos = clientPlayer.position();
-                if(clientPlayer.tickCount % (int)Util.randomInRange(level.getRandom(), 80, 120) == 0){
+
+                if(hallucination == null){
+                    hallucination = ModEntities.BOSS_WIZARD.get().create(level);
+                    hallucination.setSilent(false);
+                    hallucination.moveTo(camEntPos);
+                    hallucination.setInvulnerable(true);
+                    hallucination.setNoAi(true);
+                    level.addFreshEntity(hallucination);
+                }
+
+                if(clientPlayer.tickCount % level.getRandom().nextIntBetweenInclusive(80, 120) == 0){
                     switch (level.getRandom().nextInt(3)) {
                         case 0 -> hallucination.playSound(SoundEvents.WITCH_AMBIENT, 10, 1);
                         case 1 -> hallucination.playSound(SoundEvents.CREEPER_PRIMED, 10, 1);
@@ -51,9 +57,6 @@ public class ClientForgeEvents {
                         randPos = new Vec3(camEntPos.x + randX, camEntPos.y + randY, camEntPos.z + randZ);
                         hallucination.moveTo(camEntPos.x + randX, camEntPos.y + randY, camEntPos.z + randZ);
                     }
-                } else if(clientPlayer.tickCount % 1000 == 999){
-                    hallucination.moveTo(camEntPos);
-                    hallucination.setInvisible(true);
                 }
 
 
@@ -68,12 +71,16 @@ public class ClientForgeEvents {
                 double z = Mth.lerp(event.getPartialTick(), hallucination.zOld, hallucination.getZ());
                 float headYRot = Mth.lerp(event.getPartialTick(), hallucination.yRotO, hallucination.getYRot());
 
+                double playerX = Mth.lerp(event.getPartialTick(), clientPlayer.xOld, camEntPos.x);
+                double playerY = Mth.lerp(event.getPartialTick(), clientPlayer.yOld, camEntPos.y);
+                double playerZ = Mth.lerp(event.getPartialTick(), clientPlayer.zOld, camEntPos.z);
+
                 //event.getPoseStack().translate(randX, randY, randZ);
                 renderer.render(
                         hallucination,
-                        x - camEntPos.x,
-                        y - camEntPos.y,
-                        z - camEntPos.z,
+                        x - playerX,
+                        y - playerY,
+                        z - playerZ,
                         headYRot,
                         event.getPartialTick(),
                         event.getPoseStack(),

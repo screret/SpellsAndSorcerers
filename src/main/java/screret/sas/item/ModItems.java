@@ -10,10 +10,7 @@ import net.minecraftforge.registries.RegistryObject;
 import screret.sas.SpellsAndSorcerers;
 import screret.sas.block.ModBlocks;
 import screret.sas.entity.ModEntities;
-import screret.sas.item.item.ModArmorItem;
-import screret.sas.item.item.PalantirItem;
-import screret.sas.item.item.WandCoreItem;
-import screret.sas.item.item.WandItem;
+import screret.sas.item.item.*;
 import screret.sas.item.material.ModArmorMaterials;
 import screret.sas.item.material.ModTiers;
 
@@ -42,7 +39,7 @@ public class ModItems {
     //OTHER ITEMS
     public static final RegistryObject<Item> HANDLE = ITEMS.register("handle", basicItem());
     public static final RegistryObject<Item> SOUL_BOTTLE = ITEMS.register("soul_bottle", () -> new Item(basicItemProperties().craftRemainder(Items.GLASS_BOTTLE)));
-    public static final RegistryObject<Item> CTHULHU_EYE = ITEMS.register("cthulhu_eye", basicItem());
+    public static final RegistryObject<Item> CTHULHU_EYE = ITEMS.register("cthulhu_eye", CthulhuEyeItem::new);
     public static final RegistryObject<Item> SOULSTEEL_INGOT = ITEMS.register("soulsteel_ingot", basicItem());
     public static final RegistryObject<Item> SOULSTEEL_NUGGET = ITEMS.register("soulsteel_nugget", basicItem());
     public static final RegistryObject<Item> GLINT = ITEMS.register("glint", basicItem());

@@ -4,6 +4,7 @@ import com.mojang.logging.LogUtils;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.stats.Stats;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.TagManager;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CreativeModeTab;
@@ -13,6 +14,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.data.event.GatherDataEvent;
+import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
@@ -39,6 +41,7 @@ import screret.sas.blockentity.ModBlockEntities;
 import screret.sas.client.particle.ModParticles;
 import screret.sas.config.SASConfig;
 import screret.sas.container.ModContainers;
+import screret.sas.data.conversion.builder.EyeConversionProvider;
 import screret.sas.data.recipe.provider.ModRecipeProvider;
 import screret.sas.data.recipe.provider.WandRecipeProvider;
 import screret.sas.data.tag.SASBiomeTagsProvider;
@@ -51,6 +54,7 @@ import screret.sas.entity.entity.WizardEntity;
 import screret.sas.item.ModCreativeTab;
 import screret.sas.item.ModItems;
 import screret.sas.recipe.ModRecipes;
+import screret.sas.resource.EyeConversionManager;
 
 import static screret.sas.Util.addWand;
 
@@ -123,6 +127,7 @@ public class SpellsAndSorcerers {
 
         gen.addProvider(event.includeServer(), new WandRecipeProvider(gen));
         gen.addProvider(event.includeServer(), new ModRecipeProvider(gen));
+        gen.addProvider(event.includeServer(), new EyeConversionProvider(gen));
 
         gen.addProvider(event.includeServer(), new SASBiomeTagsProvider(gen, existingFileHelper));
 
@@ -168,6 +173,12 @@ public class SpellsAndSorcerers {
                 event.getEntity().awardStat(Stats.ITEM_USED.get(event.getEntity().getUseItem().getItem()));
                 ItemUtils.createFilledResult(event.getEntity().getUseItem(), event.getEntity(), stack);
             }
+        }
+
+        @SubscribeEvent
+        public static void registerReloadListeners(final AddReloadListenerEvent event){
+            EyeConversionManager.INSTANCE = new EyeConversionManager((TagManager) event.getServerResources().listeners().get(0));
+            event.addListener(EyeConversionManager.INSTANCE);
         }
     }
 }
