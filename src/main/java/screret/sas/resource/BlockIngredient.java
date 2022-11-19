@@ -8,9 +8,12 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.GsonHelper;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.registries.ForgeRegistries;
+import screret.sas.SpellsAndSorcerers;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -18,18 +21,18 @@ import java.util.function.Predicate;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-public class BlockIngredient implements Predicate<Block>  {
+public class BlockIngredient implements Predicate<BlockState> {
 
     public static final BlockIngredient EMPTY = new BlockIngredient(Stream.empty());
     private final BlockIngredient.Value[] values;
     @Nullable
-    private Block[] blocks;
+    private BlockState[] blocks;
 
     protected BlockIngredient(Stream<? extends BlockIngredient.Value> pValues) {
         this.values = pValues.toArray(Value[]::new);
     }
 
-    public Block[] getBlocks() {
+    public BlockState[] getBlocks() {
         this.dissolve();
         return this.blocks;
     }
@@ -37,20 +40,21 @@ public class BlockIngredient implements Predicate<Block>  {
     private void dissolve() {
         if (this.blocks == null) {
             this.blocks = Arrays.stream(this.values).flatMap((value) -> {
-                return value.getItems().stream();
-            }).distinct().toArray(Block[]::new);
+                return value.getBlocks().stream();
+            }).distinct().toArray(BlockState[]::new);
         }
 
     }
 
-    public boolean test(@Nullable Block block) {
+    public boolean test(@Nullable BlockState block) {
         if (block != null) {
             this.dissolve();
+            if(this.blocks.length == 0){
+                return block.isAir();
+            }
 
-            for (Block element : this.blocks) {
-                if (element == block) {
-                    return true;
-                }
+            for (var element : this.blocks) {
+                if(block.is(element.getBlock())) return true;
             }
 
         }
@@ -59,7 +63,7 @@ public class BlockIngredient implements Predicate<Block>  {
 
     public final void toNetwork(FriendlyByteBuf pBuffer) {
         this.dissolve();
-        pBuffer.writeCollection(Arrays.stream(this.blocks).map(ForgeRegistries.BLOCKS::getKey).toList(), FriendlyByteBuf::writeResourceLocation);
+        pBuffer.writeCollection(Arrays.stream(this.blocks).map(BlockState::getBlock).map(ForgeRegistries.BLOCKS::getKey).toList(), FriendlyByteBuf::writeResourceLocation);
     }
 
     public JsonElement toJson() {
@@ -84,10 +88,6 @@ public class BlockIngredient implements Predicate<Block>  {
         this.blocks = null;
     }
 
-    public boolean isSimple() {
-        return true;
-    }
-
     public BlockIngredientSerializer getSerializer() {
         return BlockIngredientSerializer.INSTANCE;
     }
@@ -102,11 +102,15 @@ public class BlockIngredient implements Predicate<Block>  {
     }
 
     public static BlockIngredient of(Block... pStacks) {
+        return of(Arrays.stream(pStacks).map(Block::defaultBlockState));
+    }
+
+    public static BlockIngredient of(BlockState... pStacks) {
         return of(Arrays.stream(pStacks));
     }
 
-    public static BlockIngredient of(Stream<Block> pStacks) {
-        return fromValues(pStacks.filter(Objects::nonNull).map(BlockIngredient.BlockValue::new));
+    public static BlockIngredient of(Stream<BlockState> pStacks) {
+        return fromValues(pStacks.filter((p_43944_) -> !p_43944_.isAir()).map(BlockIngredient.BlockValue::new));
     }
 
     public static BlockIngredient of(TagKey<Block> pTag) {
@@ -152,46 +156,44 @@ public class BlockIngredient implements Predicate<Block>  {
             TagKey<Block> key = TagKey.create(Registry.BLOCK_REGISTRY, resourcelocation);
             return new BlockIngredient.TagValue(key);
         } else {
-            throw new JsonParseException("An BlockIngredient entry needs either a tag or an item");
+            throw new JsonParseException("An BlockIngredient entry needs either a tag or a block");
         }
     }
 
-    //Merges several vanilla BlockIngredients together. As a quirk of how the json is structured, we can't tell if it's a single BlockIngredient type or multiple, so we split per item and re-merge here.
-    //Only public for internal use, so we can access a private field in here.
-    public static BlockIngredient merge(Collection<BlockIngredient> parts) {
-        return fromValues(parts.stream().flatMap(i -> Arrays.stream(i.values)));
-    }
-
     public static Block blockFromJson(JsonObject pItemObject) {
-        String s = GsonHelper.getAsString(pItemObject, "item");
-        Block item = Registry.BLOCK.getOptional(new ResourceLocation(s)).orElseThrow(() -> {
+        String s = GsonHelper.getAsString(pItemObject, "block");
+        Block block = Registry.BLOCK.getOptional(new ResourceLocation(s)).orElseThrow(() -> {
             return new JsonSyntaxException("Unknown item '" + s + "'");
         });
-        if (item == Blocks.AIR) {
+        if (block == Blocks.AIR) {
             throw new JsonSyntaxException("Invalid item: " + s);
         } else {
-            return item;
+            return block;
         }
     }
 
     public static class BlockValue implements BlockIngredient.Value {
-        private final Block block;
+        private final BlockState block;
 
-        public BlockValue(Block block) {
+        public BlockValue(BlockState block) {
             this.block = block;
         }
 
-        public BlockValue(ResourceLocation location) {
-            this.block = ForgeRegistries.BLOCKS.getValue(location);
+        public BlockValue(Block block) {
+            this.block = block.defaultBlockState();
         }
 
-        public Collection<Block> getItems() {
+        public BlockValue(ResourceLocation location) {
+            this.block = ForgeRegistries.BLOCKS.getValue(location).defaultBlockState();
+        }
+
+        public Collection<BlockState> getBlocks() {
             return Collections.singleton(this.block);
         }
 
         public JsonObject serialize() {
             JsonObject jsonobject = new JsonObject();
-            jsonobject.addProperty("block", Registry.BLOCK.getKey(this.block).toString());
+            jsonobject.addProperty("block", ForgeRegistries.BLOCKS.getKey(this.block.getBlock()).toString());
             return jsonobject;
         }
     }
@@ -203,15 +205,15 @@ public class BlockIngredient implements Predicate<Block>  {
             this.tag = pTag;
         }
 
-        public Collection<Block> getItems() {
-            List<Block> list = Lists.newArrayList();
+        public Collection<BlockState> getBlocks() {
+            List<BlockState> list = Lists.newArrayList();
 
             for(Holder<Block> holder : Registry.BLOCK.getTagOrEmpty(this.tag)) {
-                list.add(holder.value());
+                list.add(holder.value().defaultBlockState());
             }
 
             if (list.size() == 0) {
-                list.add(Blocks.BARRIER);
+                list.add(Blocks.BARRIER.defaultBlockState());
             }
             return list;
         }
@@ -224,7 +226,7 @@ public class BlockIngredient implements Predicate<Block>  {
     }
 
     public interface Value {
-        Collection<Block> getItems();
+        Collection<BlockState> getBlocks();
 
         JsonObject serialize();
     }

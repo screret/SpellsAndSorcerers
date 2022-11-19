@@ -37,6 +37,7 @@ public class SASConfig {
         public static final ForgeConfigSpec serverSpec;
         public static ForgeConfigSpec.BooleanValue useMana;
         public static ForgeConfigSpec.BooleanValue armorGiveEffects;
+        public static ForgeConfigSpec.BooleanValue enableQthulhuEyeConversion;
 
         public static ForgeConfigSpec.IntValue maxDefaultMana;
 
@@ -62,7 +63,10 @@ public class SASConfig {
                     .comment("Do wizards drop wand cores?")
                     .translation("sas.configgui.dropWandCores")
                     .define("dropWandCores", true);
-
+            enableQthulhuEyeConversion = builder
+                    .comment("Does the Eye of Qthulhu convert blocks?")
+                    .translation("sas.configgui.enableQthulhuEyeConversion")
+                    .define("enableQthulhuEyeConversion", true);
             builder.pop();
         }
 

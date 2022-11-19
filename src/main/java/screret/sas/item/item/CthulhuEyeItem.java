@@ -1,6 +1,11 @@
 package screret.sas.item.item;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.DustParticleOptions;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
@@ -10,9 +15,16 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.fml.DistExecutor;
 import screret.sas.SpellsAndSorcerers;
+import screret.sas.config.SASConfig;
 import screret.sas.resource.EyeConversionManager;
 
 public class CthulhuEyeItem extends Item {
@@ -20,32 +32,62 @@ public class CthulhuEyeItem extends Item {
         super(new Item.Properties().tab(SpellsAndSorcerers.SAS_TAB));
     }
 
-
+    @Override
     public InteractionResult useOn(UseOnContext pContext) {
-        var player = pContext.getPlayer();
-        ItemStack itemstack = pContext.getItemInHand();
-        var level = pContext.getLevel();
-        if(!level.isClientSide){
-            BlockHitResult hitResult = getPlayerPOVHitResult(level, player, ClipContext.Fluid.SOURCE_ONLY);
-            if (hitResult.getType() != HitResult.Type.MISS) {
-                if (hitResult.getType() == HitResult.Type.BLOCK) {
-                    BlockPos blockpos = hitResult.getBlockPos();
-                    if (!level.mayInteract(player, blockpos)) {
-                        return InteractionResult.SUCCESS;
-                    }
+        if(SASConfig.Server.enableQthulhuEyeConversion.get()){
+            var player = pContext.getPlayer();
+            var level = pContext.getLevel();
+            BlockPos blockpos = pContext.getClickedPos();
+            if (!level.mayInteract(player, blockpos)) {
+                return InteractionResult.PASS;
+            }
 
-                    for (var block : EyeConversionManager.INSTANCE.getAllConversions()){
-                        if(block.getValue().test(level.getBlockState(blockpos).getBlock())) {
-                            level.setBlockAndUpdate(blockpos, block.getKey().defaultBlockState());
-                            return InteractionResult.SUCCESS;
-                        }
+            for (var block : EyeConversionManager.INSTANCE.getAllConversions()){
+                var originalState = level.getBlockState(blockpos);
+                if(block.getValue().test(originalState)) {
+                    copyProperties(level, blockpos, block.getKey().defaultBlockState(), originalState);
+                    if(!level.isClientSide){
+                        var serverLevel = (ServerLevel)level;
+                        var random = level.random;
+                        var pos = new Vec3(blockpos.getX() + 0.5D, blockpos.getY() + 0.5D, blockpos.getZ() + 0.5D);
+                        serverLevel.sendParticles(ParticleTypes.END_ROD,
+                                pos.x,
+                                pos.y,
+                                pos.z,
+                                32,
+                                random.nextDouble(),
+                                random.nextDouble(),
+                                random.nextDouble(),
+                                0.5D
+                        );
+                        serverLevel.sendParticles(ParticleTypes.TOTEM_OF_UNDYING,
+                                pos.x,
+                                pos.y,
+                                pos.z,
+                                32,
+                                random.nextDouble(),
+                                random.nextDouble(),
+                                random.nextDouble(),
+                                0.5D
+                        );
                     }
-
+                    return InteractionResult.sidedSuccess(level.isClientSide);
                 }
             }
 
         }
+        return super.useOn(pContext);
+    }
 
-        return InteractionResult.PASS;
+    private static void copyProperties(Level level, BlockPos pos, BlockState toPlace, BlockState originalState){
+        var newState = toPlace;
+        for (Property<?> property : originalState.getProperties()) {
+            newState = copyProperty(originalState, newState, property);
+        }
+        level.setBlockAndUpdate(pos, newState);
+    }
+
+    private static <T extends Comparable<T>> BlockState copyProperty(BlockState from, BlockState to, Property<T> property) {
+        return to.setValue(property, from.getValue(property));
     }
 }

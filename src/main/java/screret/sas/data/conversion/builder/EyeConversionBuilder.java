@@ -66,7 +66,7 @@ public class EyeConversionBuilder {
     private void ensureValid(ResourceLocation pId) {
 
         for (var block : ingredient.getBlocks()){
-            if(!ForgeRegistries.BLOCKS.containsValue(block)){
+            if(!ForgeRegistries.BLOCKS.containsValue(block.getBlock())){
                 throw new IllegalArgumentException("Block " + block + " is not registered!");
             }
         }

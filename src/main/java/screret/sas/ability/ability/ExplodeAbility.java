@@ -26,7 +26,7 @@ public class ExplodeAbility extends SubAbility {
 
 
     public ExplodeAbility() {
-        super(100, 60, 1, true, ExplodeAbility.PARTICLE, EnumSet.of(HitFlags.BLOCK), 0xAA0000);
+        super(100, 60, 1, true, ExplodeAbility.PARTICLE, EnumSet.of(HitFlags.BLOCK, HitFlags.NONE), 0xAA0000);
     }
 
     @Override

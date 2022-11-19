@@ -3,6 +3,7 @@ package screret.sas.resource;
 import com.google.gson.JsonObject;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.stream.Stream;
@@ -23,10 +24,10 @@ public class BlockIngredientSerializer
 
     public void write(FriendlyByteBuf buffer, BlockIngredient ingredient)
     {
-        Block[] items = ingredient.getBlocks();
-        buffer.writeVarInt(items.length);
+        BlockState[] blocks = ingredient.getBlocks();
+        buffer.writeVarInt(blocks.length);
 
-        for (Block stack : items)
-            buffer.writeResourceLocation(ForgeRegistries.BLOCKS.getKey(stack));
+        for (BlockState block : blocks)
+            buffer.writeResourceLocation(ForgeRegistries.BLOCKS.getKey(block.getBlock()));
     }
 }

@@ -4,7 +4,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderLevelStageEvent;
@@ -20,7 +22,7 @@ import screret.sas.item.ModItems;
 public class ClientForgeEvents {
 
     private static BossWizardEntity hallucination;
-    private static Vec3 randPos;
+    private static final int MIN_DISTANCE = 6;
 
     @SubscribeEvent
     public static void renderEyeHallucinations(final RenderLevelStageEvent event){
@@ -39,26 +41,21 @@ public class ClientForgeEvents {
                     level.addFreshEntity(hallucination);
                 }
 
+                if(camEntPos.distanceToSqr(hallucination.position()) < MIN_DISTANCE * MIN_DISTANCE){
+                    playHallucinationSound(level);
+                    moveHallucination(camEntPos, level);
+                }
+
                 if(clientPlayer.tickCount % level.getRandom().nextIntBetweenInclusive(80, 120) == 0){
-                    switch (level.getRandom().nextInt(3)) {
-                        case 0 -> hallucination.playSound(SoundEvents.WITCH_AMBIENT, 10, 1);
-                        case 1 -> hallucination.playSound(SoundEvents.CREEPER_PRIMED, 10, 1);
-                        case 2 -> hallucination.playSound(SoundEvents.EVOKER_AMBIENT, 10, 1);
-                        case 3 -> hallucination.playSound(SoundEvents.BEACON_AMBIENT, 10, 1);
-                    }
+                    playHallucinationSound(level);
 
                     if(level.getRandom().nextInt(3) > 1){
                         hallucination.setInvisible(true);
                     }else{
                         hallucination.setInvisible(false);
-                        var randX = Util.randomInRange(level.getRandom(),-10, 10);
-                        var randY = Util.randomInRange(level.getRandom(),-5, 5);
-                        var randZ = Util.randomInRange(level.getRandom(),-5, -10);
-                        randPos = new Vec3(camEntPos.x + randX, camEntPos.y + randY, camEntPos.z + randZ);
-                        hallucination.moveTo(camEntPos.x + randX, camEntPos.y + randY, camEntPos.z + randZ);
+                        moveHallucination(camEntPos, level);
                     }
                 }
-
 
                 var renderer = Minecraft.getInstance().getEntityRenderDispatcher();
 
@@ -75,7 +72,6 @@ public class ClientForgeEvents {
                 double playerY = Mth.lerp(event.getPartialTick(), clientPlayer.yOld, camEntPos.y);
                 double playerZ = Mth.lerp(event.getPartialTick(), clientPlayer.zOld, camEntPos.z);
 
-                //event.getPoseStack().translate(randX, randY, randZ);
                 renderer.render(
                         hallucination,
                         x - playerX,
@@ -87,9 +83,24 @@ public class ClientForgeEvents {
                         Minecraft.getInstance().renderBuffers().bufferSource(),
                         renderer.getPackedLightCoords(hallucination, event.getPartialTick())
                 );
-                //event.getPoseStack().translate(-randX, -randY, -randZ);
             }
 
+        }
+    }
+
+    private static void moveHallucination(Vec3 camEntPos, Level level){
+        var randX = Util.randomInRange(level.getRandom(),-10, 10);
+        var randY = Util.randomInRange(level.getRandom(),-5, 5);
+        var randZ = Util.randomInRange(level.getRandom(),-5, -10);
+        hallucination.moveTo(camEntPos.x + randX, camEntPos.y + randY, camEntPos.z + randZ);
+    }
+
+    private static void playHallucinationSound(Level level){
+        switch (level.getRandom().nextInt(3)) {
+            case 0 -> hallucination.playSound(SoundEvents.WITCH_AMBIENT, 10, 1);
+            case 1 -> hallucination.playSound(SoundEvents.CREEPER_PRIMED, 10, 1);
+            case 2 -> hallucination.playSound(SoundEvents.EVOKER_AMBIENT, 10, 1);
+            case 3 -> hallucination.playSound(SoundEvents.BEACON_AMBIENT, 10, 1);
         }
     }
 

@@ -4,7 +4,6 @@ import com.mojang.logging.LogUtils;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.stats.Stats;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.TagManager;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CreativeModeTab;
@@ -41,7 +40,7 @@ import screret.sas.blockentity.ModBlockEntities;
 import screret.sas.client.particle.ModParticles;
 import screret.sas.config.SASConfig;
 import screret.sas.container.ModContainers;
-import screret.sas.data.conversion.builder.EyeConversionProvider;
+import screret.sas.data.conversion.provider.EyeConversionProvider;
 import screret.sas.data.recipe.provider.ModRecipeProvider;
 import screret.sas.data.recipe.provider.WandRecipeProvider;
 import screret.sas.data.tag.SASBiomeTagsProvider;
@@ -142,6 +141,7 @@ public class SpellsAndSorcerers {
     @SubscribeEvent
     public void attachCapabilitiesPlayer(final AttachCapabilitiesEvent<Entity> event) {
         if (!(event.getObject() instanceof Player)) return;
+        if(!SASConfig.Server.useMana.get()) return;
         event.addCapability(Util.resource("mana"), new ManaProvider());
     }
 
@@ -177,7 +177,7 @@ public class SpellsAndSorcerers {
 
         @SubscribeEvent
         public static void registerReloadListeners(final AddReloadListenerEvent event){
-            EyeConversionManager.INSTANCE = new EyeConversionManager((TagManager) event.getServerResources().listeners().get(0));
+            EyeConversionManager.INSTANCE = new EyeConversionManager();
             event.addListener(EyeConversionManager.INSTANCE);
         }
     }

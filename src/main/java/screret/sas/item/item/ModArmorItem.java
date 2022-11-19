@@ -1,6 +1,5 @@
 package screret.sas.item.item;
 
-import com.google.common.collect.ImmutableMap;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
@@ -10,7 +9,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import screret.sas.alchemy.effect.ModMobEffects;
 import screret.sas.config.SASConfig;
-import screret.sas.item.material.ModArmorMaterials;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
@@ -21,8 +19,6 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.item.GeoArmorItem;
 import software.bernie.geckolib3.util.GeckoLibUtil;
-
-import java.util.Map;
 
 public class ModArmorItem extends GeoArmorItem implements IAnimatable {
     public static final MobEffectInstance SOUL_STEEL_EFFECT = new MobEffectInstance(ModMobEffects.MANA.get(), 200, 1);

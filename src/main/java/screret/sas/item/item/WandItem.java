@@ -3,18 +3,14 @@ package screret.sas.item.item;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.tags.FluidTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.material.Fluid;
-import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import screret.sas.SpellsAndSorcerers;
 import screret.sas.ability.ModWandAbilities;
 import screret.sas.api.capability.ability.ICapabilityWandAbility;
 import screret.sas.api.capability.ability.WandAbilityProvider;
@@ -22,6 +18,7 @@ import screret.sas.api.capability.mana.ManaProvider;
 import screret.sas.api.wand.ability.WandAbility;
 import screret.sas.api.wand.ability.WandAbilityInstance;
 import screret.sas.client.item.WandItemClientExtensions;
+import screret.sas.config.SASConfig;
 import screret.sas.enchantment.ModEnchantments;
 
 import javax.annotation.Nullable;
@@ -120,7 +117,7 @@ public class WandItem extends Item {
 
     public boolean deductManaFromUser(LivingEntity user, ItemStack stack, int timeCharged){
         if(user instanceof Player player && player.isCreative()) return true;
-        if(user.getCapability(ManaProvider.MANA).isPresent()){
+        if(user.getCapability(ManaProvider.MANA).isPresent() && SASConfig.Server.useMana.get()){
             var manaCap = user.getCapability(ManaProvider.MANA).resolve().get();
             var manaToDeduct = 1 + timeCharged / 4 * (6 - stack.getEnchantmentLevel(ModEnchantments.MANA_EFFICIENCY.get()));
             if(manaCap.getManaStored() < manaToDeduct) return false;

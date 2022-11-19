@@ -1,4 +1,4 @@
-package screret.sas.data.conversion.builder;
+package screret.sas.data.conversion.provider;
 
 import com.google.common.collect.Sets;
 import com.google.gson.JsonObject;
@@ -14,6 +14,7 @@ import net.minecraftforge.common.Tags;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.slf4j.Logger;
 import screret.sas.Util;
+import screret.sas.data.conversion.builder.EyeConversionBuilder;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -31,12 +32,17 @@ public class EyeConversionProvider implements DataProvider {
 
     protected void buildCraftingRecipes(Consumer<EyeConversionBuilder.Result> finished) {
         addConversion(finished, Blocks.GOLD_BLOCK, Tags.Blocks.STORAGE_BLOCKS_IRON);
+        addConversion(finished, Blocks.IRON_BLOCK, Tags.Blocks.STORAGE_BLOCKS_GOLD);
         addConversion(finished, Blocks.EMERALD_BLOCK, Tags.Blocks.STORAGE_BLOCKS_DIAMOND);
         addConversion(finished, Blocks.COAL_BLOCK, Tags.Blocks.STORAGE_BLOCKS_RAW_COPPER);
-        addConversion(finished, Blocks.COBBLED_DEEPSLATE, Tags.Blocks.COBBLESTONE);
+        addConversion(finished, Blocks.RAW_COPPER_BLOCK, Tags.Blocks.STORAGE_BLOCKS_COAL);
+        addConversion(finished, Blocks.COBBLED_DEEPSLATE, Tags.Blocks.COBBLESTONE_NORMAL);
+        addConversion(finished, Blocks.COBBLESTONE, Tags.Blocks.COBBLESTONE_DEEPSLATE);
 
         addConversion(finished, Blocks.ZOMBIE_HEAD, Blocks.SKELETON_SKULL);
+        addConversion(finished, Blocks.SKELETON_SKULL, Blocks.ZOMBIE_HEAD);
         addConversion(finished, Blocks.ZOMBIE_WALL_HEAD, Blocks.SKELETON_WALL_SKULL);
+        addConversion(finished, Blocks.SKELETON_WALL_SKULL, Blocks.ZOMBIE_WALL_HEAD);
 
     }
 

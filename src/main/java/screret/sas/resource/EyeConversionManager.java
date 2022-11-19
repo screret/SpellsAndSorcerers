@@ -33,12 +33,9 @@ public class EyeConversionManager extends SimpleJsonResourceReloadListener {
 
     private Map<Block, BlockIngredient> registeredConversions = ImmutableMap.of();
 
-    private final ICondition.IContext context; //Forge: add context
 
-
-    public EyeConversionManager(TagManager tags) {
+    public EyeConversionManager() {
         super(GSON_INSTANCE, folder);
-        this.context = new ConditionContext(tags);
     }
 
     @Override
@@ -49,11 +46,7 @@ public class EyeConversionManager extends SimpleJsonResourceReloadListener {
             ResourceLocation recipeLocation = entry.getKey();
 
             try {
-                if (entry.getValue().isJsonObject() && !CraftingHelper.processConditions(entry.getValue().getAsJsonObject(), "conditions", this.context)) {
-                    LOGGER.debug("Skipping loading recipe {} as it's conditions were not met", recipeLocation);
-                    continue;
-                }
-                Map.Entry<Block, BlockIngredient> recipe = fromJson(recipeLocation, GsonHelper.convertToJsonObject(entry.getValue(), "top element"), this.context);
+                Map.Entry<Block, BlockIngredient> recipe = fromJson(recipeLocation, GsonHelper.convertToJsonObject(entry.getValue(), "top element"));
                 if (recipe == null) {
                     LOGGER.info("Skipping loading recipe {} as it's serializer returned null", recipeLocation);
                     continue;
@@ -68,9 +61,9 @@ public class EyeConversionManager extends SimpleJsonResourceReloadListener {
         LOGGER.info("Loaded {} recipes", registeredConversions.size());
     }
 
-    public static Map.Entry<Block, BlockIngredient> fromJson(ResourceLocation pRecipeId, JsonObject pJson, ICondition.IContext context) {
+    public static Map.Entry<Block, BlockIngredient> fromJson(ResourceLocation pRecipeId, JsonObject pJson) {
         Block result = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(pJson.getAsJsonPrimitive("result").getAsString()));
-        BlockIngredient ingredient = BlockIngredient.fromJson(pJson);
+        BlockIngredient ingredient = BlockIngredient.fromJson(GsonHelper.getAsJsonObject(pJson, "ingredient"));
         if(result == null || ingredient == null) return null;
         return new AbstractMap.SimpleImmutableEntry<>(result, ingredient);
     }

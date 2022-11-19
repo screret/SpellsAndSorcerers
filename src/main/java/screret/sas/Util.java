@@ -41,6 +41,7 @@ public class Util {
 
         addWand(ModWandAbilities.SMALL_FIREBALL.get(), null);
         addWand(ModWandAbilities.LARGE_FIREBALL.get(), null);
+        addWand(new WandAbilityInstance(ModWandAbilities.SHOOT_LIGHTNING.get(), new WandAbilityInstance(ModWandAbilities.LIGHTNING.get())), null);
 
         for(WandAbility ability : WandAbilityRegistry.WAND_ABILITIES_BUILTIN.get().getValues()){
             addWandCore(ability);

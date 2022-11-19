@@ -16,30 +16,33 @@ public class ManaBarOverlay implements IGuiOverlay {
 
     @Override
     public void render(ForgeGui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
-        RenderSystem.setShaderTexture(0, MANA_BAR_LOCATION);
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        RenderSystem.disableBlend();
+        if(SASConfig.Server.useMana.get()){
+            RenderSystem.setShaderTexture(0, MANA_BAR_LOCATION);
+            RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+            RenderSystem.disableBlend();
 
-        if (gui.shouldDrawSurvivalElements() && gui.getMinecraft().player != null)
-        {
-            gui.getMinecraft().getProfiler().push("manaBar");
+            if (gui.shouldDrawSurvivalElements() && gui.getMinecraft().player != null)
+            {
+                gui.getMinecraft().getProfiler().push("manaBar");
 
-            if(gui.getMinecraft().player.getCapability(ManaProvider.MANA).isPresent()){
-                var capability = gui.getMinecraft().player.getCapability(ManaProvider.MANA).resolve().get();
-                int left = screenWidth / 2 + SASConfig.Client.manaBarX.get();
-                int top = screenHeight - SASConfig.Client.manaBarY.get();
+                if(gui.getMinecraft().player.getCapability(ManaProvider.MANA).isPresent()){
+                    var capability = gui.getMinecraft().player.getCapability(ManaProvider.MANA).resolve().get();
+                    int left = screenWidth / 2 + SASConfig.Client.manaBarX.get();
+                    int top = screenHeight - SASConfig.Client.manaBarY.get();
 
-                int progress = (int) ((capability.getManaStored() / (float)capability.getMaxManaStored()) * 80);
-                gui.blit(poseStack, left, top, 0, 0, 80, 5);
-                if (progress > 0) {
-                    gui.blit(poseStack, left, top, 0, 5, progress, 5);
+                    int progress = (int) ((capability.getManaStored() / (float)capability.getMaxManaStored()) * 80);
+                    gui.blit(poseStack, left, top, 0, 0, 80, 5);
+                    if (progress > 0) {
+                        gui.blit(poseStack, left, top, 0, 5, progress, 5);
+                    }
+
+                    gui.getMinecraft().getProfiler().pop();
                 }
 
-                gui.getMinecraft().getProfiler().pop();
             }
-
+            RenderSystem.enableBlend();
+            RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         }
-        RenderSystem.enableBlend();
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+
     }
 }
