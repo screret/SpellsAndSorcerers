@@ -1,15 +1,18 @@
 package screret.sas;
 
 import com.google.common.collect.Maps;
+import com.google.gson.JsonObject;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.GsonHelper;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
@@ -24,6 +27,7 @@ import screret.sas.api.wand.ability.WandAbility;
 import screret.sas.api.wand.ability.WandAbilityInstance;
 import screret.sas.api.wand.ability.WandAbilityRegistry;
 import screret.sas.item.ModItems;
+import screret.sas.item.item.WandCoreItem;
 
 import java.util.Map;
 import java.util.Optional;
@@ -63,26 +67,33 @@ public class Util {
         return customWands.put(main.getKey(), createWand(main, crouch));
     }
 
-    public static ItemStack addWand(WandAbilityInstance main, @Nullable WandAbilityInstance crouch){
+    public static ItemStack createWand(Item item, WandAbilityInstance main, @Nullable WandAbilityInstance crouch){
         var tag = new CompoundTag();
         tag.put(WandAbility.BASIC_ABILITY_KEY, main.serializeNBT());
         if(crouch != null) {
             tag.put(WandAbility.CROUCH_ABILITY_KEY, crouch.serializeNBT());
         }
+        return new ItemStack(item, 1, tag);
+    }
+
+    public static ItemStack addWand(WandAbilityInstance main, @Nullable WandAbilityInstance crouch){
         var childestAbility = main;
-        while (childestAbility.getChildren() != null && childestAbility.getChildren().size() > 0){
+        while (childestAbility.getChildren() != null && !childestAbility.getChildren().isEmpty()){
             childestAbility = childestAbility.getChildren().get(0);
         }
-        var stack = new ItemStack(ModItems.WAND.get(), 1, tag);
-        return customWands.put(childestAbility.getId(), stack);
+        return customWands.put(childestAbility.getId(), createWand(ModItems.WAND.get(), main, crouch));
     }
 
     public static ItemStack addWandCore(WandAbility ability){
         var coreStack = new ItemStack(ModItems.WAND_CORE.get(), 1);
         var tag = new CompoundTag();
-        tag.putString("ability", ability.toString());
+        tag.putString(WandCoreItem.ABILITY_KEY, ability.toString());
         coreStack.setTag(tag);
         return customWandCores.put(ability.getKey(), coreStack);
+    }
+
+    public static WandAbility getAbilityFromJson(JsonObject json, String key){
+        return WandAbilityRegistry.WAND_ABILITIES_BUILTIN.get().getValue(new ResourceLocation(GsonHelper.getAsString(json, key)));
     }
 
     public static double randomInRange(RandomSource randomSource, double min, double max) {

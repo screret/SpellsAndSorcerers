@@ -8,7 +8,7 @@
             "items": [
               "sas:wand_core"
             ],
-            "nbt": "{ability:\"sas:heal\"}"
+            "nbt": "{ability:\"sas:small_fireball\"}"
           }
         ]
       },
@@ -16,7 +16,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "sas:heal_wand"
+        "recipe": "sas:wand/small_fireball"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -29,7 +29,7 @@
   ],
   "rewards": {
     "recipes": [
-      "sas:heal_wand"
+      "sas:wand/small_fireball"
     ]
   }
 }

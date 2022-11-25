@@ -6,11 +6,12 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import screret.sas.api.capability.ability.WandAbilityProvider;
 import screret.sas.enchantment.ModEnchantments;
 
 public class WandAbility implements IWandAbility {
 
-    public static final String BASIC_ABILITY_KEY = "basic_ability", CROUCH_ABILITY_KEY = "crouch_ability";
+    public static final String BASIC_ABILITY_KEY = "basic_ability", CROUCH_ABILITY_KEY = "crouch_ability", POWERED_UP_KEY = "is_powered_up";
 
     private final int useDuration, cooldownDuration;
     private final float damagePerHit;
@@ -62,6 +63,10 @@ public class WandAbility implements IWandAbility {
         return applyEnchants ? damagePerHit + (damagePerHit / 5) * stack.getEnchantmentLevel(ModEnchantments.POWER.get()) : damagePerHit;
     }
 
+    public boolean getPoweredUpMultiplier(ItemStack stack){
+        return stack.getCapability(WandAbilityProvider.WAND_ABILITY).isPresent() && stack.getCapability(WandAbilityProvider.WAND_ABILITY).resolve().get().getPoweredUp();
+    }
+
     @Override
     public ResourceLocation getKey() {
         return WandAbilityRegistry.WAND_ABILITIES_BUILTIN.get().getKey(this);
@@ -79,5 +84,9 @@ public class WandAbility implements IWandAbility {
 
     public ParticleOptions getParticle(){
         return particle;
+    }
+
+    public WandAbilityInstance getBasicInstance(){
+        return new WandAbilityInstance(this);
     }
 }

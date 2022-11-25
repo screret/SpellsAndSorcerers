@@ -1,0 +1,39 @@
+{
+  "type": "sas:shaped_wand",
+  "group": "wands",
+  "key": {
+    "B": {
+      "item": "sas:cloud_bottle"
+    },
+    "C": {
+      "type": "forge:nbt",
+      "count": 1,
+      "item": "sas:wand_core",
+      "nbt": "{ability:\"sas:lightning\"}"
+    },
+    "L": {
+      "tag": "forge:leather"
+    },
+    "S": {
+      "item": "sas:handle"
+    }
+  },
+  "pattern": [
+    "BCB",
+    "LSL"
+  ],
+  "result": {
+    "type": "sas:wand_ability",
+    "ability": {
+      "children": [
+        {
+          "children": [],
+          "id": "sas:lightning"
+        }
+      ],
+      "id": "sas:shoot_lightning"
+    },
+    "item": "sas:wand",
+    "powered_up": false
+  }
+}

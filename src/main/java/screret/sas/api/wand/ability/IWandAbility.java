@@ -5,7 +5,6 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.Vec3;
 
 public interface IWandAbility {
 
@@ -26,4 +25,6 @@ public interface IWandAbility {
     ResourceLocation getKey();
 
     int getColor();
+
+    WandAbilityInstance getBasicInstance();
 }

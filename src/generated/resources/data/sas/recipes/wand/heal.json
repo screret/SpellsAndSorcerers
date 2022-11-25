@@ -1,5 +1,5 @@
 {
-  "type": "sas:wand",
+  "type": "sas:shaped_wand",
   "group": "wands",
   "key": {
     "B": {
@@ -26,7 +26,21 @@
     "LSL"
   ],
   "result": {
+    "type": "sas:wand_ability",
+    "ability": {
+      "children": [
+        {
+          "children": [],
+          "id": "sas:heal"
+        }
+      ],
+      "id": "sas:shoot_hold_down"
+    },
+    "crouch_ability": {
+      "children": [],
+      "id": "sas:heal_self"
+    },
     "item": "sas:wand",
-    "nbt": "{Damage:0,ForgeCaps:{basic_ability:{children:[{children:[],id:\"sas:heal\"}],id:\"sas:shoot_hold_down\"},crouch_ability:{children:[],id:\"sas:heal_self\"}}}"
+    "powered_up": false
   }
 }

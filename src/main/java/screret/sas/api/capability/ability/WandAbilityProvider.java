@@ -15,19 +15,22 @@ public class WandAbilityProvider implements ICapabilitySerializable<CompoundTag>
     public static final Capability<ICapabilityWandAbility> WAND_ABILITY = CapabilityManager.get(new CapabilityToken<>(){});
 
     private final WandAbilityInstance main, crouch;
+    private boolean isPoweredUp;
 
     CapabilityWandAbility backend = null;
     LazyOptional<ICapabilityWandAbility> optionalStorage = LazyOptional.of(this::createCapability);
 
-    public WandAbilityProvider(WandAbilityInstance mainAbility, WandAbilityInstance crouchAbility){
+    public WandAbilityProvider(WandAbilityInstance mainAbility, WandAbilityInstance crouchAbility, boolean isPoweredUp){
         this.main = mainAbility;
         this.crouch = crouchAbility;
+        this.isPoweredUp = isPoweredUp;
+
     }
 
     @NotNull
     public CapabilityWandAbility createCapability(){
         if(backend == null){
-            backend = new CapabilityWandAbility(main, crouch);
+            backend = new CapabilityWandAbility(main, crouch, isPoweredUp);
         }
         return backend;
     }

@@ -1,4 +1,4 @@
-package screret.sas.resource;
+package screret.sas.recipe.ingredient;
 
 import com.google.gson.JsonObject;
 import net.minecraft.network.FriendlyByteBuf;
@@ -14,7 +14,7 @@ public class BlockIngredientSerializer
 
     public BlockIngredient parse(FriendlyByteBuf buffer)
     {
-        return BlockIngredient.fromValues(Stream.generate(() -> new BlockIngredient.BlockValue(buffer.readResourceLocation())).limit(buffer.readVarInt()));
+        return BlockIngredient.fromValues(Stream.generate(() -> new BlockIngredient.BlockValue(buffer.<Block>readRegistryId())).limit(buffer.readVarInt()));
     }
 
     public BlockIngredient parse(JsonObject json)
@@ -28,6 +28,6 @@ public class BlockIngredientSerializer
         buffer.writeVarInt(blocks.length);
 
         for (BlockState block : blocks)
-            buffer.writeResourceLocation(ForgeRegistries.BLOCKS.getKey(block.getBlock()));
+            buffer.writeRegistryId(ForgeRegistries.BLOCKS, block.getBlock());
     }
 }

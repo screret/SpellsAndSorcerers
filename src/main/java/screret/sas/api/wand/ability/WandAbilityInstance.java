@@ -12,10 +12,13 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.util.INBTSerializable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import screret.sas.Util;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class WandAbilityInstance implements INBTSerializable<CompoundTag> {
 
@@ -24,7 +27,7 @@ public class WandAbilityInstance implements INBTSerializable<CompoundTag> {
 
     public WandAbilityInstance(@NotNull WandAbility ability, @Nullable WandAbilityInstance... children){
         this.myAbility = ability;
-        this.children = Arrays.stream(children).toList();
+        this.children = Arrays.stream(children).collect(Collectors.toList());
     }
 
     public WandAbilityInstance(CompoundTag tag){
@@ -108,6 +111,20 @@ public class WandAbilityInstance implements INBTSerializable<CompoundTag> {
             this.children = new ArrayList<>();
             this.children.add(a);
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if(o instanceof WandAbilityInstance ability){
+            return ability.getAbility() == this.getAbility() && ability.getChildren().equals(this.children);
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(myAbility, children);
     }
 
     public static class Vec3Wrapped {

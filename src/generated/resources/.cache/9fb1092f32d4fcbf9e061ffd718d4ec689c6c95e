@@ -1,11 +1,25 @@
-// 1.19.2	2022-11-18T21:15:40.989273	Recipes
-37550357ccd052e2cf4ec51dd3352825dda8ea35 data/sas/advancements/recipes/sas/damage_wand.json
-9fc825f3c67ed98324ae72bc9afa3c1a70719e24 data/sas/advancements/recipes/sas/explosion_wand.json
-f6bf39aab1150d2e342fcc9d863cab713ba76de0 data/sas/advancements/recipes/sas/heal_wand.json
-2fdc7c0480d89705a9446863ad2eba84fdb359ce data/sas/advancements/recipes/sas/large_fireball_wand.json
-1807d62b496327f7868523456a54ad0957114384 data/sas/advancements/recipes/sas/small_fireball_wand.json
-9d27885acce162807803d78b4b8ed7d4efa6eb1b data/sas/recipes/damage_wand.json
-804ca24664e39cd05215d4fd7ae9afdc1b680b8d data/sas/recipes/explosion_wand.json
-cb17184bccaf5e5d55c72eb949c0982be42eec84 data/sas/recipes/heal_wand.json
-a011124e68b9ac6a015846e867c1bc1aedb20fc0 data/sas/recipes/large_fireball_wand.json
-b7e51c7a5d7ab78a164e9cfa08b7a2fa0f684cb9 data/sas/recipes/small_fireball_wand.json
+// 1.19.2	2022-11-19T21:30:29.6669781	Recipes
+e28d13fce14b34d908608d334caf344e5e926e52 data/sas/advancements/recipes/sas/wand/damage.json
+c263786edc13483d2729121472d5c1a146dd26ef data/sas/advancements/recipes/sas/wand/explosion.json
+dbf01f0b172fbffb554e333ed0f9d12e433b3655 data/sas/advancements/recipes/sas/wand/heal.json
+7e75b386b80615fe3a24b1f9bed87811ea5004e1 data/sas/advancements/recipes/sas/wand/large_fireball.json
+dd73cb39452a50744259048f394ed9427f9ac09b data/sas/advancements/recipes/sas/wand/lightning.json
+d51d1310f85d02050834738940c134cc473709be data/sas/advancements/recipes/sas/wand/small_fireball.json
+43dba0694f130010baa43e1f021cf2d048cbb828 data/sas/advancements/recipes/sas/wand_upgrade/large_fireball.json
+1a5087acf5cca4b2d6dbccdec89607f1adbd9e01 data/sas/advancements/recipes/sas/wand_upgrade/shoot_angry_ray.json
+f63f6cf93816826ceca2662bf04e6f32eec5754c data/sas/advancements/recipes/sas/wand_upgrade/shoot_hold_down.json
+b03efa193a2d7ef4b85e3f45df581a125c412b1f data/sas/advancements/recipes/sas/wand_upgrade/shoot_lightning.json
+7e5bae665f6e9c1387e38f79a3a34aa13527816d data/sas/advancements/recipes/sas/wand_upgrade/shoot_ray.json
+1b69cc1267238fd2638f870f1007d690ce3b8ca6 data/sas/advancements/recipes/sas/wand_upgrade/small_fireball.json
+443cd970cc63c46d9c79b2972f7ba1c9bad203ad data/sas/recipes/wand/damage.json
+21f8e8636288b49c2b5a93b319309e3e1cff25ee data/sas/recipes/wand/explosion.json
+4c855d9926995e978eded4ef4ef3a409874a3af0 data/sas/recipes/wand/heal.json
+a2436610dcdb8c2958fce3cd708530c34c3146b9 data/sas/recipes/wand/large_fireball.json
+f6aff205d7f62f91c698146259ca69793c97faca data/sas/recipes/wand/lightning.json
+288e02594fab62132d3d945db0ad97c86faf8839 data/sas/recipes/wand/small_fireball.json
+e4235a37bb50b8c5ba8bc499c9c314440774c907 data/sas/recipes/wand_upgrade/large_fireball.json
+0944a0e3ef648aca0a29a7c82cf72fcaff547465 data/sas/recipes/wand_upgrade/shoot_angry_ray.json
+4976483965434f95d5f32789bcab56398d6bf873 data/sas/recipes/wand_upgrade/shoot_hold_down.json
+d4a543e2e6bb4ba8274766eec817bba40a2170f2 data/sas/recipes/wand_upgrade/shoot_lightning.json
+538575087854e51c6d8e58b523fcda03b5a0e875 data/sas/recipes/wand_upgrade/shoot_ray.json
+d683d63ee2a9e61350616cdffa3e9f3455af7f0a data/sas/recipes/wand_upgrade/small_fireball.json

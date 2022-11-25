@@ -1,14 +1,13 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_core": {
+    "has_cthulu_eye": {
       "conditions": {
         "items": [
           {
             "items": [
-              "sas:wand_core"
-            ],
-            "nbt": "{ability:\"sas:large_fireball\"}"
+              "sas:cthulhu_eye"
+            ]
           }
         ]
       },
@@ -16,20 +15,20 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "sas:large_fireball_wand"
+        "recipe": "sas:wand_upgrade/shoot_hold_down"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "has_core",
+      "has_cthulu_eye",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "sas:large_fireball_wand"
+      "sas:wand_upgrade/shoot_hold_down"
     ]
   }
 }

@@ -10,11 +10,9 @@ import net.minecraft.advancements.AdvancementRewards;
 import net.minecraft.advancements.CriterionTriggerInstance;
 import net.minecraft.advancements.RequirementsStrategy;
 import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
-import net.minecraft.core.Registry;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.TagParser;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
@@ -22,11 +20,12 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.ItemLike;
-import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.common.crafting.StrictNBTIngredient;
 import net.minecraftforge.registries.ForgeRegistries;
 import screret.sas.SpellsAndSorcerers;
+import screret.sas.api.capability.ability.WandAbilityProvider;
 import screret.sas.recipe.ModRecipes;
+import screret.sas.recipe.ingredient.WandAbilityIngredient;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -34,43 +33,48 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
 
-public class WandRecipeBuilder implements RecipeBuilder {
-   private final ItemStack result;
+public class ShapedWandRecipeBuilder implements RecipeBuilder {
+   private final WandAbilityIngredient result;
    private final List<String> rows = Lists.newArrayList();
    private final Map<Character, Ingredient> key = Maps.newLinkedHashMap();
    private final Advancement.Builder advancement = Advancement.Builder.advancement();
    @Nullable
    private String group;
 
-   public WandRecipeBuilder(ItemStack pResult) {
+   public ShapedWandRecipeBuilder(WandAbilityIngredient pResult) {
       this.result = pResult;
    }
+
+   public ShapedWandRecipeBuilder(ItemStack pResult) {
+      this.result = WandAbilityIngredient.fromStack(pResult);
+   }
+
 
    /**
     * Adds a key to the recipe pattern.
     */
-   public WandRecipeBuilder define(Character pSymbol, TagKey<Item> pTag) {
+   public ShapedWandRecipeBuilder define(Character pSymbol, TagKey<Item> pTag) {
       return this.define(pSymbol, Ingredient.of(pTag));
    }
 
    /**
     * Adds a key to the recipe pattern.
     */
-   public WandRecipeBuilder define(Character symbol, ItemStack stack) {
+   public ShapedWandRecipeBuilder define(Character symbol, ItemStack stack) {
       return this.define(symbol, StrictNBTIngredient.of(stack));
    }
 
    /**
     * Adds a key to the recipe pattern.
     */
-   public WandRecipeBuilder define(Character pSymbol, ItemLike pItem) {
+   public ShapedWandRecipeBuilder define(Character pSymbol, ItemLike pItem) {
       return this.define(pSymbol, Ingredient.of(pItem));
    }
 
    /**
     * Adds a key to the recipe pattern.
     */
-   public WandRecipeBuilder define(Character pSymbol, Ingredient pIngredient) {
+   public ShapedWandRecipeBuilder define(Character pSymbol, Ingredient pIngredient) {
       if (this.key.containsKey(pSymbol)) {
          throw new IllegalArgumentException("Symbol '" + pSymbol + "' is already defined!");
       } else if (pSymbol == ' ') {
@@ -84,7 +88,7 @@ public class WandRecipeBuilder implements RecipeBuilder {
    /**
     * Adds a new entry to the patterns for this recipe.
     */
-   public WandRecipeBuilder pattern(String pPattern) {
+   public ShapedWandRecipeBuilder pattern(String pPattern) {
       if (!this.rows.isEmpty() && pPattern.length() != this.rows.get(0).length()) {
          throw new IllegalArgumentException("Pattern must be the same width on every line!");
       } else {
@@ -93,20 +97,24 @@ public class WandRecipeBuilder implements RecipeBuilder {
       }
    }
 
-   public WandRecipeBuilder unlockedBy(String pCriterionName, CriterionTriggerInstance pCriterionTrigger) {
+   @Override
+   public ShapedWandRecipeBuilder unlockedBy(String pCriterionName, CriterionTriggerInstance pCriterionTrigger) {
       this.advancement.addCriterion(pCriterionName, pCriterionTrigger);
       return this;
    }
 
-   public WandRecipeBuilder group(@Nullable String pGroupName) {
+   @Override
+   public ShapedWandRecipeBuilder group(@Nullable String pGroupName) {
       this.group = pGroupName;
       return this;
    }
 
+   @Override
    public Item getResult() {
-      return this.result.getItem();
+      return this.result.getStack().getItem();
    }
 
+   @Override
    public void save(Consumer<FinishedRecipe> pFinishedRecipeConsumer, ResourceLocation pRecipeId) {
       this.ensureValid(pRecipeId);
       this.advancement.parent(ROOT_RECIPE_ADVANCEMENT).addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(pRecipeId)).rewards(AdvancementRewards.Builder.recipe(pRecipeId)).requirements(RequirementsStrategy.OR);
@@ -146,14 +154,14 @@ public class WandRecipeBuilder implements RecipeBuilder {
 
    public static class Result implements FinishedRecipe {
       private final ResourceLocation id;
-      private final ItemStack result;
+      private final WandAbilityIngredient result;
       private final String group;
       private final List<String> pattern;
       private final Map<Character, Ingredient> key;
       private final Advancement.Builder advancement;
       private final ResourceLocation advancementId;
 
-      public Result(ResourceLocation pId, ItemStack pResult, String pGroup, List<String> pPattern, Map<Character, Ingredient> pKey, Advancement.Builder pAdvancement, ResourceLocation pAdvancementId) {
+      public Result(ResourceLocation pId, WandAbilityIngredient pResult, String pGroup, List<String> pPattern, Map<Character, Ingredient> pKey, Advancement.Builder pAdvancement, ResourceLocation pAdvancementId) {
          this.id = pId;
          this.result = pResult;
          this.group = pGroup;
@@ -169,39 +177,23 @@ public class WandRecipeBuilder implements RecipeBuilder {
          }
 
          JsonArray jsonarray = new JsonArray();
-
          for(String s : this.pattern) {
             jsonarray.add(s);
          }
-
          pJson.add("pattern", jsonarray);
-         JsonObject jsonobject = new JsonObject();
 
+         JsonObject jsonobject = new JsonObject();
          for(Map.Entry<Character, Ingredient> entry : this.key.entrySet()) {
             jsonobject.add(String.valueOf(entry.getKey()), entry.getValue().toJson());
          }
-
          pJson.add("key", jsonobject);
-         JsonObject resultObject = new JsonObject();
-         resultObject.addProperty("item", ForgeRegistries.ITEMS.getKey(this.result.getItem()).toString());
-         if (this.result.getCount() > 1) {
-            resultObject.addProperty("count", this.result.getCount());
-         }
-         var saved = this.result.serializeNBT();
-         var tag = new CompoundTag();
-         if(saved.contains("tag")){
-            tag = tag.merge(saved.getCompound("tag"));
-         }
-         if(saved.contains("ForgeCaps")){
-            tag.put("ForgeCaps", saved.getCompound("ForgeCaps"));
-         }
-         resultObject.addProperty("nbt", tag.toString());
 
+         JsonObject resultObject = result.toJson().getAsJsonObject();
          pJson.add("result", resultObject);
       }
 
       public RecipeSerializer<?> getType() {
-         return ModRecipes.WAND_RECIPE_SERIALIZER.get();
+         return ModRecipes.SHAPED_WAND_RECIPE_SERIALIZER.get();
       }
 
       /**
@@ -220,7 +212,7 @@ public class WandRecipeBuilder implements RecipeBuilder {
       }
 
       /**
-       * Gets the ID for the advancement associated with this recipe. Should not be null if {@link RecipeBuilder#getAdvancementJson}
+       * Gets the ID for the advancement associated with this recipe. Should not be null if
        * is non-null.
        */
       @Nullable

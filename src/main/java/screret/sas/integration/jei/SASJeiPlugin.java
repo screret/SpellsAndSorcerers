@@ -14,6 +14,7 @@ import screret.sas.integration.jei.wand.WandRecipeCategory;
 import screret.sas.integration.jei.wand.WandSubtypeInterpreter;
 import screret.sas.item.ModItems;
 import screret.sas.recipe.ModRecipes;
+import screret.sas.recipe.recipe.ShapedWandRecipe;
 import screret.sas.recipe.recipe.WandRecipe;
 
 import java.util.List;
@@ -48,7 +49,7 @@ public class SASJeiPlugin implements IModPlugin {
 
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
-        List<WandRecipe> wandRecipes = Minecraft.getInstance().level.getRecipeManager().getAllRecipesFor(ModRecipes.WAND_RECIPE_TYPE.get());
+        List<WandRecipe> wandRecipes = Minecraft.getInstance().level.getRecipeManager().getAllRecipesFor(ModRecipes.WAND_RECIPE.get());
         registration.addRecipes(WandRecipeCategory.JEI_RECIPE_TYPE, wandRecipes);
     }
 }

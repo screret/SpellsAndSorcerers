@@ -1,15 +1,15 @@
 {
-  "type": "sas:wand",
+  "type": "sas:shaped_wand",
   "group": "wands",
   "key": {
     "B": {
-      "item": "minecraft:fire_charge"
+      "item": "sas:soul_bottle"
     },
     "C": {
       "type": "forge:nbt",
       "count": 1,
       "item": "sas:wand_core",
-      "nbt": "{ability:\"sas:large_fireball\"}"
+      "nbt": "{ability:\"sas:damage\"}"
     },
     "L": {
       "tag": "forge:leather"
@@ -23,7 +23,17 @@
     "LSL"
   ],
   "result": {
+    "type": "sas:wand_ability",
+    "ability": {
+      "children": [
+        {
+          "children": [],
+          "id": "sas:damage"
+        }
+      ],
+      "id": "sas:shoot_ray"
+    },
     "item": "sas:wand",
-    "nbt": "{Damage:0,ForgeCaps:{basic_ability:{children:[],id:\"sas:large_fireball\"}}}"
+    "powered_up": false
   }
 }

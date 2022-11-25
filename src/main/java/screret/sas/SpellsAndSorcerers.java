@@ -11,6 +11,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUtils;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
+import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.event.AddReloadListenerEvent;
@@ -26,6 +27,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegisterEvent;
 import org.slf4j.Logger;
 import screret.sas.ability.ModWandAbilities;
@@ -53,6 +55,7 @@ import screret.sas.entity.entity.WizardEntity;
 import screret.sas.item.ModCreativeTab;
 import screret.sas.item.ModItems;
 import screret.sas.recipe.ModRecipes;
+import screret.sas.recipe.ingredient.WandAbilityIngredient;
 import screret.sas.resource.EyeConversionManager;
 
 import static screret.sas.Util.addWand;
@@ -76,6 +79,7 @@ public class SpellsAndSorcerers {
         modEventBus.addListener(this::registerCapabilities);
         modEventBus.addListener(this::gatherData);
         modEventBus.addListener(this::registerEntityAttributes);
+        modEventBus.addListener(this::registerSerializers);
 
 
         WandAbilityRegistry.init();
@@ -155,6 +159,11 @@ public class SpellsAndSorcerers {
         Util.addItems();
     }
 
+
+    public void registerSerializers(RegisterEvent event) {
+        event.register(ForgeRegistries.Keys.RECIPE_SERIALIZERS, helper -> CraftingHelper.register(Util.resource("wand_ability"), WandAbilityIngredient.Serializer.INSTANCE));
+    }
+
     @Mod.EventBusSubscriber(modid = SpellsAndSorcerers.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
     private static class ForgeBusEvents {
         @SubscribeEvent
@@ -167,11 +176,15 @@ public class SpellsAndSorcerers {
         }
 
         @SubscribeEvent
-        public static void onRightclickBlockSoulSand(final PlayerInteractEvent.RightClickBlock event){
-            if(event.getEntity().getItemInHand(event.getHand()).is(ModTags.Items.GLASS_BOTTLES) && event.getLevel().getBlockState(event.getHitVec().getBlockPos()).is(BlockTags.SOUL_FIRE_BASE_BLOCKS)) {
-                var stack = new ItemStack(ModItems.SOUL_BOTTLE.get());
-                event.getEntity().awardStat(Stats.ITEM_USED.get(event.getEntity().getUseItem().getItem()));
-                ItemUtils.createFilledResult(event.getEntity().getUseItem(), event.getEntity(), stack);
+        public static void onRightclickBlock(final PlayerInteractEvent.RightClickBlock event){
+            if(event.getEntity().getItemInHand(event.getHand()).is(ModTags.Items.GLASS_BOTTLES)) {
+                if(event.getLevel().getBlockState(event.getHitVec().getBlockPos()).is(BlockTags.SOUL_FIRE_BASE_BLOCKS)){
+                    event.getEntity().awardStat(Stats.ITEM_USED.get(event.getEntity().getUseItem().getItem()));
+                    ItemUtils.createFilledResult(event.getEntity().getUseItem(), event.getEntity(), new ItemStack(ModItems.SOUL_BOTTLE.get()));
+                } else if(event.getEntity().getY() > 320 - 16){
+                    event.getEntity().awardStat(Stats.ITEM_USED.get(event.getEntity().getUseItem().getItem()));
+                    ItemUtils.createFilledResult(event.getEntity().getUseItem(), event.getEntity(), new ItemStack(ModItems.CLOUD_BOTTLE.get()));
+                }
             }
         }
 

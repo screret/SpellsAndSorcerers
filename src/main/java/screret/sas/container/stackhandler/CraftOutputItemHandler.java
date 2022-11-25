@@ -5,15 +5,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.inventory.RecipeHolder;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 import org.jetbrains.annotations.NotNull;
 import screret.sas.recipe.ModRecipes;
-import screret.sas.recipe.recipe.WandRecipe;
-
-import java.util.Optional;
 
 public class CraftOutputItemHandler extends SlotItemHandler {
     private final CraftingContainer craftSlots;
@@ -81,7 +76,7 @@ public class CraftOutputItemHandler extends SlotItemHandler {
     public void onTake(Player pPlayer, ItemStack pStack) {
         this.checkTakeAchievements(pStack);
         net.minecraftforge.common.ForgeHooks.setCraftingPlayer(pPlayer);
-        NonNullList<ItemStack> ingredients = pPlayer.level.getRecipeManager().getRemainingItemsFor(ModRecipes.WAND_RECIPE_TYPE.get(), this.craftSlots, pPlayer.level);
+        NonNullList<ItemStack> ingredients = pPlayer.level.getRecipeManager().getRemainingItemsFor(ModRecipes.WAND_RECIPE.get(), this.craftSlots, pPlayer.level);
         net.minecraftforge.common.ForgeHooks.setCraftingPlayer(null);
         for(int i = 0; i < ingredients.size(); ++i) {
             ItemStack craftSlotItem = this.craftSlots.getItem(i);

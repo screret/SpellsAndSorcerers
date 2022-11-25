@@ -28,12 +28,10 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.RangedAttackMob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LevelEvent;
-import net.minecraftforge.event.ForgeEventFactory;
 import screret.sas.Util;
 import screret.sas.ability.ModWandAbilities;
 import screret.sas.api.wand.ability.WandAbilityInstance;
@@ -57,8 +55,8 @@ import java.util.function.Predicate;
 public class BossWizardEntity extends Monster implements RangedAttackMob, IAnimatable {
     private static final Predicate<LivingEntity> LIVING_ENTITY_SELECTOR = (mob) -> mob.getMobType() != MobType.ILLAGER && mob.attackable();
     private static final EntityDataAccessor<Boolean> IS_ATTACKING = SynchedEntityData.defineId(BossWizardEntity.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Integer> DATA_ID_INV = SynchedEntityData.defineId(BossWizardEntity.class, EntityDataSerializers.INT);
-    private static final int INVULNERABLE_TICKS = 75;
+    private static final EntityDataAccessor<Integer> INVULNERABLE_TICKS = SynchedEntityData.defineId(BossWizardEntity.class, EntityDataSerializers.INT);
+    private static final int MAX_INVULNERABLE_TICKS = 75;
     public static final WandAbilityInstance DUMMY_SPELL = new WandAbilityInstance(ModWandAbilities.DUMMY.get());
 
 
@@ -119,7 +117,7 @@ public class BossWizardEntity extends Monster implements RangedAttackMob, IAnima
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(IS_ATTACKING, false);
-        this.entityData.define(DATA_ID_INV, 0);
+        this.entityData.define(INVULNERABLE_TICKS, 0);
     }
 
     @Override
@@ -147,7 +145,7 @@ public class BossWizardEntity extends Monster implements RangedAttackMob, IAnima
             }
 
             int ticks = this.getInvulnerableTicks() - 1;
-            this.bossEvent.setProgress(1.0F - (float)ticks / INVULNERABLE_TICKS);
+            this.bossEvent.setProgress(1.0F - (float)ticks / MAX_INVULNERABLE_TICKS);
             if (ticks <= 0) {
                 //Explosion.BlockInteraction explosion = ForgeEventFactory.getMobGriefingEvent(this.level, this) ? Explosion.BlockInteraction.DESTROY : Explosion.BlockInteraction.NONE;
                 //this.level.explode(this, this.getX(), this.getEyeY(), this.getZ(), 7.0F, false, explosion);
@@ -250,15 +248,15 @@ public class BossWizardEntity extends Monster implements RangedAttackMob, IAnima
     }
 
     public int getInvulnerableTicks() {
-        return this.entityData.get(DATA_ID_INV);
+        return this.entityData.get(INVULNERABLE_TICKS);
     }
 
     public void setInvulnerableTicks(int pInvulnerableTicks) {
-        this.entityData.set(DATA_ID_INV, pInvulnerableTicks);
+        this.entityData.set(INVULNERABLE_TICKS, pInvulnerableTicks);
     }
 
     public void makeInvulnerable() {
-        this.setInvulnerableTicks(INVULNERABLE_TICKS);
+        this.setInvulnerableTicks(MAX_INVULNERABLE_TICKS);
         this.setInvulnerable(true);
         this.bossEvent.setProgress(0.0F);
         this.setHealth(this.getMaxHealth() / 3.0F);

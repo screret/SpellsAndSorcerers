@@ -61,7 +61,11 @@ public class WandItem extends Item {
             if(crouch == null && main.getAbility() != null && main.getAbility().equals(ModWandAbilities.HEAL.get())){
                 crouch = new WandAbilityInstance(ModWandAbilities.HEAL_SELF.get());
             }
-            return new WandAbilityProvider(main, crouch);
+            boolean isPoweredUp = false;
+            if(nbt.contains(WandAbility.POWERED_UP_KEY, Tag.TAG_ANY_NUMERIC)) {
+                isPoweredUp = nbt.getBoolean(WandAbility.POWERED_UP_KEY);
+            }
+            return new WandAbilityProvider(main, crouch, isPoweredUp);
         }
         return super.initCapabilities(stack, nbt);
     }

@@ -1,0 +1,24 @@
+{
+  "type": "sas:shapeless_wand",
+  "group": "wand_upgrades",
+  "ingredients": [
+    {
+      "item": "sas:cthulhu_eye"
+    },
+    {
+      "type": "forge:nbt",
+      "count": 1,
+      "item": "sas:wand",
+      "nbt": "{Damage:0}"
+    }
+  ],
+  "result": {
+    "type": "sas:wand_ability",
+    "ability": {
+      "children": [],
+      "id": "sas:small_fireball"
+    },
+    "item": "sas:wand",
+    "powered_up": true
+  }
+}

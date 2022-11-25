@@ -16,7 +16,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "sas:explosion_wand"
+        "recipe": "sas:wand/explosion"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -29,7 +29,7 @@
   ],
   "rewards": {
     "recipes": [
-      "sas:explosion_wand"
+      "sas:wand/explosion"
     ]
   }
 }

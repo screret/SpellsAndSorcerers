@@ -17,6 +17,10 @@ public interface ICapabilityWandAbility extends INBTSerializable<CompoundTag> {
 
     WandAbilityInstance getAbility();
 
+    void setPoweredUp(boolean poweredUp);
+
+    boolean getPoweredUp();
+
     void setMainAbility(WandAbilityInstance ability);
 
     void setCrouchAbility(WandAbilityInstance ability);

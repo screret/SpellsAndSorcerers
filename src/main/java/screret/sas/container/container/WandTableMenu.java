@@ -7,9 +7,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.items.SlotItemHandler;
 import screret.sas.block.ModBlocks;
@@ -17,6 +15,7 @@ import screret.sas.container.ModContainers;
 import screret.sas.container.stackhandler.CraftOutputItemHandler;
 import screret.sas.container.stackhandler.CraftResultStackHandler;
 import screret.sas.recipe.ModRecipes;
+import screret.sas.recipe.recipe.ShapedWandRecipe;
 import screret.sas.recipe.recipe.WandRecipe;
 
 import java.util.Optional;
@@ -76,7 +75,7 @@ public class WandTableMenu extends AbstractContainerMenu {
         if (!pLevel.isClientSide) {
             ServerPlayer serverplayer = (ServerPlayer)pPlayer;
             ItemStack result = ItemStack.EMPTY;
-            Optional<WandRecipe> optional = pLevel.getServer().getRecipeManager().getRecipeFor(ModRecipes.WAND_RECIPE_TYPE.get(), pContainer, pLevel);
+            Optional<WandRecipe> optional = pLevel.getServer().getRecipeManager().getRecipeFor(ModRecipes.WAND_RECIPE.get(), pContainer, pLevel);
             if (optional.isPresent()) {
                 WandRecipe recipe = optional.get();
                 if (pResult.setRecipeUsed(pLevel, serverplayer, recipe)) {

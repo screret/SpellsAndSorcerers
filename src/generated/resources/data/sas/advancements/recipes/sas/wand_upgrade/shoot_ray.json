@@ -1,14 +1,13 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_core": {
+    "has_cthulu_eye": {
       "conditions": {
         "items": [
           {
             "items": [
-              "sas:wand_core"
-            ],
-            "nbt": "{ability:\"sas:damage\"}"
+              "sas:cthulhu_eye"
+            ]
           }
         ]
       },
@@ -16,20 +15,20 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "sas:damage_wand"
+        "recipe": "sas:wand_upgrade/shoot_ray"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "has_core",
+      "has_cthulu_eye",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "sas:damage_wand"
+      "sas:wand_upgrade/shoot_ray"
     ]
   }
 }

@@ -24,7 +24,7 @@ java {
     toolchain.languageVersion = JavaLanguageVersion.of(17)
 }
 
-//jarJar.enable()
+jarJar.disable()
 
 minecraft {
     // The mappings can be changed at any time and must be in the following format.
@@ -196,9 +196,9 @@ jar {
     }
 }
 
-tasks.findByName("jarJar").configure {
+/*tasks.findByName("jarJar").configure {
     finalizedBy(reobf.maybeCreate('jarJar'))
-}
+}*/
 
 jar.finalizedBy('reobfJar')
 

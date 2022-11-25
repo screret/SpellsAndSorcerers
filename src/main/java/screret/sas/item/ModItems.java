@@ -39,6 +39,7 @@ public class ModItems {
     //OTHER ITEMS
     public static final RegistryObject<Item> HANDLE = ITEMS.register("handle", basicItem());
     public static final RegistryObject<Item> SOUL_BOTTLE = ITEMS.register("soul_bottle", () -> new Item(basicItemProperties().craftRemainder(Items.GLASS_BOTTLE)));
+    public static final RegistryObject<Item> CLOUD_BOTTLE = ITEMS.register("cloud_bottle", () -> new Item(basicItemProperties().craftRemainder(Items.GLASS_BOTTLE)));
     public static final RegistryObject<Item> CTHULHU_EYE = ITEMS.register("cthulhu_eye", CthulhuEyeItem::new);
     public static final RegistryObject<Item> SOULSTEEL_INGOT = ITEMS.register("soulsteel_ingot", basicItem());
     public static final RegistryObject<Item> SOULSTEEL_NUGGET = ITEMS.register("soulsteel_nugget", basicItem());
