@@ -10,16 +10,11 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.boss.enderdragon.EndCrystal;
-import net.minecraft.world.entity.boss.enderdragon.phases.EnderDragonPhase;
-import net.minecraft.world.entity.boss.enderdragon.phases.EnderDragonPhaseManager;
 import net.minecraft.world.entity.monster.Enemy;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import screret.sas.api.capability.cthulhu.CthulhuFightProvider;
 import screret.sas.entity.entity.BossWizardEntity;
 import screret.sas.entity.entity.boss.cthulhu.part.CthulhuPart;
-import screret.sas.entity.entity.boss.cthulhu.phases.CthulhuPhase;
-import screret.sas.entity.entity.boss.cthulhu.phases.CthulhuPhaseManager;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
@@ -48,7 +43,6 @@ public class CthulhuEntity extends Mob implements Enemy, IAnimatable {
     private final CthulhuPart tail3;
     private final CthulhuPart wing1;
     private final CthulhuPart wing2;
-    private final CthulhuPhaseManager phaseManager;
     @Nullable
     public EndCrystal nearestCrystal;
     @Nullable
@@ -75,7 +69,6 @@ public class CthulhuEntity extends Mob implements Enemy, IAnimatable {
             this.cthulhuFight = null;
         }
 
-        this.phaseManager = new CthulhuPhaseManager(this);
         this.setId(ENTITY_COUNTER.getAndAdd(this.subEntities.length + 1) + 1); // Forge: Fix MC-158205: Make sure part ids are successors of parent mob id
     }
 
@@ -87,37 +80,7 @@ public class CthulhuEntity extends Mob implements Enemy, IAnimatable {
     }
 
     public boolean hurt(CthulhuPart pPart, DamageSource pSource, float pDamage) {
-        if (this.phaseManager.getCurrentPhase().getPhase() == CthulhuPhase.DYING) {
-            return false;
-        } else {
-            pDamage = this.phaseManager.getCurrentPhase().onHurt(pSource, pDamage);
-            if (pPart != this.head) {
-                pDamage = pDamage / 4.0F + Math.min(pDamage, 1.0F);
-            }
-
-            if (pDamage < 0.01F) {
-                return false;
-            } else {
-                if (pSource.getEntity() instanceof Player || pSource.isExplosion()) {
-                    float f = this.getHealth();
-                    this.reallyHurt(pSource, pDamage);
-                    if (this.isDeadOrDying() && !this.phaseManager.getCurrentPhase().isSitting()) {
-                        this.setHealth(1.0F);
-                        this.phaseManager.setPhase(EnderDragonPhase.DYING);
-                    }
-
-                    if (this.phaseManager.getCurrentPhase().isSitting()) {
-                        this.sittingDamageReceived = this.sittingDamageReceived + f - this.getHealth();
-                        if (this.sittingDamageReceived > 0.25F * this.getMaxHealth()) {
-                            this.sittingDamageReceived = 0.0F;
-                            this.phaseManager.setPhase(EnderDragonPhase.TAKEOFF);
-                        }
-                    }
-                }
-
-                return true;
-            }
-        }
+        return false;
     }
 
     public int getInvulnerableTicks() {

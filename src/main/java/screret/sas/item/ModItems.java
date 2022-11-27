@@ -28,6 +28,7 @@ public class ModItems {
     public static final RegistryObject<Item> PALANTIR = ITEMS.register("palantir", PalantirItem::new);
     public static final RegistryObject<Item> SOULSTEEL_BLOCK = ITEMS.register("soulsteel_block", blockItem(ModBlocks.SOULSTEEL_BLOCK));
     public static final RegistryObject<Item> GLINT_ORE = ITEMS.register("glint_ore", blockItem(ModBlocks.GLINT_ORE));
+    public static final RegistryObject<Item> POTION_DISTILLERY = ITEMS.register("potion_distillery", blockItem(ModBlocks.POTION_DISTILLERY));
 
 
     // WANDS

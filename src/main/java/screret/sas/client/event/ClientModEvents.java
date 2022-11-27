@@ -17,8 +17,9 @@ import screret.sas.api.wand.ability.WandAbilityRegistry;
 import screret.sas.block.ModBlocks;
 import screret.sas.block.block.SummonSignBlock;
 import screret.sas.blockentity.ModBlockEntities;
-import screret.sas.client.gui.ManaBarOverlay;
-import screret.sas.client.gui.WandTableScreen;
+import screret.sas.client.gui.overlay.ManaBarOverlay;
+import screret.sas.client.gui.screen.PotionDistilleryScreen;
+import screret.sas.client.gui.screen.WandTableScreen;
 import screret.sas.client.model.item.WandModel;
 import screret.sas.client.particle.ModParticles;
 import screret.sas.client.particle.particle.EyeParticle;
@@ -39,7 +40,8 @@ public class ClientModEvents {
     @SubscribeEvent
     public static void clientSetup(final FMLClientSetupEvent event){
         event.enqueueWork(() -> {
-            MenuScreens.register(ModContainers.WAND_CRAFTING.get(), WandTableScreen::new);
+            MenuScreens.register(ModContainers.WAND_TABLE.get(), WandTableScreen::new);
+            MenuScreens.register(ModContainers.POTION_DISTILLERY.get(), PotionDistilleryScreen::new);
         });
     }
 

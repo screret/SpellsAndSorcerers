@@ -1,4 +1,4 @@
-package screret.sas.client.gui;
+package screret.sas.client.gui.overlay;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;

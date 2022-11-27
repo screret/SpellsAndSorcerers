@@ -15,19 +15,13 @@ import screret.sas.container.ModContainers;
 import screret.sas.container.stackhandler.CraftOutputItemHandler;
 import screret.sas.container.stackhandler.CraftResultStackHandler;
 import screret.sas.recipe.ModRecipes;
-import screret.sas.recipe.recipe.ShapedWandRecipe;
 import screret.sas.recipe.recipe.WandRecipe;
 
 import java.util.Optional;
 
 public class WandTableMenu extends AbstractContainerMenu {
     public static final int RESULT_SLOT = 0;
-    private static final int CRAFT_SLOT_START = 1;
-    private static final int CRAFT_SLOT_END = 7;
-    private static final int INV_SLOT_START = 7;
-    private static final int INV_SLOT_END = 34;
-    private static final int USE_ROW_SLOT_START = 34;
-    private static final int USE_ROW_SLOT_END = 43;
+    private static final int CRAFT_SLOT_START = 1, CRAFT_SLOT_END = 7, INV_SLOT_START = 7, INV_SLOT_END = 34, USE_ROW_SLOT_START = 34, USE_ROW_SLOT_END = 43;
     private static final int INPUT_X_SIZE = 3, INPUT_Y_SIZE = 2;
 
     private final CraftingContainer inputSlots = new CraftingContainer(this, 3,2){
@@ -48,7 +42,7 @@ public class WandTableMenu extends AbstractContainerMenu {
     }
 
     public WandTableMenu(int pContainerId, Inventory pPlayerInventory, ContainerLevelAccess pAccess) {
-        super(ModContainers.WAND_CRAFTING.get(), pContainerId);
+        super(ModContainers.WAND_TABLE.get(), pContainerId);
         this.access = pAccess;
         this.player = pPlayerInventory.player;
         this.addSlot(new CraftOutputItemHandler(pPlayerInventory.player, this.inputSlots, this.resultSlot, 0, 124, 35));

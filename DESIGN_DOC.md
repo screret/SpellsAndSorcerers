@@ -12,7 +12,7 @@ design document
 - 
 - powerfuller wands (from qthulhu eye)
 - better particle effects
-- 
+- CTHULHU BOSS
 
 
 7685484292284261461

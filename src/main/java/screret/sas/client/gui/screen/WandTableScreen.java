@@ -1,4 +1,4 @@
-package screret.sas.client.gui;
+package screret.sas.client.gui.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -22,7 +22,7 @@ public class WandTableScreen extends AbstractContainerScreen<WandTableMenu> {
     @Override
     protected void init() {
         super.init();
-        this.titleLabelX = 29;
+        this.titleLabelX = (this.imageWidth - this.font.width(this.title)) / 2;
     }
 
     @Override

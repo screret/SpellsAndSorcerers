@@ -7,6 +7,7 @@ import net.minecraftforge.registries.RegistryObject;
 import screret.sas.SpellsAndSorcerers;
 import screret.sas.block.ModBlocks;
 import screret.sas.blockentity.blockentity.PalantirBE;
+import screret.sas.blockentity.blockentity.PotionDistilleryBE;
 import screret.sas.blockentity.blockentity.SummonSignBE;
 
 public class ModBlockEntities {
@@ -15,5 +16,6 @@ public class ModBlockEntities {
 
     public static final RegistryObject<BlockEntityType<SummonSignBE>> SUMMON_SIGN_BE = BLOCK_ENTITIES.register("summon_sign", () -> BlockEntityType.Builder.of(SummonSignBE::new, ModBlocks.SUMMON_SIGN.get()).build(null));
     public static final RegistryObject<BlockEntityType<PalantirBE>> PALANTIR_BE = BLOCK_ENTITIES.register("palantir", () -> BlockEntityType.Builder.of(PalantirBE::new, ModBlocks.PALANTIR.get()).build(null));
+    public static final RegistryObject<BlockEntityType<PotionDistilleryBE>> POTION_DISTILLERY_BE = BLOCK_ENTITIES.register("potion_distillery", () -> BlockEntityType.Builder.of(PotionDistilleryBE::new, ModBlocks.POTION_DISTILLERY.get()).build(null));
 
 }

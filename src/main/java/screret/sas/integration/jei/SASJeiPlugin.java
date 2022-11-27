@@ -8,13 +8,12 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import screret.sas.Util;
 import screret.sas.block.ModBlocks;
-import screret.sas.client.gui.WandTableScreen;
+import screret.sas.client.gui.screen.WandTableScreen;
 import screret.sas.integration.jei.wand.WandCoreSubtypeInterpreter;
 import screret.sas.integration.jei.wand.WandRecipeCategory;
 import screret.sas.integration.jei.wand.WandSubtypeInterpreter;
 import screret.sas.item.ModItems;
 import screret.sas.recipe.ModRecipes;
-import screret.sas.recipe.recipe.ShapedWandRecipe;
 import screret.sas.recipe.recipe.WandRecipe;
 
 import java.util.List;

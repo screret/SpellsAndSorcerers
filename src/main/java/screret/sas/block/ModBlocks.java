@@ -10,8 +10,10 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import screret.sas.SpellsAndSorcerers;
 import screret.sas.block.block.PalantirBlock;
+import screret.sas.block.block.PotionDistilleryBlock;
 import screret.sas.block.block.SummonSignBlock;
 import screret.sas.block.block.WandTableBlock;
+import screret.sas.blockentity.blockentity.PotionDistilleryBE;
 
 public class ModBlocks {
 
@@ -22,6 +24,7 @@ public class ModBlocks {
     public static final RegistryObject<Block> WAND_TABLE = BLOCKS.register("wand_table", WandTableBlock::new);
     public static final RegistryObject<Block> SUMMON_SIGN = BLOCKS.register("summon_sign", SummonSignBlock::new);
     public static final RegistryObject<Block> PALANTIR = BLOCKS.register("palantir", PalantirBlock::new);
+    public static final RegistryObject<Block> POTION_DISTILLERY = BLOCKS.register("potion_distillery", PotionDistilleryBlock::new);
 
 
     public static final RegistryObject<Block> SOULSTEEL_BLOCK = BLOCKS.register("soulsteel_block", () -> new Block(BlockBehaviour.Properties.of(Material.HEAVY_METAL).strength(5.0F)));
