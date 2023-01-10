@@ -10,42 +10,33 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.EnchantmentTableBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import screret.sas.blockentity.ModBlockEntities;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.builder.ILoopType;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib.animatable.GeoBlockEntity;
+import software.bernie.geckolib.constant.DefaultAnimations;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class PalantirBE extends BlockEntity implements IAnimatable {
+public class PalantirBE extends BlockEntity implements GeoBlockEntity {
     private static final float MAX_LOOK_X_INCREASE = 3f, MAX_LOOK_Y_INCREASE = 3f;
 
     public float xRot, yRot;
 
-    private AnimationFactory factory = GeckoLibUtil.createFactory(this);
-
+    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
     public PalantirBE(BlockPos pPos, BlockState pBlockState) {
         super(ModBlockEntities.PALANTIR_BE.get(), pPos, pBlockState);
     }
 
-
-    private PlayState predicate(AnimationEvent<PalantirBE> event) {
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.palantir.idle", ILoopType.EDefaultLoopTypes.LOOP));
-        return PlayState.CONTINUE;
+    @Override
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(
+                DefaultAnimations.genericIdleController(this)
+        );
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController<>(this, "controller", 0, this::predicate));
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return cache;
     }
 
     public static void eyeAnimationTick(Level pLevel, BlockPos pPos, BlockState pState, PalantirBE pBlockEntity) {

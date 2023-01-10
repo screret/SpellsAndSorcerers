@@ -9,11 +9,11 @@ import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
 import screret.sas.blockentity.blockentity.PalantirBE;
 import screret.sas.client.model.blockentity.PalantirModel;
-import software.bernie.geckolib3.renderers.geo.GeoBlockRenderer;
+import software.bernie.geckolib.renderer.GeoBlockRenderer;
 
 public class PalantirBERenderer extends GeoBlockRenderer<PalantirBE> {
-    public PalantirBERenderer(BlockEntityRendererProvider.Context rendererProvider) {
-        super(rendererProvider, new PalantirModel());
+    public PalantirBERenderer() {
+        super(new PalantirModel());
     }
 
     @Override

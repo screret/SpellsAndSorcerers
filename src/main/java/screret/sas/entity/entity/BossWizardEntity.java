@@ -39,20 +39,16 @@ import screret.sas.blockentity.blockentity.SummonSignBE;
 import screret.sas.config.SASConfig;
 import screret.sas.enchantment.ModEnchantments;
 import screret.sas.entity.goal.ShootEnemyGoal;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.builder.ILoopType;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.constant.DefaultAnimations;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
 
 import java.util.EnumSet;
 import java.util.function.Predicate;
 
-public class BossWizardEntity extends Monster implements RangedAttackMob, IAnimatable {
+public class BossWizardEntity extends Monster implements RangedAttackMob, GeoEntity {
     private static final Predicate<LivingEntity> LIVING_ENTITY_SELECTOR = (mob) -> mob.getMobType() != MobType.ILLAGER && mob.attackable();
     private static final EntityDataAccessor<Boolean> IS_ATTACKING = SynchedEntityData.defineId(BossWizardEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> INVULNERABLE_TICKS = SynchedEntityData.defineId(BossWizardEntity.class, EntityDataSerializers.INT);
@@ -64,8 +60,6 @@ public class BossWizardEntity extends Monster implements RangedAttackMob, IAnima
     private WandAbilityInstance currentSpell = DUMMY_SPELL;
     private final ServerBossEvent bossEvent = new ServerBossEvent(this.getDisplayName(), BossEvent.BossBarColor.GREEN, BossEvent.BossBarOverlay.PROGRESS);
     private BlockPos spawnPos;
-
-    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
 
     public BossWizardEntity(EntityType<BossWizardEntity> type, Level pLevel) {
         super(type, pLevel);
@@ -291,27 +285,19 @@ public class BossWizardEntity extends Monster implements RangedAttackMob, IAnima
         return SoundEvents.EVOKER_HURT;
     }
 
-    private PlayState predicate(AnimationEvent<BossWizardEntity> event) {
-        if(event.getAnimatable().getInvulnerableTicks() > 0){
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.boss_wizard.spawn", ILoopType.EDefaultLoopTypes.PLAY_ONCE));
-        } else if(event.getAnimatable().isAttacking()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.boss_wizard.attack", ILoopType.EDefaultLoopTypes.LOOP));
-        } else if(event.isMoving()){
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.boss_wizard.walk", ILoopType.EDefaultLoopTypes.LOOP));
-        } else {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.boss_wizard.idle", ILoopType.EDefaultLoopTypes.LOOP));
-        }
-        return PlayState.CONTINUE;
+    @Override
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(
+                new AnimationController<>(this, 10, state -> state.setAndContinue(this.getInvulnerableTicks() > 0 ? DefaultAnimations.SPAWN : DefaultAnimations.IDLE)),
+                new AnimationController<>(this, 10, state -> state.setAndContinue(this.isAttacking() ? DefaultAnimations.ATTACK_CAST : DefaultAnimations.IDLE)),
+                DefaultAnimations.genericWalkController(this),
+                DefaultAnimations.genericIdleController(this)
+        );
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController<>(this, "controller", 0, this::predicate));
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return this.factory;
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return null;
     }
 
     @Override

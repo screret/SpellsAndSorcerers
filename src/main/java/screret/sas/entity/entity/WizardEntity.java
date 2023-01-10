@@ -2,6 +2,7 @@ package screret.sas.entity.entity;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -35,27 +36,23 @@ import org.jetbrains.annotations.Nullable;
 import screret.sas.Util;
 import screret.sas.api.wand.ability.WandAbilityInstance;
 import screret.sas.config.SASConfig;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.builder.ILoopType;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.core.molang.LazyVariable;
-import software.bernie.geckolib3.resource.GeckoLibCache;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.constant.DefaultAnimations;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.util.ClientUtils;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.List;
 
-public class WizardEntity extends SpellcasterIllager implements RangedAttackMob, IAnimatable {
+public class WizardEntity extends SpellcasterIllager implements RangedAttackMob, GeoEntity {
     private static final EntityDataAccessor<Boolean> IS_ATTACKING = SynchedEntityData.defineId(WizardEntity.class, EntityDataSerializers.BOOLEAN);
-    private AnimationFactory factory = GeckoLibUtil.createFactory(this);
-
     private final float attackRadius = 32, attackRadiusSqr = attackRadius * attackRadius;
-
     private final ItemStackHandler inventory = new ItemStackHandler(1);
+    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+
 
     public WizardEntity(EntityType<WizardEntity> type, Level pLevel) {
         super(type, pLevel);
@@ -198,26 +195,27 @@ public class WizardEntity extends SpellcasterIllager implements RangedAttackMob,
         return SoundEvents.EVOKER_CELEBRATE;
     }
 
-    private PlayState predicate(AnimationEvent<WizardEntity> event) {
-        if(event.getAnimatable().isAttacking()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.wizard.attack", ILoopType.EDefaultLoopTypes.PLAY_ONCE));
-        } else if(event.isMoving()){
-            GeckoLibCache.getInstance().parser.setValue("move_speed", () -> event.getAnimatable().getSpeed());
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.wizard.walk", ILoopType.EDefaultLoopTypes.LOOP));
-        } else {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.wizard.idle", ILoopType.EDefaultLoopTypes.LOOP));
-        }
-        return PlayState.CONTINUE;
+    @Override
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(
+                new AnimationController<>(this, 10, state -> state.setAndContinue(this.isAttacking() ? DefaultAnimations.ATTACK_CAST : DefaultAnimations.IDLE))
+                        .setParticleKeyframeHandler(state -> {
+                            var handWorldPos = state.getKeyframeData().script()("rightArm").get().getWorldPosition();
+                            this.level.addParticle(Util.getMainAbilityFromStack(animatable.getMainHandItem()).get().getAbility().getParticle(),
+                                    handWorldPos.x,
+                                    handWorldPos.y,
+                                    handWorldPos.z,
+                                    (animatable.getRandom().nextDouble() - 0.5D), -animatable.getRandom().nextDouble(),
+                                    (animatable.getRandom().nextDouble() - 0.5D));
+                        }),
+                DefaultAnimations.genericWalkController(this),
+                DefaultAnimations.genericIdleController(this)
+        );
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController<>(this, "controller", 0, this::predicate));
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return this.factory;
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return cache;
     }
 
     @Override

@@ -15,6 +15,10 @@ import net.minecraft.world.level.Level;
 import screret.sas.api.capability.cthulhu.CthulhuFightProvider;
 import screret.sas.entity.entity.BossWizardEntity;
 import screret.sas.entity.entity.boss.cthulhu.part.CthulhuPart;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.util.GeckoLibUtil;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
@@ -28,7 +32,7 @@ import software.bernie.geckolib3.util.GeckoLibUtil;
 import javax.annotation.Nullable;
 import java.util.function.Predicate;
 
-public class CthulhuEntity extends Mob implements Enemy, IAnimatable {
+public class CthulhuEntity extends Mob implements Enemy, GeoEntity {
     private static final Predicate<LivingEntity> LIVING_ENTITY_SELECTOR = (mob) -> mob.getMobType() != MobType.ILLAGER && mob.attackable();
     private static final EntityDataAccessor<Boolean> IS_ATTACKING = SynchedEntityData.defineId(BossWizardEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> INVULNERABLE_TICKS = SynchedEntityData.defineId(BossWizardEntity.class, EntityDataSerializers.INT);
@@ -48,7 +52,7 @@ public class CthulhuEntity extends Mob implements Enemy, IAnimatable {
     @Nullable
     private final CthulhuFight cthulhuFight;
 
-    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
     public CthulhuEntity(EntityType<? extends Mob> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
@@ -103,26 +107,13 @@ public class CthulhuEntity extends Mob implements Enemy, IAnimatable {
         return super.hurt(pDamageSource, pAmount);
     }
 
-    private PlayState predicate(AnimationEvent<CthulhuEntity> event) {
-        if(event.getAnimatable().getInvulnerableTicks() > 0){
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.boss_wizard.spawn", ILoopType.EDefaultLoopTypes.PLAY_ONCE));
-        } else if(event.getAnimatable().isAttacking()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.boss_wizard.attack", ILoopType.EDefaultLoopTypes.LOOP));
-        } else if(event.isMoving()){
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.boss_wizard.walk", ILoopType.EDefaultLoopTypes.LOOP));
-        } else {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.boss_wizard.idle", ILoopType.EDefaultLoopTypes.LOOP));
-        }
-        return PlayState.CONTINUE;
+    @Override
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController<>(this, "controller", 0, this::predicate));
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return this.factory;
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return cache;
     }
 }

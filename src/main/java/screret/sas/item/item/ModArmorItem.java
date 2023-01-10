@@ -1,40 +1,58 @@
 package screret.sas.item.item;
 
+import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+import org.jetbrains.annotations.NotNull;
 import screret.sas.alchemy.effect.ModMobEffects;
+import screret.sas.client.renderer.armor.SoulsteelArmorRenderer;
 import screret.sas.config.SASConfig;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.builder.ILoopType;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.item.GeoArmorItem;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.example.client.renderer.armor.GeckoArmorRenderer;
+import software.bernie.geckolib.animatable.GeoItem;
+import software.bernie.geckolib.constant.DefaultAnimations;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.renderer.GeoArmorRenderer;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class ModArmorItem extends GeoArmorItem implements IAnimatable {
+import java.util.function.Consumer;
+
+public class ModArmorItem extends ArmorItem implements GeoItem {
     public static final MobEffectInstance SOUL_STEEL_EFFECT = new MobEffectInstance(ModMobEffects.MANA.get(), 200, 1);
 
-    private AnimationFactory factory = GeckoLibUtil.createFactory(this);
-
     private final MobEffectInstance fullSetEffect;
+    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
     public ModArmorItem(ArmorMaterial material, MobEffectInstance fullSetEffect, EquipmentSlot slot, Properties builder) {
         super(material, slot, builder);
         this.fullSetEffect = fullSetEffect;
     }
 
-    private PlayState predicate(AnimationEvent<ModArmorItem> event) {
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.%s_armor.idle".formatted(this.material.getName()), ILoopType.EDefaultLoopTypes.LOOP));
-        return PlayState.CONTINUE;
+    @Override
+    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+        consumer.accept(new IClientItemExtensions() {
+            private GeoArmorRenderer<?> renderer;
+
+            @Override
+            public @NotNull HumanoidModel<?> getHumanoidArmorModel(LivingEntity livingEntity, ItemStack itemStack, EquipmentSlot equipmentSlot, HumanoidModel<?> original) {
+                if (this.renderer == null)
+                    this.renderer = new SoulsteelArmorRenderer();
+
+                // This prepares our GeoArmorRenderer for the current render frame.
+                // These parameters may be null however, so we don't do anything further with them
+                this.renderer.prepForRender(livingEntity, itemStack, equipmentSlot, original);
+
+                return this.renderer;
+            }
+        });
     }
 
     @Override
@@ -49,13 +67,15 @@ public class ModArmorItem extends GeoArmorItem implements IAnimatable {
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController<>(this, "controller", 0, this::predicate));
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(
+                DefaultAnimations.genericIdleController(this)
+        );
     }
 
     @Override
-    public AnimationFactory getFactory() {
-        return factory;
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return cache;
     }
 
     private void evaluateArmorEffects(Player player) {

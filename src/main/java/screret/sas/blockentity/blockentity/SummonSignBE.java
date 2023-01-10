@@ -22,6 +22,9 @@ import screret.sas.block.block.SummonSignBlock;
 import screret.sas.blockentity.ModBlockEntities;
 import screret.sas.entity.ModEntities;
 import screret.sas.entity.entity.BossWizardEntity;
+import software.bernie.geckolib.animatable.GeoBlockEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
@@ -36,14 +39,13 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class SummonSignBE extends BlockEntity implements IAnimatable {
+public class SummonSignBE extends BlockEntity implements GeoBlockEntity {
     private static final int REQUIRED_ITEMS_COUNT = 4;
     private static final int TICKS_TO_SPAWN = 100;
     public static final VoxelShape INSIDE = Block.box(-1D, 0.0D, -1D, 17.0D, 16.0D, 17.0D);
 
     private int ticksToSpawn = -1;
     private boolean hasSpawned = false;
-    private AnimationFactory factory = GeckoLibUtil.createFactory(this);
 
     public SummonSignBE(BlockPos pPos, BlockState pBlockState) {
         super(ModBlockEntities.SUMMON_SIGN_BE.get(), pPos, pBlockState);
@@ -66,6 +68,18 @@ public class SummonSignBE extends BlockEntity implements IAnimatable {
             }
         }
         return false;
+    }
+
+    @Override
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(
+
+        );
+    }
+
+    @Override
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return null;
     }
 
     private static class RequiredCounter {
@@ -134,8 +148,6 @@ public class SummonSignBE extends BlockEntity implements IAnimatable {
         if(pTag.contains("HasSpawned")) this.hasSpawned = pTag.getBoolean("HasSpawned");
     }
 
-
-
     private PlayState predicate(AnimationEvent<SummonSignBE> event) {
         if(event.getAnimatable().getBlockState().getValue(SummonSignBlock.TRIGGERED)){
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.summon_sign.summon", ILoopType.EDefaultLoopTypes.LOOP));
@@ -148,10 +160,5 @@ public class SummonSignBE extends BlockEntity implements IAnimatable {
     @Override
     public void registerControllers(AnimationData data) {
         data.addAnimationController(new AnimationController<>(this, "controller", 0, this::predicate));
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return this.factory;
     }
 }

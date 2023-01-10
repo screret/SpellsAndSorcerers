@@ -8,39 +8,21 @@ import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import screret.sas.SpellsAndSorcerers;
 import screret.sas.block.ModBlocks;
 import screret.sas.client.renderer.item.PalantirItemRenderer;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.builder.ILoopType;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib.animatable.GeoItem;
+import software.bernie.geckolib.constant.DefaultAnimations;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.function.Consumer;
 
-public class PalantirItem extends BlockItem implements IAnimatable {
-    private AnimationFactory factory = GeckoLibUtil.createFactory(this);
+public class PalantirItem extends BlockItem implements GeoItem {
+
+    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+
 
     public PalantirItem() {
         super(ModBlocks.PALANTIR.get(), new Item.Properties().fireResistant().rarity(Rarity.UNCOMMON).tab(SpellsAndSorcerers.SAS_TAB));
-    }
-
-
-    private PlayState predicate(AnimationEvent<PalantirItem> event) {
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.palantir.idle", ILoopType.EDefaultLoopTypes.LOOP));
-        return PlayState.CONTINUE;
-    }
-
-    @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController<>(this, "controller", 0, this::predicate));
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
     }
 
     @Override
@@ -54,5 +36,17 @@ public class PalantirItem extends BlockItem implements IAnimatable {
                 return renderer;
             }
         });
+    }
+
+    @Override
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(
+                DefaultAnimations.genericIdleController(this)
+        );
+    }
+
+    @Override
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return cache;
     }
 }
