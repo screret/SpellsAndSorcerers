@@ -17,7 +17,7 @@ import screret.sas.api.capability.ability.WandAbilityProvider;
 import screret.sas.api.capability.mana.ManaProvider;
 import screret.sas.api.wand.ability.WandAbility;
 import screret.sas.api.wand.ability.WandAbilityInstance;
-import screret.sas.client.item.WandItemClientExtensions;
+import screret.sas.client.model.item.WandItemClientExtensions;
 import screret.sas.config.SASConfig;
 import screret.sas.enchantment.ModEnchantments;
 
