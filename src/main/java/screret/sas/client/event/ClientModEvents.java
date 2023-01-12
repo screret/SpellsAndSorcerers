@@ -31,8 +31,6 @@ import screret.sas.client.renderer.entity.WizardRenderer;
 import screret.sas.container.ModContainers;
 import screret.sas.entity.ModEntities;
 import screret.sas.item.ModItems;
-import screret.sas.item.item.ModArmorItem;
-import software.bernie.geckolib3.renderers.geo.GeoArmorRenderer;
 
 @Mod.EventBusSubscriber(modid = SpellsAndSorcerers.MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ClientModEvents {
@@ -60,11 +58,6 @@ public class ClientModEvents {
     }
 
     @SubscribeEvent
-    public static void registerArmorRenderers(final EntityRenderersEvent.AddLayers event) {
-        GeoArmorRenderer.registerArmorRenderer(ModArmorItem.class, SoulsteelArmorRenderer::new);
-    }
-
-    @SubscribeEvent
     public static void onRegisterGeometryLoaders(final ModelEvent.RegisterGeometryLoaders event) {
         event.register("wand", WandModel.Loader.INSTANCE);
     }
@@ -79,12 +72,12 @@ public class ClientModEvents {
     }
 
     @SubscribeEvent
-    public static void registerTextures(final TextureStitchEvent.Pre event) {
+    public static void registerTextures(final TextureStitchEvent event) {
         TextureAtlas map = event.getAtlas();
 
         if (map.location() == InventoryMenu.BLOCK_ATLAS) {
             for (var ability : WandAbilityRegistry.WAND_ABILITIES_BUILTIN.get().getValues()){
-                event.addSprite(new ResourceLocation(ability.getKey().getNamespace(), "item/wand/" + ability.getKey().getPath()));
+                event.getAtlas().getSprite(new ResourceLocation(ability.getKey().getNamespace(), "item/wand/" + ability.getKey().getPath()));
             }
         }
     }

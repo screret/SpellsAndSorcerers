@@ -15,9 +15,4 @@ public class PalantirBERenderer extends GeoBlockRenderer<PalantirBE> {
     public PalantirBERenderer() {
         super(new PalantirModel());
     }
-
-    @Override
-    public RenderType getRenderType(PalantirBE animatable, float partialTick, PoseStack poseStack, @Nullable MultiBufferSource bufferSource, @Nullable VertexConsumer buffer, int packedLight, ResourceLocation texture) {
-        return RenderType.entityTranslucentCull(getTextureLocation(animatable));
-    }
 }

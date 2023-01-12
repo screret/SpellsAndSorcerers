@@ -25,15 +25,6 @@ import screret.sas.entity.entity.BossWizardEntity;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.builder.ILoopType;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -146,19 +137,5 @@ public class SummonSignBE extends BlockEntity implements GeoBlockEntity {
     public void load(CompoundTag pTag) {
         if(pTag.contains("TimeToSpawn")) this.ticksToSpawn = pTag.getInt("TimeToSpawn");
         if(pTag.contains("HasSpawned")) this.hasSpawned = pTag.getBoolean("HasSpawned");
-    }
-
-    private PlayState predicate(AnimationEvent<SummonSignBE> event) {
-        if(event.getAnimatable().getBlockState().getValue(SummonSignBlock.TRIGGERED)){
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.summon_sign.summon", ILoopType.EDefaultLoopTypes.LOOP));
-        }else{
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.summon_sign.idle", ILoopType.EDefaultLoopTypes.LOOP));
-        }
-        return PlayState.CONTINUE;
-    }
-
-    @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController<>(this, "controller", 0, this::predicate));
     }
 }
