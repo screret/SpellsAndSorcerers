@@ -2,6 +2,7 @@ package screret.sas.data.conversion.builder;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
+import net.minecraft.advancements.Advancement;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.crafting.RecipeSerializer;

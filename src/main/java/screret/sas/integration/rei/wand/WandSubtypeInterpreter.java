@@ -1,12 +1,10 @@
-package screret.sas.integration.jei.wand;
+package screret.sas.integration.rei.wand;
 
-import mezz.jei.api.ingredients.subtypes.IIngredientSubtypeInterpreter;
-import mezz.jei.api.ingredients.subtypes.UidContext;
 import net.minecraft.world.item.ItemStack;
 import screret.sas.api.capability.ability.ICapabilityWandAbility;
 import screret.sas.api.capability.ability.WandAbilityProvider;
 
-public class WandSubtypeInterpreter implements IIngredientSubtypeInterpreter<ItemStack> {
+public class WandSubtypeInterpreter implements Subtype<ItemStack> {
     public static final WandSubtypeInterpreter INSTANCE = new WandSubtypeInterpreter();
 
     private WandSubtypeInterpreter() {

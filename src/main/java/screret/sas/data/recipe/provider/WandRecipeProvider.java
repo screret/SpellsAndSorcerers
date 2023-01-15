@@ -3,6 +3,7 @@ package screret.sas.data.recipe.provider;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.nbt.CompoundTag;
@@ -25,12 +26,12 @@ import java.util.function.Consumer;
 
 public class WandRecipeProvider extends RecipeProvider {
 
-    public WandRecipeProvider(DataGenerator generatorIn) {
-        super(generatorIn);
+    public WandRecipeProvider(PackOutput output) {
+        super(output);
     }
 
     @Override
-    protected void buildCraftingRecipes(Consumer<FinishedRecipe> consumer) {
+    protected void buildRecipes(Consumer<FinishedRecipe> consumer) {
         Util.addItems();
 
         addWandUpgradeRecipes(consumer);

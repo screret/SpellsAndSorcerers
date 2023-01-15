@@ -62,7 +62,7 @@ public class ModItems {
 
 
     private static Item.Properties basicItemProperties(){
-        return new Item.Properties().tab(SpellsAndSorcerers.SAS_TAB);
+        return new Item.Properties();
     }
     private static Supplier<Item> basicItem(){
         return () -> new Item(basicItemProperties());

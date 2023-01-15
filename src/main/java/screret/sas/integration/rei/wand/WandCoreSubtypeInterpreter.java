@@ -1,4 +1,4 @@
-package screret.sas.integration.jei.wand;
+package screret.sas.integration.rei.wand;
 
 import mezz.jei.api.ingredients.subtypes.IIngredientSubtypeInterpreter;
 import mezz.jei.api.ingredients.subtypes.UidContext;

@@ -124,6 +124,11 @@ public class ShapedWandRecipe implements WandRecipe {
         return getId().toString();
     }
 
+    @Override
+    public boolean isShapeless() {
+        return false;
+    }
+
     public static class Serializer implements RecipeSerializer<ShapedWandRecipe> {
         @Override
         public ShapedWandRecipe fromJson(ResourceLocation recipeId, JsonObject json) {

@@ -199,7 +199,7 @@ public class WizardEntity extends SpellcasterIllager implements RangedAttackMob,
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(
                 new AnimationController<>(this, 10, state -> state.setAndContinue(this.isAttacking() ? DefaultAnimations.ATTACK_CAST : DefaultAnimations.IDLE))
-                        .setParticleKeyframeHandler(state -> {
+                        /*.setParticleKeyframeHandler(state -> {
                             var handWorldPos = state.getKeyframeData().script()("rightArm").get().getWorldPosition();
                             this.level.addParticle(Util.getMainAbilityFromStack(animatable.getMainHandItem()).get().getAbility().getParticle(),
                                     handWorldPos.x,
@@ -207,7 +207,7 @@ public class WizardEntity extends SpellcasterIllager implements RangedAttackMob,
                                     handWorldPos.z,
                                     (animatable.getRandom().nextDouble() - 0.5D), -animatable.getRandom().nextDouble(),
                                     (animatable.getRandom().nextDouble() - 0.5D));
-                        }),
+                        })*/,
                 DefaultAnimations.genericWalkController(this),
                 DefaultAnimations.genericIdleController(this)
         );

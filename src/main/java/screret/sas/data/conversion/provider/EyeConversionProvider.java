@@ -6,6 +6,7 @@ import com.mojang.logging.LogUtils;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
+import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
@@ -18,16 +19,19 @@ import screret.sas.data.conversion.builder.EyeConversionBuilder;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
 public class EyeConversionProvider implements DataProvider {
     private static final Logger LOGGER = LogUtils.getLogger();
-    protected final DataGenerator.PathProvider pathProvider;
+    protected final PackOutput.PathProvider pathProvider;
 
 
-    public EyeConversionProvider(DataGenerator pGenerator) {
-        this.pathProvider = pGenerator.createPathProvider(DataGenerator.Target.DATA_PACK, "eye_conversions");
+    public EyeConversionProvider(PackOutput output) {
+        this.pathProvider = output.createPathProvider(PackOutput.Target.DATA_PACK, "eye_conversions");
     }
 
     protected void buildCraftingRecipes(Consumer<EyeConversionBuilder.Result> finished) {
@@ -60,24 +64,18 @@ public class EyeConversionProvider implements DataProvider {
     }
 
     @Override
-    public void run(CachedOutput pOutput) {
+    public CompletableFuture<?> run(CachedOutput pOutput) {
         Set<ResourceLocation> set = Sets.newHashSet();
+        List<CompletableFuture<?>> futures = new ArrayList<>();
         buildCraftingRecipes((result) -> {
             if (!set.add(result.getId())) {
                 throw new IllegalStateException("Duplicate recipe " + result.getId());
             } else {
-                saveRecipe(pOutput, result.serializeRecipe(), this.pathProvider.json(result.getId()));
+                futures.add(DataProvider.saveStable(pOutput, result.serializeRecipe(), this.pathProvider.json(result.getId())));
             }
         });
-    }
 
-    private static void saveRecipe(CachedOutput pOutput, JsonObject pRecipeJson, Path pPath) {
-        try {
-            DataProvider.saveStable(pOutput, pRecipeJson, pPath);
-        } catch (IOException ioexception) {
-            LOGGER.error("Couldn't save recipe {}", pPath, ioexception);
-        }
-
+        return CompletableFuture.allOf(futures.toArray(CompletableFuture[]::new));
     }
 
         @Override

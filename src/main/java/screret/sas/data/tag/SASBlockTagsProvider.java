@@ -1,23 +1,26 @@
 package screret.sas.data.tag;
 
+import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.data.tags.BlockTagsProvider;
+import net.minecraft.data.PackOutput;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.Tags;
+import net.minecraftforge.common.data.BlockTagsProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import org.jetbrains.annotations.Nullable;
 import screret.sas.ModTags;
 import screret.sas.SpellsAndSorcerers;
 import screret.sas.block.ModBlocks;
-import screret.sas.item.ModItems;
+
+import java.util.concurrent.CompletableFuture;
 
 public class SASBlockTagsProvider extends BlockTagsProvider {
 
-    public SASBlockTagsProvider(DataGenerator pGenerator, ExistingFileHelper existingFileHelper) {
-        super(pGenerator, SpellsAndSorcerers.MODID, existingFileHelper);
+    public SASBlockTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, @Nullable ExistingFileHelper existingFileHelper) {
+        super(output, lookupProvider, SpellsAndSorcerers.MODID, existingFileHelper);
     }
 
-    protected void addTags() {
+    protected void addTags(HolderLookup.Provider pProvider) {
         tag(ModTags.Blocks.GLINT_ORES).add(ModBlocks.GLINT_ORE.get());
         tag(ModTags.Blocks.SOULSTEEL_BLOCKS).add(ModBlocks.SOULSTEEL_BLOCK.get());
 

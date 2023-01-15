@@ -1,24 +1,28 @@
 package screret.sas.data.tag;
 
+import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.data.tags.BlockTagsProvider;
+import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
-import net.minecraft.world.item.Item;
+import net.minecraft.data.tags.TagsProvider;
 import net.minecraft.world.item.Items;
-import net.minecraftforge.common.Tags;
+import net.minecraft.world.level.block.Block;
+import net.minecraftforge.common.data.BlockTagsProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import screret.sas.ModTags;
 import screret.sas.SpellsAndSorcerers;
 import screret.sas.item.ModItems;
 
+import java.util.concurrent.CompletableFuture;
+
 public class SASItemTagsProvider extends ItemTagsProvider {
 
-    public SASItemTagsProvider(DataGenerator pGenerator, BlockTagsProvider pBlockTagsProvider, ExistingFileHelper existingFileHelper) {
-        super(pGenerator, pBlockTagsProvider, SpellsAndSorcerers.MODID, existingFileHelper);
+    public SASItemTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, TagsProvider<Block> blockTagProvider, ExistingFileHelper existingFileHelper) {
+        super(output, lookupProvider, blockTagProvider, SpellsAndSorcerers.MODID, existingFileHelper);
     }
 
     @Override
-    protected void addTags() {
+    protected void addTags(HolderLookup.Provider pProvider) {
         tag(ModTags.Items.GLASS_BOTTLES).add(Items.GLASS_BOTTLE);
         tag(ModTags.Items.BOSS_SUMMON_ITEMS).add(ModItems.WAND_CORE.get(), Items.GLOWSTONE_DUST, Items.LAPIS_BLOCK, Items.ZOMBIE_HEAD);
         tag(ModTags.Items.GLINT_ORES).add(ModItems.GLINT_ORE.get());

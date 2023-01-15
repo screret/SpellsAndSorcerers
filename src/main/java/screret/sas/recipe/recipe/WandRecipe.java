@@ -10,4 +10,6 @@ public interface WandRecipe extends Recipe<CraftingContainer> {
         return ModRecipes.WAND_RECIPE.get();
     }
 
+    boolean isShapeless();
+
 }

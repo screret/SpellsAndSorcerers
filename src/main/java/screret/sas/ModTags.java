@@ -1,6 +1,8 @@
 package screret.sas;
 
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.tags.BlockTags;
@@ -59,7 +61,7 @@ public class ModTags {
             return create(Util.resource(name));
         }
         private static TagKey<Biome> create(ResourceLocation pName) {
-            return TagKey.create(Registry.BIOME_REGISTRY, pName);
+            return TagKey.create(Registries.BIOME, pName);
         }
     }
 }

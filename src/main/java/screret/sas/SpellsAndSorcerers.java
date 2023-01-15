@@ -1,12 +1,17 @@
 package screret.sas;
 
 import com.mojang.logging.LogUtils;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.stats.Stats;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUtils;
 import net.minecraftforge.common.MinecraftForge;
@@ -16,6 +21,7 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
+import net.minecraftforge.event.CreativeModeTabEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -52,11 +58,13 @@ import screret.sas.enchantment.ModEnchantments;
 import screret.sas.entity.ModEntities;
 import screret.sas.entity.entity.BossWizardEntity;
 import screret.sas.entity.entity.WizardEntity;
-import screret.sas.item.ModCreativeTab;
 import screret.sas.item.ModItems;
 import screret.sas.recipe.ModRecipes;
 import screret.sas.recipe.ingredient.WandAbilityIngredient;
 import screret.sas.resource.EyeConversionManager;
+import software.bernie.geckolib.GeckoLib;
+
+import java.util.concurrent.CompletableFuture;
 
 import static screret.sas.Util.addWand;
 
@@ -69,8 +77,6 @@ public class SpellsAndSorcerers {
     // Directly reference a slf4j logger
     public static final Logger LOGGER = LogUtils.getLogger();
 
-    public static final CreativeModeTab SAS_TAB = new ModCreativeTab();
-
     public SpellsAndSorcerers() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
@@ -80,6 +86,7 @@ public class SpellsAndSorcerers {
         modEventBus.addListener(this::gatherData);
         modEventBus.addListener(this::registerEntityAttributes);
         modEventBus.addListener(this::registerSerializers);
+        modEventBus.addListener(this::addCreativeTabs);
 
 
         WandAbilityRegistry.init();
@@ -119,20 +126,91 @@ public class SpellsAndSorcerers {
         });
     }
 
+    public void addCreativeTabs(final CreativeModeTabEvent.Register event) {
+        Util.addItems();
+        event.registerCreativeModeTab(new ResourceLocation(GeckoLib.MOD_ID, "spellsandsorcerers"),
+                e -> e.icon(() -> new ItemStack(ModItems.WAND.get()))
+                        .title(Component.translatable("itemGroup." + SpellsAndSorcerers.MODID))
+                        .displayItems((enabledFeatures, entries, operatorEnabled) -> {
+                            entries.acceptAll(Util.customWands.values());
+                            entries.acceptAll(Util.customWandCores.values());
+                            entries.accept(ModItems.HANDLE.get());
+                            entries.accept(ModItems.CLOUD_BOTTLE.get());
+                            entries.accept(ModItems.CTHULHU_EYE.get());
+                            entries.accept(ModItems.GLINT.get());
+                            entries.accept(ModItems.GLINT_ORE.get());
+                            entries.accept(ModItems.PALANTIR.get());
+                            entries.accept(ModItems.POTION_DISTILLERY.get());
+                            entries.accept(ModItems.WAND_TABLE.get());
+                            entries.accept(ModItems.SOUL_BOTTLE.get());
+                            entries.accept(ModItems.SOULSTEEL_INGOT.get());
+                            entries.accept(ModItems.SOULSTEEL_BLOCK.get());
+                            entries.accept(ModItems.SOULSTEEL_AXE.get());
+                            entries.accept(ModItems.SOULSTEEL_HOE.get());
+                            entries.accept(ModItems.SOULSTEEL_PICKAXE.get());
+                            entries.accept(ModItems.SOULSTEEL_SHOVEL.get());
+                            entries.accept(ModItems.SOULSTEEL_SWORD.get());
+                            entries.accept(ModItems.SOULSTEEL_HELMET.get());
+                            entries.accept(ModItems.SOULSTEEL_CHESTPLATE.get());
+                            entries.accept(ModItems.SOULSTEEL_LEGGINGS.get());
+                            entries.accept(ModItems.SOULSTEEL_BOOTS.get());
+                            entries.accept(ModItems.WIZARD_SPAWN_EGG.get());
+                            entries.accept(ModItems.BOSS_WIZARD_SPAWN_EGG.get());
+                        }));
+    }
+
+    public void addItemsVanillaTabs(final CreativeModeTabEvent.BuildContents event) {
+        Util.addItems();
+        if(event.getTab() == CreativeModeTabs.COMBAT) {
+            event.accept(ModItems.SOULSTEEL_AXE.get());
+            event.accept(ModItems.SOULSTEEL_SWORD.get());
+            event.accept(ModItems.SOULSTEEL_HELMET.get());
+            event.accept(ModItems.SOULSTEEL_CHESTPLATE.get());
+            event.accept(ModItems.SOULSTEEL_LEGGINGS.get());
+            event.accept(ModItems.SOULSTEEL_BOOTS.get());
+            event.acceptAll(Util.customWands.values());
+            event.acceptAll(Util.customWandCores.values());
+        } else if (event.getTab() == CreativeModeTabs.TOOLS_AND_UTILITIES) {
+            event.accept(ModItems.SOULSTEEL_AXE.get());
+            event.accept(ModItems.SOULSTEEL_HOE.get());
+            event.accept(ModItems.SOULSTEEL_PICKAXE.get());
+            event.accept(ModItems.SOULSTEEL_SHOVEL.get());
+            event.accept(ModItems.CTHULHU_EYE.get());
+        } else if (event.getTab() == CreativeModeTabs.BUILDING_BLOCKS) {
+            event.accept(ModItems.SOULSTEEL_BLOCK.get());
+        } else if (event.getTab() == CreativeModeTabs.FUNCTIONAL_BLOCKS) {
+            event.accept(ModItems.PALANTIR.get());
+            event.accept(ModItems.POTION_DISTILLERY.get());
+            event.accept(ModItems.WAND_TABLE.get());
+        } else if (event.getTab() == CreativeModeTabs.REDSTONE_BLOCKS) {
+            event.accept(ModItems.POTION_DISTILLERY.get());
+        } else if (event.getTab() == CreativeModeTabs.INGREDIENTS) {
+            event.accept(ModItems.HANDLE.get());
+            event.accept(ModItems.CLOUD_BOTTLE.get());
+            event.accept(ModItems.SOUL_BOTTLE.get());
+            event.accept(ModItems.SOULSTEEL_INGOT.get());
+        } else if (event.getTab() == CreativeModeTabs.SPAWN_EGGS) {
+            event.accept(ModItems.WIZARD_SPAWN_EGG.get());
+            event.accept(ModItems.BOSS_WIZARD_SPAWN_EGG.get());
+        }
+    }
+
     public void gatherData(GatherDataEvent event)
     {
         DataGenerator gen = event.getGenerator();
+        PackOutput packOutput = gen.getPackOutput();
+        CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
 
         ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
-        SASBlockTagsProvider blockTags = new SASBlockTagsProvider(gen, existingFileHelper);
+        SASBlockTagsProvider blockTags = new SASBlockTagsProvider(packOutput, lookupProvider, existingFileHelper);
         gen.addProvider(event.includeServer(), blockTags);
-        gen.addProvider(event.includeServer(), new SASItemTagsProvider(gen, blockTags, existingFileHelper));
+        gen.addProvider(event.includeServer(), new SASItemTagsProvider(packOutput, lookupProvider, blockTags, existingFileHelper));
 
-        gen.addProvider(event.includeServer(), new WandRecipeProvider(gen));
-        gen.addProvider(event.includeServer(), new ModRecipeProvider(gen));
-        gen.addProvider(event.includeServer(), new EyeConversionProvider(gen));
+        gen.addProvider(event.includeServer(), new WandRecipeProvider(packOutput));
+        gen.addProvider(event.includeServer(), new ModRecipeProvider(packOutput));
+        gen.addProvider(event.includeServer(), new EyeConversionProvider(packOutput));
 
-        gen.addProvider(event.includeServer(), new SASBiomeTagsProvider(gen, existingFileHelper));
+        gen.addProvider(event.includeServer(), new SASBiomeTagsProvider(packOutput, lookupProvider, existingFileHelper));
 
         //gen.addProvider(event.includeServer(), new ModBlockstateProvider(gen, existingFileHelper));
     }
